@@ -4,18 +4,24 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class GameServer {
+public class GameServer implements Observer{
 
     private ServerSocket serverSocket;
     private List<ClientHandler> clients = new ArrayList<>();
-    private int numPlayers;
+    private GameModel gameModel; //Vi vill observa gamemodel
 
-    public GameServer() {
-        System.out.println("Server started");
-        numPlayers = 0;
+    public GameServer(GameModel model) {
+        this.gameModel = model;
+        model.addObserver(this);
+
         try {
-            serverSocket = new ServerSocket(12345);
+            int port = 12345;
+            serverSocket = new ServerSocket(port);
+            System.out.println("Server started on port " + port);
+
         } catch (IOException ex) {
             System.out.println("Server could not be started");
             ex.printStackTrace();
@@ -24,10 +30,9 @@ public class GameServer {
 
     public void acceptConnections() {
         System.out.println("Waiting for connections...");
-        while (numPlayers < 2) {
+        while (clients.size() < 2) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                numPlayers++;
                 System.out.println("Accepted connection from " + clientSocket.getInetAddress().getHostAddress());
 
                 //Create a new handler for each client and start a new thread.
@@ -44,16 +49,20 @@ public class GameServer {
     }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof GameModel) {
+            String updatedState = (String) arg;
+            broadcast(updatedState);  // Broadcast model state to all clients
+        }
+    }
+
+
     //Broadcast a message to all connected clients
     public synchronized void broadcast(String message) {
     for (ClientHandler client : clients) {
         client.sendMessage(message);
         }
-    }
-
-    public static void main(String[] args){
-        GameServer server = new GameServer();
-        server.acceptConnections();
     }
 
 
@@ -62,11 +71,9 @@ public class GameServer {
         private Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
-        private GameServer server;
 
         public ClientHandler(Socket socket, GameServer server) {
             this.clientSocket = socket;
-            this.server = server;
         }
 
 
@@ -82,8 +89,8 @@ public class GameServer {
                 while ((message = in.readLine()) != null) {
                     System.out.println("Received message from client: " + message);
 
-                    //Broadcast message to all clients
-                    server.broadcast(message);
+                    // Update game state through the model (controller should normally do this)
+                    //gameModel.updateGameState(message);
 
                 }
             } catch (IOException ex) {
