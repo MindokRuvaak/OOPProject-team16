@@ -10,7 +10,7 @@ public class Model {
 
 
 
-    
+
     public void AddListener(Listener l){
         listeners.add(l);
     }
