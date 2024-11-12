@@ -12,8 +12,9 @@ public class GameServer implements Observer{
     private ServerSocket serverSocket;
     private List<ClientHandler> clients = new ArrayList<>();
     private GameModel gameModel; //Vi vill observa gamemodel
+    private int maxPlayers;
 
-    public GameServer(GameModel model) {
+    public GameServer(GameModel model, int maxPlayers) {
         this.gameModel = model;
         model.addObserver(this);
 
