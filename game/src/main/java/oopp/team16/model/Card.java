@@ -15,7 +15,7 @@ public class Card {
     }
 
     public Value getValue(){
-        return this. value;
+        return this.value;
     }
 
 
