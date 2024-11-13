@@ -17,8 +17,8 @@ public class GameServer implements Observer{
 
     public GameServer(GameModel model, int maxPlayers) { //Lägg till GameController gameController här
         this.gameModel = model;
-        //this.gameController = controller;
         this.maxPlayers = maxPlayers;
+        //this.gameController = controller;
 
         //Registrerar GameServer som en observer av GameModel
         model.addObserver(this);
