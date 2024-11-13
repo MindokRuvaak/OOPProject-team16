@@ -10,8 +10,8 @@ import java.util.Observer;
 public class GameServer implements Observer{
 
     private ServerSocket serverSocket;
-    private List<ClientHandler> clients = new ArrayList<>();
-    private GameModel gameModel; //Vi vill observa gamemodel
+    private final List<ClientHandler> clients = new ArrayList<>();
+    private final GameModel gameModel; //Vi vill observa gamemodel
     private int maxPlayers;
     //private GameController gameController FELIX MÅSTE GÖRA SIN SKIT
 
