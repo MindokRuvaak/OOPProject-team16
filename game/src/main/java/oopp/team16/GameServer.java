@@ -41,7 +41,7 @@ public class GameServer implements Observer{
                 System.out.println("Accepted connection from " + clientSocket.getInetAddress().getHostAddress());
 
                 //Skapar en ny handler för varje client, och startar en ny thread.
-                ClientHandler clientHandler = new ClientHandler(clientSocket, this);
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
                 clients.add(clientHandler);
                 new Thread(clientHandler).start();
             } catch (IOException ex) {
