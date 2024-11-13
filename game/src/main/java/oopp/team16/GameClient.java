@@ -49,4 +49,26 @@ public class GameClient {
             e.printStackTrace();
         }
     }
+
+    public void start() {
+        // Example of sending a message to the server
+        try {
+            out.println("Hello, Server!");
+
+            // Read messages from the server
+            String serverMessage;
+            while ((serverMessage = in.readLine()) != null) {
+                System.out.println("Received from server: " + serverMessage);
+            }
+        } catch (IOException ex) {
+            System.out.println("Error in communication with server.");
+            ex.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        // Example of connecting to the server at localhost on port 12345
+        GameClient client = new GameClient("localhost", 12345);
+        client.start();
+    }
 }
