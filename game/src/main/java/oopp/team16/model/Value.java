@@ -9,11 +9,12 @@ public enum Value {
         this.v = v;
     }
 
-    public int getValue() {
+   public int getValue() {
 
-        return v;
+       return v;
+   }
 
-    }
+
 
 
 }
