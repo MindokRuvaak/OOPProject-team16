@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Deck {
 
-    Stack<Card> deck;
+    Stack<StdCard> deck;
 
     public Deck(){
         this.deck = CreateDeck.createUnoDeck();

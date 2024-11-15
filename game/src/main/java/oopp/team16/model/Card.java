@@ -1,22 +1,8 @@
 package oopp.team16.model;
 
-public class Card {
+public interface Card {
 
-    private final Color color;
-    private final Value value;
+    Color getColor();
 
-    public Card(Color color, Value value){
-        this.color = color;
-        this.value = value;
-    }
-
-    public Color getColor(){
-        return this.color;
-    }
-
-    public Value getValue(){
-        return this.value;
-    }
-
-
+    Value getValue();
 }

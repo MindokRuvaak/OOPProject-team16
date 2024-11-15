@@ -19,7 +19,6 @@ public enum Value {
     }
 
    public int getValue() {
-
        return v;
    }
 
