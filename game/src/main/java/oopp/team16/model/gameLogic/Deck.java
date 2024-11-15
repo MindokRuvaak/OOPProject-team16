@@ -38,18 +38,19 @@ public class Deck {
     }
 
     public void add(Card c) {
+        cardStack.push(c);
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
+        // throw new UnsupportedOperationException("Unimplemented method 'add'");
     }
     
     public void add(Deck d) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
+        // throw new UnsupportedOperationException("Unimplemented method 'add'");
     }
 
     public void shuffle(){
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'shuffle'");
+        // throw new UnsupportedOperationException("Unimplemented method 'shuffle'");
     }
 
     

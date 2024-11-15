@@ -3,6 +3,7 @@ package oopp.team16;
 import oopp.team16.controller.Controller;
 import oopp.team16.model.Model;
 import oopp.team16.view.View;
+import oopp.team16.view.ViewTerminal;
 
 public class Application {
 
@@ -35,17 +36,18 @@ public class Application {
     public static void main(String[] args) {
         int n = 2; 
         m = new Model();
-        m.init();
         
         c = new Controller(m);
-        // c.init(m);
-        m.AddListener(c);
+        // c.init(m); // might not be needed
         
-        v = new View(m,c);
-        // v.init(m,c);
+        m.AddListener(c); // does controller need to listen to model updates?
+        // should controller be able to check if player action valid or allways send them through 
+            // but model ''state'' makes invalid action have no effect?
+        
+        v = new ViewTerminal(m,c);
+        // v.init(m,c);// might not be needed
         m.AddListener(v);
-        // Application a = new Application();
-        // a.init();
-        // a.runGame();
-    }    
+        
+        m.init();
+    }
 }

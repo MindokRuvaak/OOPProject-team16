@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import oopp.team16.model.gameLogic.*;
+import oopp.team16.model.gameLogic.Card;
+import oopp.team16.model.gameLogic.Deck;
+import oopp.team16.model.gameLogic.Player;
 
 public class Model /* extends observable */ {
     private List<ModelListener> listeners;
@@ -38,16 +40,22 @@ public class Model /* extends observable */ {
 
     public void init() {
         playedCards.add(deck.drawOne());
-        throw new UnsupportedOperationException("Not supported yet.");
+        notifyListeners();
     }
 
-    public int getCurrentPlayerID() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String getCurrentPlayerID() {
+        return "player";
     }
 
     public Card getTopPlayedCard() {
         Card c = playedCards.drawOne();
         playedCards.add(c);
         return c;
+    }
+
+    public String getTopPlayedCardString() {
+        Card c = playedCards.drawOne();
+        playedCards.add(c);
+        return c.toString();
     }
 }

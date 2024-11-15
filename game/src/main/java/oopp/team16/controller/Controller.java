@@ -1,7 +1,7 @@
 package oopp.team16.controller;
 
-import oopp.team16.model.ModelListener;
 import oopp.team16.model.Model;
+import oopp.team16.model.ModelListener;
 
 
 public class Controller implements ModelListener {
@@ -22,7 +22,7 @@ public class Controller implements ModelListener {
     @Override
     public void update() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        // throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
     
 
