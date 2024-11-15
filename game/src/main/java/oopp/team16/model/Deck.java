@@ -1,19 +1,18 @@
 package oopp.team16.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Deck {
 
-    List<Card> deck;   // can make stack
+    Stack<Card> deck;
 
     public Deck(){
         this.deck = CreateDeck.createUnoDeck();
+        Collections.shuffle(deck);
     }
 
     public Card drawCard(){
-        return deck.remove(deck.size() - 1);
+        return deck.pop();
 }
 
     public int getSize() {

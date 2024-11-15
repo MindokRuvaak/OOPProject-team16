@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    List<Card> hand;   //vart ger vi 7 kort, satte i konstruktorn
+    List<Card> hand;   //vart ger vi 7 kort, satte i konstruktorn?
     int score;  // hur räknar vi score
     String name;  //?
 
     public Player (String name){
         this.name = name;
-        this.hand = new ArrayList<>(7);
+        this.hand = new ArrayList<>();
     }
 
     public void drawCard(Card card){
