@@ -1,13 +1,16 @@
 package oopp.team16.model.gameLogic;
 
+import java.util.Collections;
 import java.util.Stack;
 
 public class Deck {
 
     Stack<Card> cardStack;
+    StdCardFactory c = new StdCardFactory();
 
     private Deck(){
-        cardStack = new Stack<>();
+        cardStack = c.createDeck();
+        Collections.shuffle(cardStack);
     }
 
     public Deck(boolean createEmpty){
@@ -17,7 +20,7 @@ public class Deck {
         }
         else {
             // create normal deck
-            
+
         }
     }
 
@@ -41,7 +44,7 @@ public class Deck {
         // TODO Auto-generated method stub
         // throw new UnsupportedOperationException("Unimplemented method 'add'");
     }
-    
+
     public void add(Deck d) {
         // TODO Auto-generated method stub
         // throw new UnsupportedOperationException("Unimplemented method 'add'");
