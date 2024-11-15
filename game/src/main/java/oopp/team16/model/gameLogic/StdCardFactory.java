@@ -2,10 +2,10 @@ package oopp.team16.model.gameLogic;
 
 import java.util.Stack;
 
-public class StdCardFactory {
+public class StdCardFactory implements CardFactory {
 
-    public static Stack<StdCard> createDeck() {
-        Stack<StdCard> deck = new Stack<>();
+    public Stack<Card> createDeck() {
+        Stack<Card> deck = new Stack<>();
 
         for (Color color : Color.values()) {
             for (int i = 0; i <= 9; i++) {
