@@ -1,7 +1,7 @@
 package oopp.team16.view;
 
-import oopp.team16.ModelUpdateListener;
+import oopp.team16.model.ModelListener;
 
-public class View implements ModelUpdateListener {
-    
+public interface View extends ModelListener {
+
 }
