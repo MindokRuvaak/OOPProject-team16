@@ -20,7 +20,6 @@ public class GameServer implements Observer{
         this.maxPlayers = maxPlayers;
         //this.gameController = controller;
 
-        //Registrerar GameServer som en observer av GameModel
         model.addObserver(this);
 
         try {
@@ -52,17 +51,15 @@ public class GameServer implements Observer{
         System.out.println("Connections accepted");
     }
 
-    //Får uppdateringar av GameModel och broadcastar dem till clients
     @Override
     public void update(Observable o, Object arg) {
         if (o == gameModel && arg instanceof String) {
             String updatedState = (String) arg;
-            broadcast(updatedState);  //Broadcastar modellens state till alla clients
+            broadcast(updatedState);
         }
     }
 
 
-    //Broadcastar meddelande till alla clients
     public synchronized void broadcast(String message) {
     for (ClientHandler client : clients) {
         client.sendMessage(message);
@@ -70,7 +67,6 @@ public class GameServer implements Observer{
     }
 
 
-    //Inner class to handle individual client connections
     private class ClientHandler implements Runnable {
         private Socket clientSocket;
         private PrintWriter out;
@@ -112,4 +108,18 @@ public class GameServer implements Observer{
             }
         }
     }
+
+    public static void main(String[] args) {
+        // Create a mock GameModel (replace with your actual implementation)
+        GameModel gameModel = new GameModel();
+
+        int maxPlayers = 4; // Set the desired number of maximum players
+
+        // Start the server
+        GameServer server = new GameServer(gameModel, maxPlayers);
+
+        // Accept client connections
+        server.acceptConnections();
+    }
 }
+

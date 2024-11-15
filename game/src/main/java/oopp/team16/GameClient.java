@@ -53,7 +53,7 @@ public class GameClient {
     public void start() {
         // Example of sending a message to the server
         try {
-            out.println("Hello, Server!");
+            out.println("beep boop");
 
             // Read messages from the server
             String serverMessage;
