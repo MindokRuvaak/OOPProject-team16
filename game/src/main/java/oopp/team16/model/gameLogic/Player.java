@@ -26,6 +26,7 @@ public class Player {
     }
 
     // boolean hasUno maybe? return true if size equals 1
+    //boolean hasCards
 
     public String getName(){
         return this.name;
