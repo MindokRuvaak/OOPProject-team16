@@ -48,6 +48,6 @@ public class Application {
         // v.init(m,c);// might not be needed
         m.AddListener(v);
         
-        m.init();
+        m.initGame();
     }
 }

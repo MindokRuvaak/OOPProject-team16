@@ -1,7 +1,5 @@
 package oopp.team16.model.gameLogic;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class CreateDeck {
