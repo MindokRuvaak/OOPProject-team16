@@ -1,12 +1,10 @@
 package oopp.team16.model.gameLogic;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
-public class CreateDeck {
+public class StdCardFactory {
 
-    public static Stack<StdCard> createUnoDeck() {
+    public static Stack<StdCard> createDeck() {
         Stack<StdCard> deck = new Stack<>();
 
         for (Color color : Color.values()) {
