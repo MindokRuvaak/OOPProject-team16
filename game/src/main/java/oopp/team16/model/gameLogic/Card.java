@@ -1,10 +1,9 @@
 package oopp.team16.model.gameLogic;
 
-public class Card {
-    
-    @Override
-    public String toString(){
-        return "Nine of diamonds";
-    }
+public interface Card {
 
+    Color getColor();
+
+    Value getValue();
+    
 }

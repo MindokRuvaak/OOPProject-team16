@@ -5,7 +5,7 @@ import java.util.Stack;
 public class Deck {
 
     Stack<Card> cardStack;
-    
+
     private Deck(){
         cardStack = new Stack<>();
     }
@@ -21,20 +21,19 @@ public class Deck {
         }
     }
 
-    public Card[] draw(int n){
-        Card[] drawn = new Card[n];
-        // draw n cards from deck
-        for (int i = 0; i < n; i++) {
-            drawn[i] = drawOne();
-        }
-        return drawn;
+    public Card drawCard(){
+        return cardStack.pop();
+}
+
+    public int getSize() {
+        return cardStack.size();
     }
 
     public Card drawOne() {
         // TODO Auto-generated method stub
         // draw one card from deck
         // throw new UnsupportedOperationException("Unimplemented method 'draw'");
-        return new Card();//temporary
+        return new StdCard(Color.RED, Value.NINE);//temporary
     }
 
     public void add(Card c) {
@@ -52,6 +51,8 @@ public class Deck {
         // TODO Auto-generated method stub
         // throw new UnsupportedOperationException("Unimplemented method 'shuffle'");
     }
+    //shuffle method?, shuffle in constructor?
 
-    
+
+
 }

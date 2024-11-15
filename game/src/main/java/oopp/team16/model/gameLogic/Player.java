@@ -4,19 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    List<Card> hand;
-    String id;
+    List<StdCard> hand;   //vart ger vi 7 kort, satte i konstruktorn?
+    int score;  // hur räknar vi score
+    String name;  //?
 
-    public Player(String id) {
+    public Player (String name){
+        this.name = name;
         this.hand = new ArrayList<>();
-        this.id = id;
     }
 
-    public void add(Card c){
-        hand.add(c);
+    public void drawCard(StdCard card){
+        hand.add(card);
     }
-    
-    public String getPlayerID(){
-        return id;
+
+    public void playCard(int index){
+        hand.remove(index);
     }
+
+    public List<StdCard> getHand(){
+        return this.hand;
+    }
+
+    // boolean hasUno maybe? return true if size equals 1
+
+    public String getName(){
+        return this.name;
+    }
+
+
 }

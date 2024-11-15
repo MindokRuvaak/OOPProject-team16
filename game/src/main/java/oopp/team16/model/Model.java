@@ -39,6 +39,7 @@ public class Model /* extends observable */ {
     }
 
     public void init() {
+        ///give all players 7 cards each
         playedCards.add(deck.drawOne());
         notifyListeners();
     }
