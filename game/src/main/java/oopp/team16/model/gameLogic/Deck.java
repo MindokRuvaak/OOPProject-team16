@@ -4,13 +4,11 @@ import java.util.Collections;
 import java.util.Stack;
 
 public class Deck {
-
     Stack<Card> cardStack;
-    CreateStdDeck c = new CreateStdDeck();
+
 
     private Deck(){
-        cardStack = c.createDeck();
-        Collections.shuffle(cardStack);
+        cardStack = new Stack<>();
     }
 
     public Deck(boolean createEmpty){
@@ -51,6 +49,7 @@ public class Deck {
     }
 
     public void shuffle(){
+        Collections.shuffle(cardStack);
         // TODO Auto-generated method stub
         // throw new UnsupportedOperationException("Unimplemented method 'shuffle'");
     }
