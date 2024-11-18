@@ -2,7 +2,7 @@ package oopp.team16.model.gameLogic;
 
 import java.util.Stack;
 
-public class StdCardFactory implements CardFactory {
+public class CreateStdDeck implements DeckFactory {
 
     public Stack<Card> createDeck() {
         Stack<Card> deck = new Stack<>();

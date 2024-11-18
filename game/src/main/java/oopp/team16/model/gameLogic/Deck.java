@@ -6,7 +6,7 @@ import java.util.Stack;
 public class Deck {
 
     Stack<Card> cardStack;
-    StdCardFactory c = new StdCardFactory();
+    CreateStdDeck c = new CreateStdDeck();
 
     private Deck(){
         cardStack = c.createDeck();
