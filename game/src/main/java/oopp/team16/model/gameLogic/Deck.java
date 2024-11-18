@@ -1,5 +1,7 @@
 package oopp.team16.model.gameLogic;
 
+import oopp.team16.model.gameLogic.Colors.Red;
+
 import java.util.Collections;
 import java.util.Stack;
 
@@ -34,7 +36,7 @@ public class Deck {
         // TODO Auto-generated method stub
         // draw one card from deck
         // throw new UnsupportedOperationException("Unimplemented method 'draw'");
-        return new StdCard(Color.RED, Value.NINE);//temporary
+        return new StdCard(Red.getColor(), Value.NINE);//temporary
     }
 
     public void add(Card c) {
