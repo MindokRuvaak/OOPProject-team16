@@ -1,10 +1,8 @@
-package oopp.team16.gameserver;
+package oopp.team16.controller;
 
 import oopp.team16.model.Model;
-import java.util.logging.Logger;
 
 public class GameActionController {
-    private static final Logger logger = Logger.getLogger(GameActionController.class.getName());
     private final Model gameModel;
     private final ConnectionController connectionController;
 

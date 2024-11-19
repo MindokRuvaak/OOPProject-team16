@@ -1,4 +1,4 @@
-package oopp.team16.gameserver;
+package oopp.team16.controller;
 
 import oopp.team16.model.Model;
 import java.io.IOException;

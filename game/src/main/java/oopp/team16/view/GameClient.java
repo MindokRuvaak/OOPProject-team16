@@ -1,4 +1,4 @@
-package oopp.team16.gameserver;
+package oopp.team16.view;
 
 import java.io.*;
 import java.net.Socket;

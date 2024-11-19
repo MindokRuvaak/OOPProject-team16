@@ -1,4 +1,6 @@
-package oopp.team16.gameserver;
+package oopp.team16.controller;
+
+import oopp.team16.view.GameClient;
 
 import java.util.Scanner;
 
