@@ -13,6 +13,7 @@ public class GameServer {
     private final ConnectionController connectionController;
     private final GameActionController gameActionController;
 
+    
     public GameServer(Model model, int maxPlayers, int port) throws IOException {
         serverSocket = new ServerSocket(port);
         logger.info("Server started on port " + port);
