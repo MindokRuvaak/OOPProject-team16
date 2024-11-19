@@ -10,6 +10,8 @@ public class UnoController {
     }
     public void exitGame(){
     }
+    public void leaveGame(){
+    }
     public void connectGame(int port){
     }
     public void rules(){
@@ -18,6 +20,10 @@ public class UnoController {
     }
     public void drawButton(){
     }
-    //bög
+    public void gameName(String name){
+    }
+
+
+
 
 }
