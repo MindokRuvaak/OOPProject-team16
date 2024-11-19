@@ -1,5 +1,6 @@
-package oopp.team16;
+package oopp.team16.gameserver;
 
+import oopp.team16.model.Model;
 import java.util.logging.Logger;
 
 public class GameActionController {

@@ -1,5 +1,6 @@
-package oopp.team16;
+package oopp.team16.gameserver;
 
+import oopp.team16.model.Model;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

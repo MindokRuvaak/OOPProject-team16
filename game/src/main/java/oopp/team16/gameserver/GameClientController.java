@@ -1,4 +1,4 @@
-package oopp.team16;
+package oopp.team16.gameserver;
 
 import java.util.Scanner;
 
