@@ -17,7 +17,7 @@ public final class App {
      */
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        StartView sv = new StartView(unoCC);
+        StartView sv = new StartView(/* unoCC */);
     }
     
     
