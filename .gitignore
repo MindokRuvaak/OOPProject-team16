@@ -15,3 +15,8 @@ out/
 
 
 **.pdf
+
+
+**/old**
+
+*.class
