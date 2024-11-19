@@ -13,16 +13,11 @@ public class Deck {
         cardStack = new Stack<>();
     }
 
-    public Deck(boolean createEmpty){
+    Deck(Stack<Card> stack){
         this();
-        if (createEmpty){
-            // create an empty deck
-        }
-        else {
-            // create normal deck
-
-        }
+        cardStack.addAll(stack);
     }
+
 
     public Card drawCard(){
         return cardStack.pop();
