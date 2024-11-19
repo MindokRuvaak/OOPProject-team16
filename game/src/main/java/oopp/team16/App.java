@@ -1,5 +1,7 @@
 package oopp.team16;
 
+import oopp.team16.view.StartView;
+
 /**
  * Hello world!
  */
