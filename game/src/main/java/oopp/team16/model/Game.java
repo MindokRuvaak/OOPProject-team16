@@ -27,7 +27,7 @@ public class Game {
 
     public void init() {
         ///give all players 7 cards each
-        playedCards.add(deck.drawOne());
+        playedCards.add(deck.drawCard());
         // gameLoop();
     }
 
@@ -36,13 +36,13 @@ public class Game {
     }
 
     public Card getTopPlayedCard() {
-        Card c = playedCards.drawOne();
+        Card c = playedCards.drawCard();
         playedCards.add(c);
         return c;
     }
 
     public String getTopPlayedCardString() {
-        Card c = playedCards.drawOne();
+        Card c = playedCards.drawCard();
         playedCards.add(c);
         return c.toString();
     }
@@ -51,6 +51,8 @@ public class Game {
         Player currentPlayer = players.getFirst();
         while (true) {
             // players.push(currentPlayer);
+
+            
         }
     }
 

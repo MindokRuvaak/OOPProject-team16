@@ -29,12 +29,12 @@ public class Deck {
         return cardStack.size();
     }
 
-    public Card drawOne() {
-        // TODO Auto-generated method stub
-        // draw one card from deck
-        // throw new UnsupportedOperationException("Unimplemented method 'draw'");
-        return new StdCard(Color.RED, Value.NINE);//temporary
-    }
+    // public Card drawOne() {
+    //     // TODO Auto-generated method stub
+    //     // draw one card from deck
+    //     // throw new UnsupportedOperationException("Unimplemented method 'draw'");
+    //     return new StdCard(Color.RED, Value.NINE);//temporary
+    // }
 
     public void add(Card c) {
         cardStack.push(c);
@@ -47,12 +47,9 @@ public class Deck {
         // throw new UnsupportedOperationException("Unimplemented method 'add'");
     }
 
-    public void shuffle(){
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'shuffle'");
+    public void shuffle() {
+        
     }
-    //shuffle method?, shuffle in constructor?
-
 
 
 }
