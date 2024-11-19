@@ -12,20 +12,6 @@ public class Application {
     private static Controller c;
 
 
-    // private Application(){
-    //     m = new Model();
-    //     m.init();
-        
-    //     c = new Controller(m);
-    //     // c.init(m);
-    //     m.AddListener(c);
-        
-    //     v = new View(m,c);
-    //     // v.init(m,c);
-    //     m.AddListener(v);
-    // }
-
-
     private void init() {
         // initiate a game
         throw new UnsupportedOperationException("Not supported yet.");
@@ -34,7 +20,6 @@ public class Application {
     
     
     public static void main(String[] args) {
-        int n = 2; 
         m = new Model();
         
         c = new Controller(m);
