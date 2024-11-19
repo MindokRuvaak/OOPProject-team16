@@ -1,11 +1,16 @@
 package oopp.team16.model.gameLogic;
 
-import oopp.team16.model.gameLogic.Colors.*;
-
 import java.util.Stack;
+
+import oopp.team16.model.gameLogic.Colors.Blue;
+import oopp.team16.model.gameLogic.Colors.Color;
+import oopp.team16.model.gameLogic.Colors.Green;
+import oopp.team16.model.gameLogic.Colors.Red;
+import oopp.team16.model.gameLogic.Colors.Yellow;
 
 public class CreateStdDeck implements DeckFactory {
 
+    @Override
     public Stack<Card> createDeck() {
         Stack<Card> deck = new Stack<>();
 
