@@ -11,7 +11,7 @@ public class GameServer {
     private final ConnectionController connectionController;
     private final GameActionController gameActionController;
 
-    public GameServer(GameModel model, int maxPlayers, int port) throws IOException {
+    public GameServer(Model model, int maxPlayers, int port) throws IOException {
         serverSocket = new ServerSocket(port);
         logger.info("Server started on port " + port);
 
@@ -42,8 +42,8 @@ public class GameServer {
         int maxPlayers = args.length > 1 ? Integer.parseInt(args[1]) : 4;
 
         try {
-            GameModel gameModel = new GameModel();
-            GameServer server = new GameServer(gameModel, maxPlayers, port);
+            Model model = new Model();
+            GameServer server = new GameServer(model, maxPlayers, port);
             server.acceptConnections();
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Failed to start server", ex);

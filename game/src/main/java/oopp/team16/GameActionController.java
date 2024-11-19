@@ -1,14 +1,13 @@
 package oopp.team16;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 public class GameActionController {
     private static final Logger logger = Logger.getLogger(GameActionController.class.getName());
-    private final GameModel gameModel;
+    private final Model gameModel;
     private final ConnectionController connectionController;
 
-    public GameActionController(GameModel model, ConnectionController connectionController) {
+    public GameActionController(Model model, ConnectionController connectionController) {
         this.gameModel = model;
         this.connectionController = connectionController;
     }

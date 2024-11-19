@@ -12,12 +12,12 @@ public class ConnectionController {
     private final ServerSocket serverSocket;
     private final int maxPlayers;
     private final List<ClientHandler> clients = new ArrayList<>();
-    private final GameModel gameModel;
+    private final Model model;
 
-    public ConnectionController(ServerSocket serverSocket, int maxPlayers, GameModel model) {
+    public ConnectionController(ServerSocket serverSocket, int maxPlayers, Model model) {
         this.serverSocket = serverSocket;
         this.maxPlayers = maxPlayers;
-        this.gameModel = model;
+        this.model = model;
     }
 
     public void acceptConnections() {
