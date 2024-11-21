@@ -1,5 +1,6 @@
 package oopp.team16.model;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -14,22 +15,20 @@ public class Game {
     // private int currentPlayer; // might not be necessary?
     private final Deck deck;
     private final Stack<Card> playedCards;
+    private final int startingHandSize;
 
-    public Game(Deck deck) {
-        players = new LinkedList<>();
+    public Game(Deck deck, int startingHandSize, Collection<Player> players) {
+        this.players = new LinkedList<>();
+        this.players.addAll(players);
+        this.startingHandSize = startingHandSize;
         this.deck = deck;
         deck.shuffle();
         playedCards = new Stack<>();
     }
 
-    public void createPlayer(String id) {
-        players.add(new Player(id));
-    }
-
     public void init() {
-        /// give all players 7 cards each
-        playedCards.add(deck.drawCard());
-        // gameLoop();
+        setUpGame();
+        gameLoop();
     }
 
     public String getCurrentPlayerID() {
@@ -48,6 +47,7 @@ public class Game {
 
     private void gameLoop() {
         boolean noWinner = true;
+
         Player currentPlayer = players.getFirst();
         Iterator<Player> turnOrder = players.iterator();
         while (noWinner) {
@@ -57,8 +57,25 @@ public class Game {
                 turnOrder = players.descendingIterator();
             }
             currentPlayer = turnOrder.next();
-            //check winner
+            // check winner
         }
+    }
+
+    private void setUpGame() {
+        givePLayersCards(startingHandSize);// give all players a starting hand
+        playedCards.add(deck.drawCard());// add one card to start
+    }
+
+    private void givePLayersCards(int n) {
+        for (int i = 0; i < n; i++) {
+            givePlayersCard();
+        }
+    }
+
+    private void givePlayersCard() {
+       for (Player p : players) {
+        p.drawCard(deck.drawCard());
+       }
     }
 
     private void takeTurn(Player currentPlayer) {

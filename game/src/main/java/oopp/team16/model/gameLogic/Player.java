@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    List<StdCard> hand;   //vart ger vi 7 kort, satte i konstruktorn?
+    List<Card> hand;   //vart ger vi 7 kort, satte i konstruktorn?
     int score;  // hur räknar vi score
     String name;  //?
 
@@ -13,7 +13,7 @@ public class Player {
         this.hand = new ArrayList<>();
     }
 
-    public void drawCard(StdCard card){
+    public void drawCard(Card card){
         hand.add(card);
     }
 
@@ -21,8 +21,12 @@ public class Player {
         hand.remove(index);
     }
 
-    public List<StdCard> getHand(){
+    public List<Card> getHand(){
         return this.hand;
+    }
+
+    public int getHandSize(){
+        return this.hand.size();
     }
 
     // boolean hasUno maybe? return true if size equals 1

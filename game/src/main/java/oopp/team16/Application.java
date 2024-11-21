@@ -12,11 +12,6 @@ public class Application {
     private static Controller c;
 
 
-    private void init() {
-        // initiate a game
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     
     
     public static void main(String[] args) {
