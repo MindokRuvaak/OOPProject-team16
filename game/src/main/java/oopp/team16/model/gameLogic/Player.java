@@ -28,6 +28,10 @@ public class Player {
     // boolean hasUno maybe? return true if size equals 1
     //boolean hasCards
 
+    public boolean hasCards(){
+        return hand.isEmpty();
+    }
+
     public String getName(){
         return this.name;
     }
