@@ -7,6 +7,7 @@ import java.util.Stack;
 import oopp.team16.model.gameLogic.Card;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.Player;
+import oopp.team16.model.gameLogic.StdCard;
 
 public class Game {
 
@@ -44,6 +45,18 @@ public class Game {
 
     public String getTopPlayedCardString() {
         return getTopPlayedCard().toString();
+    }
+
+    public void initializeGame(){
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            for (int j = 0; j < 7; j++) {
+                if(!deck.isEmpty()) {
+                    Card card = deck.drawCard();
+                    player.drawCard(card);
+                }
+            }
+        }
     }
 
     private void gameLoop() {
