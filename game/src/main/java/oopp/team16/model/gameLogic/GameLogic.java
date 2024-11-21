@@ -2,12 +2,7 @@ package oopp.team16.model.gameLogic;
 
 import java.util.Stack;
 
-public class logic {
-
-    //valid play, turn order
-
-    // tar in två kort, ligger högst i played card och tar in kort som spelas, kollar om man får sepla
-
+public class GameLogic {
     boolean canPlay(Card card, Stack<Card> playedCard) {
         //stack, peek
         Card topCard = playedCard.peek();
@@ -18,6 +13,8 @@ public class logic {
             return card.getValue() == topCard.getValue(); // change when changing from enum
 
     }
+
+
 
 
 
