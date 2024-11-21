@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 import oopp.team16.model.gameLogic.Colors.Red;
+import oopp.team16.model.gameLogic.Values.Value;
 
 public class Deck {
     Stack<Card> cardStack;
@@ -13,7 +14,7 @@ public class Deck {
         cardStack = new Stack<>();
     }
 
-    public Deck(boolean createEmpty){
+    public Deck(){
         this();
         if (createEmpty){
             // create an empty deck

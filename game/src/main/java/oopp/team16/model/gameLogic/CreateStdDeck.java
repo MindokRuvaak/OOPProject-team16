@@ -7,6 +7,7 @@ import oopp.team16.model.gameLogic.Colors.Color;
 import oopp.team16.model.gameLogic.Colors.Green;
 import oopp.team16.model.gameLogic.Colors.Red;
 import oopp.team16.model.gameLogic.Colors.Yellow;
+import oopp.team16.model.gameLogic.Values.Value;
 
 public class CreateStdDeck implements DeckFactory {
 
