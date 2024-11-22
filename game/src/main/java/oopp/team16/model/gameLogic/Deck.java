@@ -40,7 +40,7 @@ public class Deck {
         // throw new UnsupportedOperationException("Unimplemented method 'add'");
     }
 
-    public void add(Deck d) {
+    public void add(Stack<Card> s) {
         // TODO Auto-generated method stub
         // throw new UnsupportedOperationException("Unimplemented method 'add'");
     }

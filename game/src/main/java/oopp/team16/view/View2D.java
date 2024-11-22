@@ -27,5 +27,15 @@ public class View2D implements View {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
+
+
+
+
+
+    @Override
+    public void requestPlayers() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'requestPlayers'");
+    }
     
 }

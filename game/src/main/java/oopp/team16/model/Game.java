@@ -1,5 +1,7 @@
 package oopp.team16.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -7,40 +9,37 @@ import java.util.Stack;
 import oopp.team16.model.gameLogic.Card;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.Player;
-import oopp.team16.model.gameLogic.StdCard;
 
 public class Game {
 
+    private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
-    // private int currentPlayer; // might not be necessary?
+    private Player currentPlayer; 
     private final Deck deck;
     private final Stack<Card> playedCards;
+    private final int startingHandSize;
 
-    public Game(Deck deck) {
-        players = new LinkedList<>();
+    public Game(Deck deck, int startingHandSize) {
+        this.listeners = new ArrayList<>();
+        this.players = new LinkedList<>();
+        this.startingHandSize = startingHandSize;
         this.deck = deck;
         deck.shuffle();
         playedCards = new Stack<>();
     }
 
-    public void createPlayer(String id) {
-        players.add(new Player(id));
-    }
-
-    public void init() {
-        /// give all players 7 cards each
-        playedCards.add(deck.drawCard());
-        // gameLoop();
+    public void init(Collection<Player> players) {
+        this.players.addAll(players);
+        setUpGame();
+        gameLoop();
     }
 
     public String getCurrentPlayerID() {
-        return "player";
+        return currentPlayer.getName();
     }
 
     public Card getTopPlayedCard() {
-        Card c = playedCards.peek();
-        playedCards.add(c);
-        return c;
+        return playedCards.peek();
     }
 
     public String getTopPlayedCardString() {
@@ -61,17 +60,36 @@ public class Game {
 
     private void gameLoop() {
         boolean noWinner = true;
-        Player currentPlayer = players.getFirst();
         Iterator<Player> turnOrder = players.iterator();
-        while (noWinner) {
-            takeTurn(currentPlayer);
+        currentPlayer = turnOrder.next();
 
-            if (reverse()) {
-                turnOrder = players.descendingIterator();
-            }
-            currentPlayer = turnOrder.next();
-            //check winner
+        while (noWinner) {
+            // takeTurn(currentPlayer);
+
+            // if (reverse()) {
+            //     turnOrder = players.descendingIterator();
+            // }
+            // check winner noWinner = ...
+            this.currentPlayer = turnOrder.next();
+            notifyListeners();
         }
+    }
+
+    private void setUpGame() {
+        givePLayersCards(startingHandSize);// give all players a starting hand
+        playedCards.add(deck.drawCard());// add one card to start
+    }
+
+    private void givePLayersCards(int n) {
+        for (int i = 0; i < n; i++) {
+            givePlayersCard();
+        }
+    }
+
+    private void givePlayersCard() {
+       for (Player p : players) {
+        p.drawCard(deck.drawCard());
+       }
     }
 
     private void takeTurn(Player currentPlayer) {
@@ -84,4 +102,9 @@ public class Game {
         throw new UnsupportedOperationException("Unimplemented method 'reverse'");
     }
 
+    public void notifyListeners(){
+        for (GameListener listener : listeners) {
+            listener.update();
+        }
+    }
 }
