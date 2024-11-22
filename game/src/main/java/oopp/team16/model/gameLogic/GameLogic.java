@@ -14,7 +14,15 @@ public class GameLogic {
 
     }
 
+    //byta håll från reverse
+    void changeOrder(){
 
+    }
+
+    //byta spelare, måste wrap nånting
+    void nextPlayer(){
+
+    }
 
 
 

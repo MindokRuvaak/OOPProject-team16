@@ -1,24 +1,21 @@
 package oopp.team16.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
 import oopp.team16.model.gameLogic.Card;
 import oopp.team16.model.gameLogic.Deck;
+import oopp.team16.model.gameLogic.GameLogic;
 import oopp.team16.model.gameLogic.Player;
 
 public class Game {
 
     private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
-    private Player currentPlayer; 
+    private Player currentPlayer;
     private final Deck deck;
     private final Stack<Card> playedCards;
     private final int startingHandSize;
-
+    private GameLogic gamelogic;
     public Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
         this.players = new LinkedList<>();
@@ -90,6 +87,15 @@ public class Game {
        for (Player p : players) {
         p.drawCard(deck.drawCard());
        }
+    }
+    public List<Card> playableCards(Player player, Stack<Card> cardPile){
+        List<Card> playableHand = new ArrayList<>();
+        for (Card card:player.getHand()) {
+            if(gamelogic.canPlay(card, cardPile)) {
+                playableHand.add(card);
+            }
+        }
+        return playableHand;
     }
 
     private void takeTurn(Player currentPlayer) {
