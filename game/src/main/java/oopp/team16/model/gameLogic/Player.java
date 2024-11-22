@@ -29,8 +29,6 @@ public class Player {
         return this.hand.size();
     }
 
-    // boolean hasUno maybe? return true if size equals 1
-
     public boolean hasUno(){
         return hand.size() == 1;
     }
