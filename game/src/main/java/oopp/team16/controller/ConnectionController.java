@@ -23,7 +23,6 @@ public class ConnectionController {
         this.model = model;
 
         // Optional: Set a timeout to avoid blocking indefinitely during accept
-        serverSocket.setSoTimeout(10000); // 10 seconds timeout
     }
 
     public void acceptConnections() {
