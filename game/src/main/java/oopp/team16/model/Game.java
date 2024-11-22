@@ -9,7 +9,6 @@ import java.util.Stack;
 import oopp.team16.model.gameLogic.Card;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.Player;
-import oopp.team16.model.gameLogic.StdCard;
 
 public class Game {
 
