@@ -107,4 +107,8 @@ public class Game {
             listener.update();
         }
     }
+
+    public void AddListener(GameListener gameListener) {
+        listeners.add(gameListener);
+    }
 }
