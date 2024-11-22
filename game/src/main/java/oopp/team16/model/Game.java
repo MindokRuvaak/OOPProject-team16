@@ -1,6 +1,7 @@
 package oopp.team16.model;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 import oopp.team16.model.gameLogic.Card;
 import oopp.team16.model.gameLogic.Deck;
@@ -11,13 +12,13 @@ public class Game {
     private final LinkedList<Player> players;
     // private int currentPlayer; // might not be necessary?
     private final Deck deck;
-    private final Deck playedCards;
+    private final Stack<Card> playedCards;
 
-    public Game(){
+    public Game(Deck deck){
         players = new LinkedList<>();
-        deck = new Deck(false);
+        this.deck = deck;
         deck.shuffle();
-        playedCards = new Deck(true);
+        playedCards = new Stack<>();
     }
 
 
@@ -36,15 +37,13 @@ public class Game {
     }
 
     public Card getTopPlayedCard() {
-        Card c = playedCards.drawCard();
+        Card c = playedCards.peek();
         playedCards.add(c);
         return c;
     }
 
     public String getTopPlayedCardString() {
-        Card c = playedCards.drawCard();
-        playedCards.add(c);
-        return c.toString();
+        return getTopPlayedCard().toString();
     }
 
     private void gameLoop() {

@@ -3,13 +3,19 @@ package oopp.team16.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import oopp.team16.model.gameLogic.CreateStdDeck;
+import oopp.team16.model.gameLogic.DeckFactory;
+
 public class Model /* extends observable */ {
     private final List<ModelListener> listeners;
     private final Game game;
+    private final DeckFactory df;
 
     public Model() {
+        df = new CreateStdDeck();
         listeners = new ArrayList<>();
-        game = new Game();
+
+        game = new Game(df.createDeck());
     }
 
     public void initGame() {
