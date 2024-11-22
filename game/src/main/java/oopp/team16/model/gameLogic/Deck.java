@@ -51,5 +51,9 @@ public class Deck {
         // throw new UnsupportedOperationException("Unimplemented method 'shuffle'");
     }
 
+    public boolean isEmpty(){
+        return cardStack.isEmpty();
+    }
+
 
 }
