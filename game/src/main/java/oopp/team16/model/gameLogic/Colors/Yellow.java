@@ -13,4 +13,9 @@ public class Yellow implements Color {
         return instance;
     }
 
+    @Override
+    public String toString() {
+        return "Yellow";
+    }
+
 }
