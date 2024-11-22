@@ -1,10 +1,9 @@
 package oopp.team16.controller;
 
 import oopp.team16.model.Model;
-import oopp.team16.model.ModelListener;
 
 
-public class Controller implements ModelListener {
+public class Controller {
 
     Model m;
     public Controller(Model m) {
@@ -14,16 +13,5 @@ public class Controller implements ModelListener {
 
 
 
-
-    public void init(Model m) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-    
 
 }

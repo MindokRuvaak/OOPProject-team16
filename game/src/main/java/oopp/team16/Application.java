@@ -20,7 +20,7 @@ public class Application {
         c = new Controller(m);
         // c.init(m); // might not be needed
         
-        m.AddListener(c); // does controller need to listen to model updates?
+        // m.AddListener(c); // does controller need to listen to model updates?
         // should controller be able to check if player action valid or allways send them through 
             // but model ''state'' makes invalid action have no effect?
         

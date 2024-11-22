@@ -5,4 +5,6 @@ public interface ModelListener {
 
     void update();
 
+    void requestPlayers();
+
 }
