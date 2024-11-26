@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    List<Card> hand;   //vart ger vi 7 kort, satte i konstruktorn?
+    List<Card> hand;
     int score;  // hur räknar vi score
     String name;  //?
 
