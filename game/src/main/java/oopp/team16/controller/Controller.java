@@ -10,8 +10,16 @@ public class Controller {
         this.m = m;
     }
 
+    public String getCurrentPlayerID() {
+        return m.getCurrentPlayerID();
+    }
 
-
-
+    public String getTopPlayedCardString() {
+        return m.getTopPlayedCardString();
+    }
+    
+    public void addPlayer(String id) {
+        m.addPlayer(id);
+    }
 
 }

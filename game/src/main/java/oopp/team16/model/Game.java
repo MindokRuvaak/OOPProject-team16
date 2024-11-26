@@ -91,7 +91,7 @@ public class Game {
     public List<Card> playableCards(Player player, Stack<Card> cardPile){
         List<Card> playableHand = new ArrayList<>();
         for (Card card:player.getHand()) {
-            if(gamelogic.canPlay(card, cardPile)) {
+            if(gamelogic.canPlay(card, cardPile.peek())) {
                 playableHand.add(card);
             }
         }
@@ -112,5 +112,9 @@ public class Game {
         for (GameListener listener : listeners) {
             listener.update();
         }
+    }
+
+    public void AddListener(GameListener gameListener) {
+        listeners.add(gameListener);
     }
 }

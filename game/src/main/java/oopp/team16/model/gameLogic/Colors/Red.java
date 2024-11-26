@@ -12,5 +12,10 @@ public class Red implements Color{
         return instance;
     }
 
+    @Override
+    public String toString() {
+        return "Red";
+    }
+
 }
 

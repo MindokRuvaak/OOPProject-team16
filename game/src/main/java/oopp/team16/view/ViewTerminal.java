@@ -3,27 +3,27 @@ package oopp.team16.view;
 import java.util.Scanner;
 
 import oopp.team16.controller.Controller;
-import oopp.team16.model.Model;
+// import oopp.team16.model.Model;
 
 public class ViewTerminal implements View {
 
-    Model m;
+    // Model m;
     Controller c;
     Scanner input = new Scanner(System.in);
 
-    public ViewTerminal(Model m, Controller c) {
-        this.m = m;
+    public ViewTerminal(/* Model m,  */Controller c) {
+        // this.m = m;
         this.c = c;
     }
 
     public void printGameState() {
         StringBuilder printMessage = new StringBuilder("");
         printMessage.append("Player: ");
-        printMessage.append(m.getCurrentPlayerID());
+        printMessage.append(c.getCurrentPlayerID());
         printMessage.append("'s turn.\n\n");
 
         printMessage.append("current card in play: ");
-        printMessage.append(m.getTopPlayedCardString());
+        printMessage.append(c.getTopPlayedCardString());
 
         System.out.print(printMessage.toString());
     }
@@ -53,7 +53,7 @@ public class ViewTerminal implements View {
         for (int i = 0; i < n; i++) {
             System.out.print("Please provide user ID / name of player " + (i + 1) + "\n> ");
             String id = input.nextLine();
-            m.addPlayer(id);
+            c.addPlayer(id);
         }
     }
 

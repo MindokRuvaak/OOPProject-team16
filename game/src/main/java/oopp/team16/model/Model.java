@@ -18,6 +18,7 @@ public class Model implements GameListener {
         df = new CreateStdDeck();
         players = new ArrayList<>();
         game = new Game(df.createDeck(), 7);
+        game.AddListener(this);
     }
 
     public void initGame() {

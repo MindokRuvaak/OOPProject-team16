@@ -1,16 +1,13 @@
 package oopp.team16.view;
 
 import oopp.team16.controller.Controller;
-import oopp.team16.model.Model;
 
 public class View2D implements View {
 
-    Model m;
     Controller c;
 
 
-    public View2D(Model m, Controller c) {
-        this.m = m;
+    public View2D(Controller c) {
         this.c = c;
     }
 
@@ -18,7 +15,7 @@ public class View2D implements View {
 
 
 
-    public void init(Model m, Controller c) {
+    public void init(/* Model m,  */Controller c) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
