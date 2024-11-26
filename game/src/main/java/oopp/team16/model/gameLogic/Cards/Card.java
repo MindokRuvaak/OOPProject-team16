@@ -1,6 +1,6 @@
 package oopp.team16.model.gameLogic.Cards;
 
-import oopp.team16.model.gameLogic.Colors.Color;
+import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public interface Card {
 
