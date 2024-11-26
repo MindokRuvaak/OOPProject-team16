@@ -1,4 +1,4 @@
-package oopp.team16.model.gameLogic;
+package oopp.team16.model.gameLogic.Cards;
 
 public enum Value {
     ZERO(0),

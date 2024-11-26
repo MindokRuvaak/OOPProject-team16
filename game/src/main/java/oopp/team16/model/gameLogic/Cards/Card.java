@@ -1,4 +1,4 @@
-package oopp.team16.model.gameLogic;
+package oopp.team16.model.gameLogic.Cards;
 
 import oopp.team16.model.gameLogic.Colors.Color;
 

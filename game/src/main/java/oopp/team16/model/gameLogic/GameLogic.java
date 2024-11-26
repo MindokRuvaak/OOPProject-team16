@@ -1,9 +1,11 @@
 package oopp.team16.model.gameLogic;
 
+import oopp.team16.model.gameLogic.Cards.Card;
+
 import java.util.Stack;
 
 public class GameLogic {
-    boolean canPlay(Card card, Stack<Card> playedCard) {
+   public boolean canPlay(Card card, Stack<Card> playedCard) {
         //stack, peek
         Card topCard = playedCard.peek();
 

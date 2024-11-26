@@ -3,6 +3,9 @@ package oopp.team16.model.gameLogic;
 import java.util.Collections;
 import java.util.Stack;
 
+import oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.Cards.StdCard;
+import oopp.team16.model.gameLogic.Cards.Value;
 import oopp.team16.model.gameLogic.Colors.Red;
 
 public class Deck {

@@ -1,5 +1,7 @@
 package oopp.team16.model.gameLogic;
 
+import oopp.team16.model.gameLogic.Cards.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package oopp.team16.model.gameLogic;
+package oopp.team16.model.gameLogic.Cards;
 
 import oopp.team16.model.gameLogic.Colors.Color;
 
-public class StdCard implements Card{
+public class StdCard implements Card {
 
     private final Color color;
     private final Value value;
