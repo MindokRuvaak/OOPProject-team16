@@ -6,7 +6,7 @@ import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Cards.BaseCard;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 import oopp.team16.model.gameLogic.Cards.Value;
-import oopp.team16.model.gameLogic.Cards.Colors.Color
+import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class CreateStdDeck implements DeckFactory {
 
