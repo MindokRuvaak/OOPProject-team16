@@ -61,7 +61,7 @@ public class Game {
         currentPlayer = turnOrder.next();
 
         while (noWinner) {
-            takeTurn(currentPlayer);
+            takeTurn();
 
             // if (reverse()) {
             //     turnOrder = players.descendingIterator();
