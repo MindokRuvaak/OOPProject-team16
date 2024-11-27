@@ -61,7 +61,7 @@ public class Game {
         currentPlayer = turnOrder.next();
 
         while (noWinner) {
-            // takeTurn(currentPlayer);
+            takeTurn(currentPlayer);
 
             // if (reverse()) {
             //     turnOrder = players.descendingIterator();
@@ -88,6 +88,7 @@ public class Game {
         p.drawCard(deck.drawCard());
        }
     }
+
     public List<Card> playableCards(Player player, Stack<Card> cardPile){
         List<Card> playableHand = new ArrayList<>();
         for (Card card:player.getHand()) {
@@ -98,9 +99,8 @@ public class Game {
         return playableHand;
     }
 
-    private void takeTurn(Player currentPlayer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'takeTurn'");
+    private void takeTurn() {
+        
     }
 
     private boolean reverse() {

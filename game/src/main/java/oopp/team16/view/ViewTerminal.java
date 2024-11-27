@@ -25,7 +25,7 @@ public class ViewTerminal implements View {
         printMessage.append("current card in play: ");
         printMessage.append(c.getTopPlayedCardString());
 
-        System.out.print(printMessage.toString());
+        System.out.println(printMessage.toString());
     }
 
     @Override
