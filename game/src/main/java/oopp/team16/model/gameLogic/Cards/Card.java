@@ -6,6 +6,7 @@ public interface Card {
 
     Color getColor();
 
-    Value getValue();
+    CardType getType();
+
 
 }

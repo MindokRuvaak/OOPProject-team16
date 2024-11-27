@@ -5,8 +5,7 @@ import oopp.team16.model.gameLogic.Cards.Card;
 public class GameLogic {
 
     public boolean canPlay(Card card, Card topCard) {
-        return (card.getValue() == topCard.getValue()) || card.getColor().equals(topCard.getColor());
-        // change when changing from enum
+        return (card.getType().equals(topCard.getType()) || card.getColor().equals(topCard.getColor()));
     }
 
     // byta håll från reverse

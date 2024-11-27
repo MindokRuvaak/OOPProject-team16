@@ -4,27 +4,26 @@ import java.util.Collections;
 import java.util.Stack;
 
 import oopp.team16.model.gameLogic.Cards.Card;
-import oopp.team16.model.gameLogic.Cards.BaseCard;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
-import oopp.team16.model.gameLogic.Cards.Value;
+import oopp.team16.model.gameLogic.Cards.NumCard;
 
 public class Deck {
     Stack<Card> cardStack;
 
 
-    private Deck(){
+    private Deck() {
         cardStack = new Stack<>();
     }
 
-    Deck(Stack<Card> stack){
+    Deck(Stack<Card> stack) {
         this();
         cardStack.addAll(stack);
     }
 
 
-    public Card drawCard(){
+    public Card drawCard() {
         return cardStack.pop();
-}
+    }
 
     public int getSize() {
         return cardStack.size();
@@ -34,7 +33,7 @@ public class Deck {
         // TODO Auto-generated method stub
         // draw one card from deck
         // throw new UnsupportedOperationException("Unimplemented method 'draw'");
-        return new BaseCard(StdColors.red(), Value.NINE);//temporary
+        return new NumCard(StdColors.red(), 9);//temporary
     }
 
     public void add(Card c) {
@@ -48,13 +47,13 @@ public class Deck {
         // throw new UnsupportedOperationException("Unimplemented method 'add'");
     }
 
-    public void shuffle(){
+    public void shuffle() {
         Collections.shuffle(cardStack);
         // TODO Auto-generated method stub
         // throw new UnsupportedOperationException("Unimplemented method 'shuffle'");
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return cardStack.isEmpty();
     }
 
