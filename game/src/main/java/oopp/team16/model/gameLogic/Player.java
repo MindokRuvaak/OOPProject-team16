@@ -19,12 +19,12 @@ public class Player {
         hand.add(card);
     }
 
-    public void playCard(int index){
-        hand.remove(index);
+    public Card playCard(int index){
+        return hand.remove(index);
     }
 
-    public List<Card> getHand(){
-        return this.hand;
+    public Card[] getHand(){
+        return this.hand.toArray(new Card[0]);
     }
 
     public int getHandSize(){

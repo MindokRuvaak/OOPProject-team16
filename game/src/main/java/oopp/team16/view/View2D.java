@@ -1,6 +1,7 @@
 package oopp.team16.view;
 
 import oopp.team16.controller.Controller;
+import oopp.team16.model.gameLogic.Cards.Card;
 
 public class View2D implements View {
 
@@ -34,5 +35,22 @@ public class View2D implements View {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'requestPlayers'");
     }
+
+
+
+
+
+    @Override
+    public void takeTurn(String[] hand) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'showHand'");
+    }
+
+
+    // @Override
+    // public void requestAction() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'requestAction'");
+    // }
     
 }

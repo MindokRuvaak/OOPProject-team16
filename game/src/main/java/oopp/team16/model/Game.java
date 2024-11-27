@@ -16,6 +16,7 @@ public class Game {
     private final Stack<Card> playedCards;
     private final int startingHandSize;
     private GameLogic gamelogic;
+
     public Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
         this.players = new LinkedList<>();
@@ -31,17 +32,14 @@ public class Game {
         gameLoop();
     }
 
-    public String getCurrentPlayerID() {
-        return currentPlayer.getName();
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
     public Card getTopPlayedCard() {
         return playedCards.peek();
     }
 
-    public String getTopPlayedCardString() {
-        return getTopPlayedCard().toString();
-    }
 
     public void initializeGame(){
         for (int i = 0; i < players.size(); i++) {
@@ -61,6 +59,7 @@ public class Game {
         currentPlayer = turnOrder.next();
 
         while (noWinner) {
+            notifyListeners();
             takeTurn();
 
             // if (reverse()) {
@@ -68,7 +67,6 @@ public class Game {
             // }
             // check winner noWinner = ...
             this.currentPlayer = turnOrder.next();
-            notifyListeners();
         }
     }
 
@@ -85,7 +83,7 @@ public class Game {
 
     private void givePlayersCard() {
        for (Player p : players) {
-        p.drawCard(deck.drawCard());
+            p.drawCard(deck.drawCard());
        }
     }
 
@@ -100,7 +98,9 @@ public class Game {
     }
 
     private void takeTurn() {
-        
+        for (GameListener listener : listeners) {
+            listener.takePlayerTurn(currentPlayer);
+        }
     }
 
     private boolean reverse() {
@@ -116,5 +116,11 @@ public class Game {
 
     public void AddListener(GameListener gameListener) {
         listeners.add(gameListener);
+    }
+
+    public void playCard(int i) {
+        // TODO: Add checker for if card is allowed to be played.  
+        playedCards.add(currentPlayer.playCard(i));
+        
     }
 }
