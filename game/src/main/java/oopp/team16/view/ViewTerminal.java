@@ -69,12 +69,22 @@ public class ViewTerminal implements View {
         while (!answered) {
             System.out.print("> ");
             String ans = input.nextLine();
-            answered = handleInput(ans);
+            answered = handleInput(ans, hand.length);
         }
     }
 
-    private boolean handleInput(String ans) {
-        
+    private boolean handleInput(String ans, int handSize) {
+        if(ans.contains("^(\\d+|\\+)$")){
+            if("+".equals(ans)){
+                c.drawCard();
+                return true;
+            } else if(ans.contains("^\\d+$")) {
+                int toPlay = Integer.parseInt(ans);
+                if(0 < toPlay || toPlay <= handSize) {
+                    c.playCard(toPlay);
+                }
+            }
+        }
         System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
                     "Or enter + to draw a card.");
         return false;
@@ -89,23 +99,23 @@ public class ViewTerminal implements View {
         System.out.println(String.join("\n", message));
     }
 
-    private int cardToPLay(int handSize) {
-        System.out.print("> ");
-        String nStr = input.nextLine();
-        int n = -1;
-        try {
-            int ans = Integer.parseInt(nStr);
-            if (ans <= 0 || ans > handSize) {
-                throw new NumberFormatException();
-            } else {
-                n = ans;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
-                    "Or enter + to draw a card.");
-        }
-        return n;
-    }
+    // private int cardToPLay(int handSize) {
+    //     System.out.print("> ");
+    //     String nStr = input.nextLine();
+    //     int n = -1;
+    //     try {
+    //         int ans = Integer.parseInt(nStr);
+    //         if (ans <= 0 || ans > handSize) {
+    //             throw new NumberFormatException();
+    //         } else {
+    //             n = ans;
+    //         }
+    //     } catch (NumberFormatException e) {
+    //         System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
+    //                 "Or enter + to draw a card.");
+    //     }
+    //     return n;
+    // }
 
     @Override
     public void announceBadMove() {

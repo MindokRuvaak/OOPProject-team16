@@ -37,4 +37,8 @@ public class Controller {
         m.playCard(n);
     }
 
+    public void drawCard() {
+        m.drawCard();
+    }
+
 }

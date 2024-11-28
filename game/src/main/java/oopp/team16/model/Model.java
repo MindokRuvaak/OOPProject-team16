@@ -89,4 +89,8 @@ public class Model implements GameListener {
         }
     }
 
+    public void drawCard() {
+        game.currentPlayerDrawCard();
+    }
+
 }

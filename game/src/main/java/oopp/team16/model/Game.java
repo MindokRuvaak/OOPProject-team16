@@ -140,4 +140,8 @@ public class Game {
             listener.badMove();
         }
     }
+
+    public void currentPlayerDrawCard() {
+        currentPlayer.drawCard(deck.drawCard());
+    }
 }
