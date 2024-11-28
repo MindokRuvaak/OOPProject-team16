@@ -108,4 +108,9 @@ public class ViewTerminal implements View {
         System.out.println("That selected card cannot be played!");
     }
 
+    @Override
+    public void announceWinner(String name) {
+        System.out.println("The winner is " + name + "!!");
+    }
+
 }

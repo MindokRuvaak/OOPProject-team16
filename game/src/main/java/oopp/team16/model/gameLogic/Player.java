@@ -37,7 +37,7 @@ public class Player {
     }
 
     public boolean hasCards(){
-        return hand.isEmpty();
+        return !hand.isEmpty();
     }
 
     public String getName(){

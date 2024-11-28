@@ -12,6 +12,8 @@ public interface ModelListener {
 
     void announceBadMove();
 
+    void announceWinner(String name);
+
     // void requestAction();
 
 }

@@ -1,7 +1,6 @@
 package oopp.team16.view;
 
 import oopp.team16.controller.Controller;
-import oopp.team16.model.gameLogic.Cards.Card;
 
 public class View2D implements View {
 
@@ -54,6 +53,16 @@ public class View2D implements View {
     public void announceBadMove() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'announceBadMove'");
+    }
+
+
+
+
+
+    @Override
+    public void announceWinner(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'announceWinner'");
     }
 
 }

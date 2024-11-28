@@ -10,6 +10,8 @@ public interface GameListener {
 
     void badMove();
 
+    void announceWinner(String name);
+
     // void requestTurnAction();
 
 

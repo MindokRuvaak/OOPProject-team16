@@ -11,6 +11,7 @@ public class Game {
 
     private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
+    private Iterator<Player> turnOrder;
     private Player currentPlayer;
     private final Deck deck;
     private final Stack<Card> playedCards;
@@ -28,6 +29,7 @@ public class Game {
 
     public void init(Collection<Player> players) {
         this.players.addAll(players);
+        this.turnOrder = players.iterator();
         setUpGame();
         gameLoop();
     }
@@ -54,24 +56,29 @@ public class Game {
 
     private void gameLoop() {
         boolean noWinner = true;
-        Iterator<Player> turnOrder = players.iterator();
-        nextTurn(turnOrder);
-
         while (noWinner) {
+            nextTurn();
             notifyListeners();
             takeTurn();
-
-            // check winner noWinner = ...
-            nextTurn(turnOrder);
+            if (!currentPlayer.hasCards()) {
+                noWinner = false;
+                announceWinner(currentPlayer.getName());
+                break;
+            }
         }
     }
 
-    private void nextTurn(Iterator<Player> turnOrder) {
-        // boolean hasN = ;
-        if (!turnOrder.hasNext()) {
-            turnOrder = players.iterator(); // this feels bad? mutating input
+    private void announceWinner(String name) {
+        for (GameListener listener : listeners) {
+            listener.announceWinner(name);
         }
-        this.currentPlayer = turnOrder.next();
+    }
+
+    private void nextTurn() {
+        if (!this.turnOrder.hasNext()) {
+            this.turnOrder = this.players.iterator();
+        }
+        this.currentPlayer = this.turnOrder.next();
     }
 
     private void setUpGame() {
@@ -125,7 +132,6 @@ public class Game {
             notifyListeners();
             takeTurn();
         }
-
     }
 
     private void announceBadMove() {
@@ -136,7 +142,5 @@ public class Game {
 
     public void currentPlayerDrawCard() {
         currentPlayer.drawCard(deck.drawCard());
-        notifyListeners();
-        takeTurn();
     }
 }

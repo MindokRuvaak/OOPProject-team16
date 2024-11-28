@@ -18,14 +18,13 @@ public class Model implements GameListener {
         listeners = new ArrayList<>();
         df = new CreateStdDeck();
         players = new ArrayList<>();
-        game = new Game(df.createDeck(), 7);
+        game = new Game(df.createDeck(), 1);
         game.AddListener(this);
     }
 
     public void initGame() {
         getPlayers();
         game.init(players);
-        notifyListeners();
     }
 
     public Player getCurrentPlayer() {
@@ -91,6 +90,13 @@ public class Model implements GameListener {
 
     public void drawCard() {
         game.currentPlayerDrawCard();
+    }
+
+    @Override
+    public void announceWinner(String name) {
+        for (ModelListener listener : listeners) {
+            listener.announceWinner(name);
+        }
     }
 
 }
