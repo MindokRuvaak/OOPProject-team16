@@ -6,8 +6,8 @@ public class SpecialCard implements Card{
 
     //ska ha en action
 
-    ActionStrategy action;
-    BaseCard baseCard;
+    private ActionStrategy action; //final ?
+    private final BaseCard baseCard;
 
     public SpecialCard(Color color, CardType cardType){
         this.baseCard = new BaseCard(color, cardType);

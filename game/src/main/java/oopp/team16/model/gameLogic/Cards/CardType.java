@@ -10,7 +10,7 @@ public enum CardType{
     SKIP("SpecialCard");
 
 
-    private String t;
+    private final String t;
     CardType(String t){
         this.t = t;
     }

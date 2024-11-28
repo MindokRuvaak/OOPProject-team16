@@ -3,8 +3,8 @@ import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class NumCard implements Card {
     //extend or have a basecard??? ask on TA meeting maybe
-    int value;
-    BaseCard bCard;
+    private final int value;
+    private final BaseCard bCard;
 
     public NumCard(Color color, int value) {
         this.bCard = new BaseCard(color, CardType.NUMBER);
