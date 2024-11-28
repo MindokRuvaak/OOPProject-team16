@@ -1,5 +1,6 @@
 package oopp.team16.model.gameLogic.Cards;
 
+//interface, kort beror på interface
 public enum CardType{
     NUMBER("NumberCard"),
     REVERSE("SpecialCard"),
@@ -7,7 +8,6 @@ public enum CardType{
     DRAW_TWO("SpecialCard"),
     DRAW_FOUR("SpecialCard"),
     SKIP("SpecialCard");
-
 
 
     private String t;

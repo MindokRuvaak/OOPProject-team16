@@ -6,7 +6,6 @@ public class NumCard implements Card {
     int value;
     BaseCard bCard;
 
-
     public NumCard(Color color, int value) {
         this.bCard = new BaseCard(color, CardType.NUMBER);
         this.value = value;
