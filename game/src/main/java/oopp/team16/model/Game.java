@@ -11,11 +11,13 @@ public class Game {
 
     private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
+    private Iterator<Player> turnOrder;
     private Player currentPlayer;
     private final Deck deck;
     private final Stack<Card> playedCards;
     private final int startingHandSize;
     private GameLogic gamelogic;
+
     public Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
         this.players = new LinkedList<>();
@@ -27,27 +29,24 @@ public class Game {
 
     public void init(Collection<Player> players) {
         this.players.addAll(players);
+        this.turnOrder = players.iterator();
         setUpGame();
         gameLoop();
     }
 
-    public String getCurrentPlayerID() {
-        return currentPlayer.getName();
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
     public Card getTopPlayedCard() {
         return playedCards.peek();
     }
 
-    public String getTopPlayedCardString() {
-        return getTopPlayedCard().toString();
-    }
-
-    public void initializeGame(){
+    public void initializeGame() {
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             for (int j = 0; j < 7; j++) {
-                if(!deck.isEmpty()) {
+                if (!deck.isEmpty()) {
                     Card card = deck.drawCard();
                     player.drawCard(card);
                 }
@@ -57,19 +56,29 @@ public class Game {
 
     private void gameLoop() {
         boolean noWinner = true;
-        Iterator<Player> turnOrder = players.iterator();
-        currentPlayer = turnOrder.next();
-
         while (noWinner) {
-            takeTurn();
-
-            // if (reverse()) {
-            //     turnOrder = players.descendingIterator();
-            // }
-            // check winner noWinner = ...
-            this.currentPlayer = turnOrder.next();
+            nextTurn();
             notifyListeners();
+            takeTurn();
+            if (!currentPlayer.hasCards()) {
+                noWinner = false;
+                announceWinner(currentPlayer.getName());
+                break;
+            }
         }
+    }
+
+    private void announceWinner(String name) {
+        for (GameListener listener : listeners) {
+            listener.announceWinner(name);
+        }
+    }
+
+    private void nextTurn() {
+        if (!this.turnOrder.hasNext()) {
+            this.turnOrder = this.players.iterator();
+        }
+        this.currentPlayer = this.turnOrder.next();
     }
 
     private void setUpGame() {
@@ -84,15 +93,15 @@ public class Game {
     }
 
     private void givePlayersCard() {
-       for (Player p : players) {
-        p.drawCard(deck.drawCard());
-       }
+        for (Player p : players) {
+            p.drawCard(deck.drawCard());
+        }
     }
 
-    public List<Card> playableCards(Player player, Stack<Card> cardPile){
+    public List<Card> playableCards(Player player, Stack<Card> cardPile) {
         List<Card> playableHand = new ArrayList<>();
-        for (Card card:player.getHand()) {
-            if(gamelogic.canPlay(card, cardPile.peek())) {
+        for (Card card : player.getHand()) {
+            if (gamelogic.canPlay(card, cardPile.peek())) {
                 playableHand.add(card);
             }
         }
@@ -100,15 +109,12 @@ public class Game {
     }
 
     private void takeTurn() {
-        
+        for (GameListener listener : listeners) {
+            listener.takePlayerTurn(currentPlayer);
+        }
     }
 
-    private boolean reverse() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'reverse'");
-    }
-
-    public void notifyListeners(){
+    public void notifyListeners() {
         for (GameListener listener : listeners) {
             listener.update();
         }
@@ -116,5 +122,25 @@ public class Game {
 
     public void AddListener(GameListener gameListener) {
         listeners.add(gameListener);
+    }
+
+    public void playCard(int i) {
+        if (GameRules.allowedPlay(currentPlayer.getHand()[i], getTopPlayedCard())) {
+            playedCards.add(currentPlayer.playCard(i));
+        } else {
+            announceBadMove();
+            notifyListeners();
+            takeTurn();
+        }
+    }
+
+    private void announceBadMove() {
+        for (GameListener listener : listeners) {
+            listener.badMove();
+        }
+    }
+
+    public void currentPlayerDrawCard() {
+        currentPlayer.drawCard(deck.drawCard());
     }
 }
