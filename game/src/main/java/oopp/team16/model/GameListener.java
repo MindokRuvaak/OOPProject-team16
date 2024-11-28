@@ -8,6 +8,8 @@ public interface GameListener {
 
     void takePlayerTurn(Player currentPlayer);
 
+    void badMove();
+
     // void requestTurnAction();
 
 

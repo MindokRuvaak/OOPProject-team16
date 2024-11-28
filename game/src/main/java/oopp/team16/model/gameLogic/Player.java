@@ -16,6 +16,7 @@ public class Player {
     }
 
     public void drawCard(Card card){
+        //TODO: sorted hand
         hand.add(card);
     }
 

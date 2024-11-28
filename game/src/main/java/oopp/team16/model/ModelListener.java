@@ -10,6 +10,8 @@ public interface ModelListener {
 
     void takeTurn(String[] hand);
 
+    void announceBadMove();
+
     // void requestAction();
 
 }

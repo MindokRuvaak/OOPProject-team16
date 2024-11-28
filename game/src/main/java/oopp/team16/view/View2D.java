@@ -47,10 +47,13 @@ public class View2D implements View {
     }
 
 
-    // @Override
-    // public void requestAction() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'requestAction'");
-    // }
-    
+
+
+
+    @Override
+    public void announceBadMove() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'announceBadMove'");
+    }
+
 }

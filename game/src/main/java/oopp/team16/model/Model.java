@@ -1,7 +1,6 @@
 package oopp.team16.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import oopp.team16.model.gameLogic.CreateStdDeck;
@@ -69,12 +68,6 @@ public class Model implements GameListener {
         }
     }
 
-    // @Override
-    // public void requestTurnAction() {
-    // for (ModelListener listener : listeners) {
-    // listener.requestAction();
-    // }
-    // }
 
     private String[] ToStringArray(Card[] hand) {
         String[] handStrings = new String[hand.length];
@@ -87,6 +80,13 @@ public class Model implements GameListener {
     public void playCard(int cardNumber) {
         // change from card number displayed to player to corresponding card index in hand array
         game.playCard(cardNumber - 1); 
+    }
+
+    @Override
+    public void badMove() {
+        for (ModelListener listener : listeners) {
+            listener.announceBadMove();
+        }
     }
 
 }

@@ -40,12 +40,11 @@ public class Game {
         return playedCards.peek();
     }
 
-
-    public void initializeGame(){
+    public void initializeGame() {
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             for (int j = 0; j < 7; j++) {
-                if(!deck.isEmpty()) {
+                if (!deck.isEmpty()) {
                     Card card = deck.drawCard();
                     player.drawCard(card);
                 }
@@ -56,18 +55,25 @@ public class Game {
     private void gameLoop() {
         boolean noWinner = true;
         Iterator<Player> turnOrder = players.iterator();
-        currentPlayer = turnOrder.next();
+        nextTurn(turnOrder);
 
         while (noWinner) {
             notifyListeners();
             takeTurn();
 
             // if (reverse()) {
-            //     turnOrder = players.descendingIterator();
+            // turnOrder = players.descendingIterator();
             // }
             // check winner noWinner = ...
-            this.currentPlayer = turnOrder.next();
+            nextTurn(turnOrder);
         }
+    }
+
+    private void nextTurn(Iterator<Player> turnOrder) {
+        if (!turnOrder.hasNext()) {
+            turnOrder = players.iterator(); // this feels bad? mutating input
+        }
+        this.currentPlayer = turnOrder.next();
     }
 
     private void setUpGame() {
@@ -82,15 +88,15 @@ public class Game {
     }
 
     private void givePlayersCard() {
-       for (Player p : players) {
+        for (Player p : players) {
             p.drawCard(deck.drawCard());
-       }
+        }
     }
 
-    public List<Card> playableCards(Player player, Stack<Card> cardPile){
+    public List<Card> playableCards(Player player, Stack<Card> cardPile) {
         List<Card> playableHand = new ArrayList<>();
-        for (Card card:player.getHand()) {
-            if(gamelogic.canPlay(card, cardPile.peek())) {
+        for (Card card : player.getHand()) {
+            if (gamelogic.canPlay(card, cardPile.peek())) {
                 playableHand.add(card);
             }
         }
@@ -108,7 +114,7 @@ public class Game {
         throw new UnsupportedOperationException("Unimplemented method 'reverse'");
     }
 
-    public void notifyListeners(){
+    public void notifyListeners() {
         for (GameListener listener : listeners) {
             listener.update();
         }
@@ -119,8 +125,19 @@ public class Game {
     }
 
     public void playCard(int i) {
-        // TODO: Add checker for if card is allowed to be played.  
-        playedCards.add(currentPlayer.playCard(i));
-        
+        if (GameRules.allowedPlay(currentPlayer.getHand()[i], getTopPlayedCard())) {
+            playedCards.add(currentPlayer.playCard(i));
+        } else {
+            announceBadMove();
+            notifyListeners();
+            takeTurn();
+        }
+
+    }
+
+    private void announceBadMove() {
+        for (GameListener listener : listeners) {
+            listener.badMove();
+        }
     }
 }

@@ -3,7 +3,6 @@ package oopp.team16.view;
 import java.util.Scanner;
 
 import oopp.team16.controller.Controller;
-import oopp.team16.model.gameLogic.Cards.Card;
 
 public class ViewTerminal implements View {
 
@@ -14,7 +13,7 @@ public class ViewTerminal implements View {
         this.c = c;
     }
 
-    public void printGameState() {
+    private void printGameState() {
         StringBuilder printMessage = new StringBuilder("\n\n");
         printMessage.append("Player: ");
         printMessage.append(c.getCurrentPlayerID());
@@ -27,6 +26,8 @@ public class ViewTerminal implements View {
         System.out.println(printMessage.toString());
     }
 
+    // private
+
     @Override
     public void update() {
         printGameState();
@@ -34,7 +35,6 @@ public class ViewTerminal implements View {
 
     @Override
     public void requestPlayers() {
-        boolean noAnswer = true;
         int n = 0;
         while (n <= 0 || n > 9) {
             n = getAnswer();
@@ -49,7 +49,7 @@ public class ViewTerminal implements View {
         try {
             n = Integer.parseInt(nStr);
         } catch (NumberFormatException e) {
-            System.out.println("Pease enter a digit only.");
+            System.out.println("Pease enter a digit between 2 and 8.");
         }
         return n;
     }
@@ -65,11 +65,19 @@ public class ViewTerminal implements View {
     @Override
     public void takeTurn(String[] hand) {
         showHand(hand);
-        int answ = 0;
-        while (answ <= 0) {
-            answ = cardToPLay(hand.length);
+        boolean answered = false;
+        while (!answered) {
+            System.out.print("> ");
+            String ans = input.nextLine();
+            answered = handleInput(ans);
         }
-        c.playCard(answ);
+    }
+
+    private boolean handleInput(String ans) {
+        
+        System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
+                    "Or enter + to draw a card.");
+        return false;
     }
 
     private void showHand(String[] hand) {
@@ -81,22 +89,27 @@ public class ViewTerminal implements View {
         System.out.println(String.join("\n", message));
     }
 
-    public int cardToPLay(int handSize) {
+    private int cardToPLay(int handSize) {
         System.out.print("> ");
         String nStr = input.nextLine();
         int n = -1;
         try {
             int ans = Integer.parseInt(nStr);
-            if (ans <= 0 || ans > handSize){
+            if (ans <= 0 || ans > handSize) {
                 throw new NumberFormatException();
-            }
-            else{
+            } else {
                 n = ans;
             }
         } catch (NumberFormatException e) {
-            System.out.println("Pease enter one of the numbers corresponding to a card in your hand.");
+            System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
+                    "Or enter + to draw a card.");
         }
         return n;
+    }
+
+    @Override
+    public void announceBadMove() {
+        System.out.println("That selected card cannot be played!");
     }
 
 }
