@@ -74,20 +74,24 @@ public class ViewTerminal implements View {
     }
 
     private boolean handleInput(String ans, int handSize) {
-        if(ans.contains("^(\\d+|\\+)$")){
-            if("+".equals(ans)){
+        boolean answered = false;
+        if (ans.matches("^(\\d+|\\+)$")) {
+            if ("+".equals(ans)) {
                 c.drawCard();
-                return true;
-            } else if(ans.contains("^\\d+$")) {
+                answered = true;
+            } else if (ans.matches("^\\d+$")) {
                 int toPlay = Integer.parseInt(ans);
-                if(0 < toPlay || toPlay <= handSize) {
+                if (0 < toPlay || toPlay <= handSize) {
                     c.playCard(toPlay);
-                }
+                    answered = true;
+                } // these should be the only two options possible for the regex 
             }
-        }
-        System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
+        } 
+        if (!answered) {
+            System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
                     "Or enter + to draw a card.");
-        return false;
+        }
+        return answered;
     }
 
     private void showHand(String[] hand) {
@@ -98,24 +102,6 @@ public class ViewTerminal implements View {
         }
         System.out.println(String.join("\n", message));
     }
-
-    // private int cardToPLay(int handSize) {
-    //     System.out.print("> ");
-    //     String nStr = input.nextLine();
-    //     int n = -1;
-    //     try {
-    //         int ans = Integer.parseInt(nStr);
-    //         if (ans <= 0 || ans > handSize) {
-    //             throw new NumberFormatException();
-    //         } else {
-    //             n = ans;
-    //         }
-    //     } catch (NumberFormatException e) {
-    //         System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
-    //                 "Or enter + to draw a card.");
-    //     }
-    //     return n;
-    // }
 
     @Override
     public void announceBadMove() {

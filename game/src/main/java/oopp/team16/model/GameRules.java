@@ -4,6 +4,8 @@ import oopp.team16.model.gameLogic.Cards.Card;
 
 public class GameRules {
 
+    private GameRules(){}
+
     static boolean allowedPlay(Card playerCard, Card playedCard) {
         return sameColour(playerCard, playedCard) || sameFace(playerCard, playedCard);
     }

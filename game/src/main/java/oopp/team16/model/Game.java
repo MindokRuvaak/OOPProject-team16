@@ -61,15 +61,13 @@ public class Game {
             notifyListeners();
             takeTurn();
 
-            // if (reverse()) {
-            // turnOrder = players.descendingIterator();
-            // }
             // check winner noWinner = ...
             nextTurn(turnOrder);
         }
     }
 
     private void nextTurn(Iterator<Player> turnOrder) {
+        // boolean hasN = ;
         if (!turnOrder.hasNext()) {
             turnOrder = players.iterator(); // this feels bad? mutating input
         }
@@ -109,11 +107,6 @@ public class Game {
         }
     }
 
-    private boolean reverse() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'reverse'");
-    }
-
     public void notifyListeners() {
         for (GameListener listener : listeners) {
             listener.update();
@@ -143,5 +136,7 @@ public class Game {
 
     public void currentPlayerDrawCard() {
         currentPlayer.drawCard(deck.drawCard());
+        notifyListeners();
+        takeTurn();
     }
 }
