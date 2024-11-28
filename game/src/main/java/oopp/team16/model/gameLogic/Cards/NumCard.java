@@ -28,7 +28,7 @@ public class NumCard implements Card {
 
     @Override
     public String toString() {
-        return bCard.toString();
+        return bCard.getColor().toString() + getValue();
     }
 
 }
