@@ -9,6 +9,7 @@ public class GameServerApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+
         // Prompt for the server port
         System.out.println("Enter server port:");
         int port = scanner.nextInt();
