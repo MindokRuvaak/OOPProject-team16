@@ -19,8 +19,14 @@ public class GameRules {
     }
 
     public static boolean stackable(Card[] toPlay) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'stackable'");
+        for (Card card : toPlay) {
+            if (!sameFace(toPlay[0], card)) {
+                // checks if all cards in to be played have same face
+                // will check first card with itself 
+                return false;
+            }
+        }
+        return true;
     }
 
 }
