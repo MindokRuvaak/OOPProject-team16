@@ -124,14 +124,22 @@ public class Game {
         listeners.add(gameListener);
     }
 
-    public void playCard(int i) {
-        if (GameRules.allowedPlay(currentPlayer.getHand()[i], getTopPlayedCard())) {
-            playedCards.add(currentPlayer.playCard(i));
+    public void tryPlayCard(int index) {
+        if (GameRules.allowedPlay(currentPlayer.getHand()[index], getTopPlayedCard())) {
+            playCard(index);
         } else {
             announceBadMove();
             notifyListeners();
             takeTurn();
         }
+    }
+
+    private void playCard(int index) {
+        playedCards.add(currentPlayer.playCard(index));
+    }
+
+    public void tryPlayCards(int[] indices) {
+        
     }
 
     private void announceBadMove() {

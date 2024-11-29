@@ -78,7 +78,7 @@ public class Model implements GameListener {
 
     public void playCard(int cardNumber) {
         // change from card number displayed to player to corresponding card index in hand array
-        game.playCard(cardNumber - 1); 
+        game.tryPlayCard(cardNumber - 1); 
     }
 
     @Override
