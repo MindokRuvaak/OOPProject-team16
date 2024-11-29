@@ -1,8 +1,7 @@
-package oopp.team16.controller;
+package oopp.team16.server;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameClient {

@@ -1,6 +1,7 @@
 package oopp.team16.controller;
 
 import oopp.team16.model.Model;
+import oopp.team16.server.ConnectionController;
 
 public class GameActionController {
     private final Model gameModel;

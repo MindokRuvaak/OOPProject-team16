@@ -1,5 +1,6 @@
-package oopp.team16.controller;
+package oopp.team16.server;
 
+import oopp.team16.controller.GameActionController;
 import oopp.team16.model.Model;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ public class GameServer {
     private final ConnectionController connectionController;
     private final GameActionController gameActionController;
 
-
+    // Constructor to initialize GameServer
     public GameServer(Model model, int maxPlayers, int port) throws IOException {
         serverSocket = new ServerSocket(port);
         logger.info("Server started on port " + port);
@@ -40,16 +41,13 @@ public class GameServer {
         }
     }
 
-    public static void main(String[] args) {
-        int port = args.length > 0 ? Integer.parseInt(args[0]) : 12345;
-        int maxPlayers = args.length > 1 ? Integer.parseInt(args[1]) : 4;
+    // Getter for the ConnectionController (if needed by another manager)
+    public ConnectionController getConnectionController() {
+        return connectionController;
+    }
 
-        try {
-            Model model = new Model();
-            GameServer server = new GameServer(model, maxPlayers, port);
-            server.acceptConnections();
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Failed to start server", ex);
-        }
+    // Getter for the GameActionController (if needed by another manager)
+    public GameActionController getGameActionController() {
+        return gameActionController;
     }
 }

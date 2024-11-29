@@ -1,4 +1,4 @@
-package oopp.team16.controller;
+package oopp.team16.server;
 
 import java.io.*;
 import java.net.Socket;
