@@ -4,7 +4,6 @@ import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class NumCard implements Card {
     //extend or have a basecard??? 
-    // I say extend -Daniell
     int numValue;
     BaseCard bCard;
 
