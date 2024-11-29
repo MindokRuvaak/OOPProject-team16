@@ -19,12 +19,12 @@ public class GameClient {
     // Method to establish a connection to the server
     public void connectToServer(String serverAddress, int port) {
         try {
-            clientSocket = new Socket(serverAddress, port);  // Establish the socket connection
+            clientSocket = new Socket(serverAddress, port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            logger.info("Connected to server at " + serverAddress + ":" + port);
         } catch (IOException e) {
-            logger.warning("Failed to connect to server: " + e.getMessage());
+            logger.severe("Error connecting to server: " + e.getMessage());
+            throw new RuntimeException("Connection failed", e); // Optional
         }
     }
 

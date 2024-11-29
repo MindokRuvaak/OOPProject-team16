@@ -1,8 +1,11 @@
 package oopp.team16.controller;
 
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class GameClientController {
+    private static final Logger logger = Logger.getLogger(GameClientController.class.getName());
     private final GameClient gameClient;
 
     public GameClientController(GameClient gameClient) {
@@ -12,20 +15,14 @@ public class GameClientController {
     public void start() {
         Scanner scanner = new Scanner(System.in);
 
-        // Prompt for server address (IP) and player name
-        System.out.print("Enter server IP address: ");
-        String serverAddress = scanner.nextLine();
+        System.out.println("Connected to the server at localhost " + 12345);
 
-        System.out.print("Enter your player name: ");
+        // Continue with gameplay interaction
+        System.out.println("Enter your player name:");
         String playerName = scanner.nextLine();
-
-        // Establish the connection with the provided server address and port
-        gameClient.connectToServer(serverAddress, 12345);  // Add the port here, too!
-
-        // Send player name after connection is established
         gameClient.sendMessage("NAME:" + playerName);
 
-        // Start interacting with the game
+        // Start sending commands
         while (true) {
             System.out.println("Enter a command:");
             String command = scanner.nextLine();
@@ -33,9 +30,21 @@ public class GameClientController {
         }
     }
 
+
+
     public static void main(String[] args) {
-        GameClient gameClient = new GameClient("localhost", 12345);  // default values
+        Scanner scanner = new Scanner(System.in);
+        // Prompt for the server port once
+        System.out.println("Enter the server port:");
+        int port = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left-over
+
+        // Initialize GameClient with the server address and the port
+        GameClient gameClient = new GameClient("localhost", port);
         GameClientController controller = new GameClientController(gameClient);
-        controller.start();
+        controller.start();  // Start the game client
     }
+
+
+
 }

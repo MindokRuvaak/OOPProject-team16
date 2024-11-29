@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +15,7 @@ public class ConnectionController {
     private static final Logger logger = Logger.getLogger(ConnectionController.class.getName());
     private final ServerSocket serverSocket;
     private int maxPlayers;
-    private final List<ClientHandler> clients = new ArrayList<>();
+    List<ClientHandler> clients = new CopyOnWriteArrayList<>(); //CopyOnWriteArrayList allows for safe concurrent access, avoiding potential deadlocks and simplifying the code. It is suitable when the list is mostly read and modified infrequently (e.g., adding/removing clients).
     private final Model model;
 
     public ConnectionController(ServerSocket serverSocket, int maxPlayers, Model model) throws IOException {
@@ -22,7 +23,6 @@ public class ConnectionController {
         this.maxPlayers = maxPlayers;
         this.model = model;
 
-        // Optional: Set a timeout to avoid blocking indefinitely during accept
     }
 
     public void acceptConnections() {
@@ -77,3 +77,4 @@ public class ConnectionController {
         }
     }
 }
+
