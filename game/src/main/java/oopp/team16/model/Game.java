@@ -146,18 +146,25 @@ public class Game {
     public void tryPlayCards(int[] indices) {
         if (GameRules.allowedPlay(currentPlayer.getCard(indices[0]), getTopPlayedCard())) {
             // first card provided is allowed, check if all cards have same value
-            Card[] toPlay = new Card[indices.length];
-            for (int i = 0; i < toPlay.length; i++) {
-                toPlay[i] = currentPlayer.getCard(i);
-            }
+            Card[] toPlay = getCardsToPlay(indices);
             if (GameRules.stackable(toPlay)) {
                 for (int i : indices) {
                     playCard(i);
                 }
+            } else {
+                badMoveGoAgain();
             }
         } else {
             badMoveGoAgain();
         }
+    }
+
+    private Card[] getCardsToPlay(int[] indices) {
+        Card[] toPlay = new Card[indices.length];
+        for (int i = 0; i < toPlay.length; i++) {
+            toPlay[i] = currentPlayer.getCard(i);
+        }
+        return toPlay;
     }
 
     private void announceBadMove() {
