@@ -34,21 +34,22 @@ public class ViewTerminal implements View {
 
     @Override
     public void requestPlayers() {
-        int n = 0;
-        while (n <= 0 || n > 9) {
-            n = getAnswer();
+        int n = -1;
+        while (n <= 0 || n >= 9) {
+            n = getNumPlayers();
         }
         providePlayers(n);
     }
 
-    private int getAnswer() {
+    private int getNumPlayers() {
         System.out.print("How many players?\n> ");
         String nStr = input.nextLine();
         int n = -1;
         try {
             n = Integer.parseInt(nStr);
         } catch (NumberFormatException e) {
-            System.out.println("Pease enter a digit between 2 and 8.");
+            System.out.println("Pease enter a digit between 2 and 8."); 
+            // these numbers are not enforced yet!
         }
         return n;
     }
