@@ -28,6 +28,10 @@ public class Player {
         return this.hand.toArray(new Card[0]);
     }
 
+    public Card getCard(int index){
+        return hand.get(index);
+    }
+
     public int getHandSize(){
         return this.hand.size();
     }

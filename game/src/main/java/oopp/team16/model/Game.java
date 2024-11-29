@@ -5,6 +5,7 @@ import java.util.*;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.GameLogic;
+import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
 public class Game {
@@ -125,13 +126,17 @@ public class Game {
     }
 
     public void tryPlayCard(int index) {
-        if (GameRules.allowedPlay(currentPlayer.getHand()[index], getTopPlayedCard())) {
+        if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
             playCard(index);
         } else {
-            announceBadMove();
-            notifyListeners();
-            takeTurn();
+            badMoveGoAgain();
         }
+    }
+
+    private void badMoveGoAgain() {
+        announceBadMove();
+        notifyListeners();
+        takeTurn();
     }
 
     private void playCard(int index) {
@@ -139,7 +144,20 @@ public class Game {
     }
 
     public void tryPlayCards(int[] indices) {
-        
+        if (GameRules.allowedPlay(currentPlayer.getCard(indices[0]), getTopPlayedCard())) {
+            // first card provided is allowed, check if all cards have same value
+            Card[] toPlay = new Card[indices.length];
+            for (int i = 0; i < toPlay.length; i++) {
+                toPlay[i] = currentPlayer.getCard(i);
+            }
+            if (GameRules.stackable(toPlay)) {
+                for (int i : indices) {
+                    playCard(i);
+                }
+            }
+        } else {
+            badMoveGoAgain();
+        }
     }
 
     private void announceBadMove() {

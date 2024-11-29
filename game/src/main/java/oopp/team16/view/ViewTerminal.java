@@ -11,6 +11,7 @@ public class ViewTerminal implements View {
 
     public ViewTerminal(Controller c) {
         this.c = c;
+        System.out.println("\nTo play, enter the character inside the brackets < >\n");
     }
 
     private void printGameState() {
@@ -25,8 +26,6 @@ public class ViewTerminal implements View {
 
         System.out.println(printMessage.toString());
     }
-
-    // private
 
     @Override
     public void update() {
@@ -65,6 +64,7 @@ public class ViewTerminal implements View {
     @Override
     public void takeTurn(String[] hand) {
         showHand(hand);
+        System.out.println("\n<+> : Draw a card \n");
         boolean answered = false;
         while (!answered) {
             System.out.print("> ");

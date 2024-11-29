@@ -14,6 +14,5 @@ public interface ModelListener {
 
     void announceWinner(String name);
 
-    // void requestAction();
 
 }
