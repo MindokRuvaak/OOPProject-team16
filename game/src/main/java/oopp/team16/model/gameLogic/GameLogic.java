@@ -6,7 +6,7 @@ public class GameLogic {
 
     public boolean canPlay(Card card, Card topCard) {
         return (card.getType().equals(topCard.getType()) || card.getColor().equals(topCard.getColor()));
-    }
+    } //funkar inte just nu pga enum
 
     // byta håll från reverse
     void changeOrder() {

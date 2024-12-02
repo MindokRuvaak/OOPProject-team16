@@ -2,7 +2,6 @@ package oopp.team16.model.gameLogic.Cards;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class NumCard implements Card {
-    //extend or have a basecard??? ask on TA meeting maybe
     private final int value;
     private final BaseCard bCard;
 
@@ -29,5 +28,6 @@ public class NumCard implements Card {
     public String toString() {
         return bCard.getColor().toString() + getValue();
     }
+
 
 }

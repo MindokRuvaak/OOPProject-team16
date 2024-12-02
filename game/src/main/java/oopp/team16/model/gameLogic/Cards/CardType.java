@@ -1,6 +1,6 @@
 package oopp.team16.model.gameLogic.Cards;
 
-//interface, kort beror på interface
+//göra samma som färg
 public enum CardType{
     NUMBER("NumberCard"),
     REVERSE("SpecialCard"),
