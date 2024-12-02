@@ -75,9 +75,6 @@ public class GameViewController {
             buttonStart.setDisable(true);
         });
 
-        menuItemBack.setOnAction(event -> {
-            System.out.println("Back to Main Menu");
-        });
     }
 
     // further event handling methods
