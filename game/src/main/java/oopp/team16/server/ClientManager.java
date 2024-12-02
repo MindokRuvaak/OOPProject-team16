@@ -4,16 +4,14 @@ import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-public class ClientHandler implements Runnable {
-    private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
+public class ClientManager implements Runnable {
+    private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
-    private final ConnectionController connectionController;
     private PrintWriter out;
     private BufferedReader in;
 
-    public ClientHandler(Socket socket, ConnectionController connectionController) {
+    public ClientManager(Socket socket, ConnectionController connectionController) {
         this.clientSocket = socket;
-        this.connectionController = connectionController;
     }
 
     @Override
@@ -26,9 +24,7 @@ public class ClientHandler implements Runnable {
             while ((message = in.readLine()) != null) {
                 logger.info("Received message from client: " + message);
 
-                // Example of handling an action
-                //connectionController.getGameActionController().handleAction(this, message);
-            }
+                            }
         } catch (IOException ex) {
             logger.warning("Client disconnected: " + ex.getMessage());
         } finally {
@@ -36,18 +32,13 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void sendMessage(String message) {
-        if (out != null) {
-            out.println(message);
-        }
-    }
 
     public void closeConnection() {
         try {
             if (clientSocket != null && !clientSocket.isClosed()) {
                 clientSocket.close();
             }
-            connectionController.removeClient(this);
+            //connectionController.removeClient(this);
         } catch (IOException ex) {
             logger.warning("Error closing client connection: " + ex.getMessage());
         }

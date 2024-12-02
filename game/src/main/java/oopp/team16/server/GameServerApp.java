@@ -25,7 +25,7 @@ public class GameServerApp {
             GameServer gameServer = new GameServer(model, maxPlayers, port);
 
             // Start the server to accept connections
-            gameServer.acceptConnections();
+            gameServer.startup();
 
             // Inform user that the server is running
             System.out.println("Server is running on port " + port);

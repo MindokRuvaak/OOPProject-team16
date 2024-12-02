@@ -36,28 +36,28 @@ public class GameClient {
         }
     }
 
-    // Listen for updates from the server
-    public void listenForUpdates() {
-        new Thread(() -> {
-            String serverMessage;
-            try {
-                while ((serverMessage = in.readLine()) != null) {
-                    System.out.println("Received update from server: " + serverMessage);
-                }
-            } catch (IOException e) {
-                logger.warning("Error receiving updates from server: " + e.getMessage());
+    // Receive a message from the server
+    public String receiveMessage() {
+        try {
+            if (in != null) {
+                return in.readLine(); // Reads a single line from the server
+            } else {
+                logger.warning("Input stream is null.");
             }
-        }).start();
+        } catch (IOException e) {
+            logger.severe("Error reading from server: " + e.getMessage());
+        }
+        return null;
     }
 
-    // Close the connection
+    // Close the connection and associated streams
     public void closeConnection() {
         try {
             if (in != null) in.close();
             if (out != null) out.close();
             if (clientSocket != null) clientSocket.close();
         } catch (IOException e) {
-            logger.warning("Error closing client connection: " + e.getMessage());
+            logger.severe("Error closing connection: " + e.getMessage());
         }
     }
 }

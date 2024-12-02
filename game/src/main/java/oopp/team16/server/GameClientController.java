@@ -12,19 +12,33 @@ public class GameClientController {
     }
 
     public void start() {
+
+        // Start a new thread to listen to server messages
+        new Thread(this::listenForServerMessages).start();
+
         Scanner scanner = new Scanner(System.in);
 
 
-        // Continue with gameplay interaction
-        System.out.println("Enter your player name:");
-        String playerName = scanner.nextLine();
-        gameClient.sendMessage("NAME:" + playerName);
-
-        // Start sending commands
+        // Main game loop for sending commands
         while (true) {
             System.out.println("Enter a command:");
             String command = scanner.nextLine();
             gameClient.sendMessage(command);
+        }
+    }
+
+    private void listenForServerMessages() {
+        try {
+            // Continuously listen for incoming messages from the server
+            while (true) {
+                String serverMessage = gameClient.receiveMessage();
+                if (serverMessage != null) {
+                    logger.info("Server says: " + serverMessage);
+                    // You can process the server message here (e.g., update game state)
+                }
+            }
+        } catch (Exception e) {
+            logger.severe("Error while listening to server: " + e.getMessage());
         }
     }
 
