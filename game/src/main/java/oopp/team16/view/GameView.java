@@ -1,26 +1,41 @@
-package oopp.team16.view;
+package main.java.oopp.team16.view;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import java.io.IOException;
 
 public class GameView {
 
-    JFrame frame = new JFrame();
-    JLabel label = new JLabel();
+    private Stage primaryStage;
+    private Scene scene;
 
-    public GameView() {
+    public GameView(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        initializeUI();
+    }
 
-        label.setBounds(0, 0, 100, 50);
-        label.setFont(new Font("Arial", Font.PLAIN, 25));
-        frame.add(label, BorderLayout.CENTER);
+    private void initializeUI() {
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainGUI.fxml"));
+            Parent root = loader.load();
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 420);
-        frame.setTitle("UNO - Ingame");
-        frame.setLayout(new BorderLayout());
-        frame.setVisible(true);
+            // Set up the scene
+            scene = new Scene(root, 800, 650);
+
+            // Configure the stage
+            primaryStage.setTitle("UNO Game");
+            primaryStage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load GameView.fxml");
+        }
+    }
+
+    public void show() {
+        primaryStage.show();
     }
 }
