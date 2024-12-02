@@ -10,12 +10,10 @@ public class GameClient {
     private BufferedReader in;
     private PrintWriter out;
 
-    // Constructor with serverAddress and port
     public GameClient(String serverAddress, int port) {
         connectToServer(serverAddress, port);
     }
 
-    // Method to establish a connection to the server
     public void connectToServer(String serverAddress, int port) {
         try {
             clientSocket = new Socket(serverAddress, port);
@@ -23,11 +21,10 @@ public class GameClient {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         } catch (IOException e) {
             logger.severe("Error connecting to server: " + e.getMessage());
-            throw new RuntimeException("Connection failed", e); // Optional
+            throw new RuntimeException("Connection failed", e);
         }
     }
 
-    // Send a message to the server
     public void sendMessage(String message) {
         if (out != null) {
             out.println(message);
@@ -36,7 +33,6 @@ public class GameClient {
         }
     }
 
-    // Receive a message from the server
     public String receiveMessage() {
         try {
             if (in != null) {
@@ -50,7 +46,6 @@ public class GameClient {
         return null;
     }
 
-    // Close the connection and associated streams
     public void closeConnection() {
         try {
             if (in != null) in.close();

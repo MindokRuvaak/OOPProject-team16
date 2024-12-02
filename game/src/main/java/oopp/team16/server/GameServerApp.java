@@ -12,7 +12,6 @@ public class GameServerApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Prompt for server port and max players
         System.out.println("Enter server port:");
         int port = scanner.nextInt();
         System.out.println("Enter max number of players:");
@@ -22,22 +21,16 @@ public class GameServerApp {
         GameServer gameServer = null;
 
         try {
-            // Initialize the model (business logic)
             Model model = new Model();
 
-            // Create the GameServer instance with port and maxPlayers
             gameServer = new GameServer(model, port, maxPlayers);
-
-            // Start the server
             gameServer.startup();
 
-            // Inform the user that the server is running
             System.out.println("Server is running on port " + port);
             System.out.println("Press Enter to stop the server...");
-            scanner.nextLine(); // Wait for user input to stop the server
+            scanner.nextLine();
 
         } catch (Exception ex) {
-            // Log the exception message and stack trace using the logger
             logger.severe("An error occurred: " + ex.getMessage());
             for (StackTraceElement element : ex.getStackTrace()) {
                 logger.severe(element.toString());

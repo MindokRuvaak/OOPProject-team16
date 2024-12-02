@@ -14,7 +14,6 @@ public class GameServer {
     private final int port;
     private final int maxPlayers;
 
-    // Constructor to initialize GameServer
     public GameServer(Model model, int port, int maxPlayers) {
         this.port = port;
         this.maxPlayers = maxPlayers;
@@ -24,23 +23,19 @@ public class GameServer {
     }
 
     public void startup() {
-        // Start the server using StartupManager
         this.serverSocket = startupManager.startServer(port);
         if (serverSocket != null) {
             logger.info("Server started. Waiting for connections...");
 
-            // Initialize the ConnectionController after serverSocket is ready
             this.connectionController = new ConnectionController(serverSocket, maxPlayers);
 
-            // Begin accepting connections
             connectionController.acceptConnections();
         } else {
             logger.severe("Server failed to start.");
         }
     }
+
     //public void shutdown(){}
-
-
 
     public ShutdownManager getShutdownManager() {
         return shutdownManager;

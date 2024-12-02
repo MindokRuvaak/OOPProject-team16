@@ -45,14 +45,12 @@ public class GameClientController {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Prompt for the server address and port
         System.out.println("Enter the server address (e.g., localhost or an IP):");
         String serverAddress = scanner.nextLine();
         System.out.println("Enter the server port:");
         int port = scanner.nextInt();
         scanner.nextLine(); // Consume newline left-over
 
-        // Initialize GameClient with the user-provided server address and port
         GameClient gameClient = new GameClient(serverAddress, port);
         GameClientController controller = new GameClientController(gameClient);
         controller.start();  // Start the game client

@@ -43,4 +43,6 @@ public class ClientManager implements Runnable {
             logger.warning("Error closing client connection: " + ex.getMessage());
         }
     }
+
+    //public void removeClient(){} behövs denna? kanske bra att ha. graceful shutdown yadda yadda
 }

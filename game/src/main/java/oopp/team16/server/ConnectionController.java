@@ -45,7 +45,7 @@ public class ConnectionController {
 
     public void closeConnections() {
         for (ClientManager client : clients) {
-            client.closeConnection(); // Assuming ClientManager has a method to close the connection
+            client.closeConnection();
         }
         logger.info("All connections closed.");
     }
