@@ -1,6 +1,6 @@
 package oopp.team16.controller;
 
-import oopp.team16.view.GameView;
+//import oopp.team16.view.GameView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -29,7 +29,7 @@ public class BunAction {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameView gameView = new GameView();
+                //GameView gameView = new GameView();
             }
         });
 

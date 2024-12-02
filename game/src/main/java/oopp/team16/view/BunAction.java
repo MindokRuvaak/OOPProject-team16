@@ -2,6 +2,7 @@ package oopp.team16.view;
 
 import javax.swing.*;
 
+import javafx.stage.Stage;
 import oopp.team16.controller.UnoController;
 
 import java.awt.event.ActionEvent;
@@ -16,7 +17,6 @@ public class BunAction {
     public JButton drawButton = new JButton("Draw card");
     public JButton playCardButton = new JButton("Play a Card");
     public JTextField portNumber = new JTextField("Enter the port");
-
     private UnoController unoCC;
     public BunAction(){
     //    this.unoCC = unoCC;
