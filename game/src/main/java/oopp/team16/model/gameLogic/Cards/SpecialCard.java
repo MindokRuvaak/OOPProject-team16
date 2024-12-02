@@ -16,11 +16,11 @@ public class SpecialCard implements Card{
 
     @Override
     public Color getColor() {
-        return null;
+        return baseCard.getColor();
     }
 
     @Override
     public CardType getType() {
-        return null;
+        return baseCard.getType();
     }
 }
