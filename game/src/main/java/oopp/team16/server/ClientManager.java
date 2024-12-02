@@ -23,14 +23,16 @@ public class ClientManager implements Runnable {
             String message;
             while ((message = in.readLine()) != null) {
                 logger.info("Received message from client: " + message);
-
-                            }
+            }
         } catch (IOException ex) {
-            logger.warning("Client disconnected: " + ex.getMessage());
+            logger.warning("Client disconnected or error occurred: " + ex.getMessage());
         } finally {
+            // Log when connection is being closed
+            logger.info("Closing connection for client: " + clientSocket.getInetAddress().getHostAddress());
             closeConnection();
         }
     }
+
 
 
     public void closeConnection() {
