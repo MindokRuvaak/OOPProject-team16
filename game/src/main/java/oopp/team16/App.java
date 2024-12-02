@@ -1,24 +1,18 @@
-package oopp.team16;
+package main.java.oopp.team16;
 
-import oopp.team16.controller.UnoController;
-import oopp.team16.view.StartView;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import main.java.oopp.team16.view.GameView;
 
-/**
- * Hello world!
- */
-public final class App {
-    private App() {
+public class App extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        GameView gameView = new GameView(primaryStage);
+        gameView.show();
     }
-    static UnoController unoCC;
 
-    /**
-     * Says hello to the world.
-     * @param args The arguments of the program.
-     */
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        StartView sv = new StartView(/* unoCC */);
+        launch(args);
     }
-    
-    
 }
