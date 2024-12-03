@@ -18,15 +18,8 @@ public class GameRules {
         return playerCard.getColor() == playedCard.getColor();
     }
 
-    public static boolean stackable(Card[] toPlay) {
-        for (Card card : toPlay) {
-            if (!sameFace(toPlay[0], card)) {
-                // checks if all cards in to be played have same face
-                // will check first card with itself 
-                return false;
-            }
-        }
-        return true;
+    public static boolean stackable(Card playerCard, Card playedCard) {
+        return sameFace(playerCard, playedCard);
     }
 
 }

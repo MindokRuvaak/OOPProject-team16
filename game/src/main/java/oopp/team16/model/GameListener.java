@@ -12,6 +12,10 @@ public interface GameListener {
 
     void announceWinner(String name);
 
+    void startNextPlayerTurn(Player currentPlayer);
+
+    void announceMustPlayCard();
+
     // void requestTurnAction();
 
 

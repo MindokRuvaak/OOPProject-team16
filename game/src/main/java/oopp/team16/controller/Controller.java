@@ -41,4 +41,12 @@ public class Controller {
         m.drawCard();
     }
 
+    public void endTurn() {
+        m.endTurn();
+    }
+
+    public void playExtraCard(int toPlay) {
+        m.playMoreCards(toPlay);
+    }
+
 }
