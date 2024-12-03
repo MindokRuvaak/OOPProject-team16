@@ -34,5 +34,35 @@ public class View2D implements View {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'requestPlayers'");
     }
-    
+
+
+
+
+
+    @Override
+    public void takeTurn(String[] hand) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'showHand'");
+    }
+
+
+
+
+
+    @Override
+    public void announceBadMove() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'announceBadMove'");
+    }
+
+
+
+
+
+    @Override
+    public void announceWinner(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'announceWinner'");
+    }
+
 }

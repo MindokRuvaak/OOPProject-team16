@@ -16,7 +16,7 @@ public class GameLogic {
     }
 
     // byta spelare, måste wrap nånting
-    void nextPlayer() {
+    void nextPlayer() { // fixed in Game.java should move here?
 
     }
 

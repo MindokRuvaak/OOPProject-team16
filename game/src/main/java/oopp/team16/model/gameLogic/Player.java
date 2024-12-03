@@ -16,15 +16,20 @@ public class Player {
     }
 
     public void drawCard(Card card){
+        //TODO: sorted hand
         hand.add(card);
     }
 
-    public void playCard(int index){
-        hand.remove(index);
+    public Card playCard(int index){
+        return hand.remove(index);
     }
 
-    public List<Card> getHand(){
-        return this.hand;
+    public Card[] getHand(){
+        return this.hand.toArray(new Card[0]);
+    }
+
+    public Card getCard(int index){
+        return hand.get(index);
     }
 
     public int getHandSize(){
@@ -36,7 +41,7 @@ public class Player {
     }
 
     public boolean hasCards(){
-        return hand.isEmpty();
+        return !hand.isEmpty();
     }
 
     public String getName(){
