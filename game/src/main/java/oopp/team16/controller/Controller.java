@@ -1,29 +1,52 @@
 package oopp.team16.controller;
 
+import java.util.Arrays;
+
 import oopp.team16.model.Model;
-import oopp.team16.model.ModelListener;
+import oopp.team16.model.gameLogic.Player;
 
 
-public class Controller implements ModelListener {
+public class Controller {
 
     Model m;
     public Controller(Model m) {
         this.m = m;
     }
 
-
-
-
-
-    public void init(Model m) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private Player getCurrentPlayer(){
+        return m.getCurrentPlayer();
     }
 
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public String getCurrentPlayerHand(){
+        return Arrays.toString(getCurrentPlayer().getHand()); // usage dependency on <I>Card
+    }
+
+    public String getCurrentPlayerID() {
+        return getCurrentPlayer().getName();
+    }
+
+    public String getTopPlayedCardString() {
+        return m.getTopPlayedCard().toString(); // usage dependency on <I>Card
     }
     
+    public void addPlayer(String id) {
+        m.addPlayer(id);
+    }
+
+    public void playCard(int n) {
+        m.playCard(n);
+    }
+
+    public void drawCard() {
+        m.drawCard();
+    }
+
+    public void endTurn() {
+        m.endTurn();
+    }
+
+    public void playExtraCard(int toPlay) {
+        m.playMoreCards(toPlay);
+    }
 
 }
