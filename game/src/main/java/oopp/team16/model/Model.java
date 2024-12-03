@@ -62,11 +62,12 @@ public class Model implements GameListener {
 
     @Override
     public void takePlayerTurn(Player currentPlayer) {
+        // should maybe not allow multiple listeners?
+        // only one listener (view)? 
         for (ModelListener listener : listeners) {
-            listener.takeTurn(ToStringArray((currentPlayer.getHand())));
+            listener.takeTurn(ToStringArray((currentPlayer.getHand())),currentPlayer.hasPlayedCard());
         }
     }
-
 
     private String[] ToStringArray(Card[] hand) {
         String[] handStrings = new String[hand.length];
@@ -99,4 +100,25 @@ public class Model implements GameListener {
         }
     }
 
+    public void endTurn() {
+        game.endCurrentPlayerTurn();
+    }
+
+    public void playMoreCards(int toPlay) {
+        game.tryPlayMoreCards(toPlay - 1); //again change to index
+    }
+
+    @Override
+    public void startNextPlayerTurn(Player currentPlayer) {
+        for (ModelListener listener : listeners) {
+            listener.startNextPlayerTurn(currentPlayer.getName());
+        }
+    }
+
+    @Override
+    public void announceMustPlayCard() {
+        for (ModelListener listener : listeners) {
+            listener.announceMustPlayCard();
+        }
+    }
 }

@@ -6,22 +6,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    List<Card> hand;
-    int score;  // hur räknar vi score
-    String name;  //?
+    private List<Card> hand;
+    private int score;  // hur räknar vi score
+    private String name;
+    // turn taken info
+    private boolean playedCard;
+    private int cardsDrawn;
+    private boolean takingTurn;
 
     public Player (String name){
         this.name = name;
         this.hand = new ArrayList<>();
+        this.playedCard = false;
+        this.cardsDrawn = 0;
+        this.takingTurn = false;
     }
 
     public void drawCard(Card card){
         //TODO: sorted hand
-        hand.add(card);
+        this.hand.add(card);
+        this.cardsDrawn++;
     }
 
     public Card playCard(int index){
-        return hand.remove(index);
+        playedCard = true;
+        return this.hand.remove(index);
     }
 
     public Card[] getHand(){
@@ -29,7 +38,7 @@ public class Player {
     }
 
     public Card getCard(int index){
-        return hand.get(index);
+        return this.hand.get(index);
     }
 
     public int getHandSize(){
@@ -37,16 +46,39 @@ public class Player {
     }
 
     public boolean hasUno(){
-        return hand.size() == 1;
+        return this.hand.size() == 1;
     }
 
     public boolean hasCards(){
-        return !hand.isEmpty();
+        return !this.hand.isEmpty();
     }
 
     public String getName(){
         return this.name;
     }
 
+    public boolean hasPlayedCard(){
+        return this.playedCard;
+    }
 
+    public boolean drawnThree(){
+        return this.cardsDrawn >= 3;
+    }
+
+    public void resetTurnInfo(){
+        this.playedCard = false;
+        this.cardsDrawn = 0;
+    }
+
+    public void startTurn() {
+        this.takingTurn = true;
+    }
+
+    public void endTurn() {
+        this.takingTurn = false;
+    }
+
+    public boolean stillTakingTurn() {
+        return this.takingTurn;
+    }
 }

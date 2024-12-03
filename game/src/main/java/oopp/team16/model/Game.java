@@ -59,14 +59,30 @@ public class Game {
         boolean noWinner = true;
         while (noWinner) {
             nextTurn();
-            notifyListeners();
-            takeTurn();
+            startTurn();
+            while (this.currentPlayer.stillTakingTurn()) {
+                takeTurn();
+            }
+            endTurn();
+
             if (!currentPlayer.hasCards()) {
                 noWinner = false;
                 announceWinner(currentPlayer.getName());
                 break;
             }
         }
+    }
+
+    private void startTurn() {
+        this.currentPlayer.startTurn();
+        for (GameListener listener : listeners) {
+            listener.startNextPlayerTurn(currentPlayer);
+        }
+    }
+
+    private void endTurn() {
+        this.currentPlayer.resetTurnInfo();
+        this.currentPlayer.endTurn();
     }
 
     private void announceWinner(String name) {
@@ -80,6 +96,7 @@ public class Game {
             this.turnOrder = this.players.iterator();
         }
         this.currentPlayer = this.turnOrder.next();
+        this.currentPlayer.startTurn();
     }
 
     private void setUpGame() {
@@ -113,6 +130,7 @@ public class Game {
         for (GameListener listener : listeners) {
             listener.takePlayerTurn(currentPlayer);
         }
+
     }
 
     public void notifyListeners() {
@@ -135,36 +153,10 @@ public class Game {
 
     private void badMoveGoAgain() {
         announceBadMove();
-        notifyListeners();
-        takeTurn();
     }
 
     private void playCard(int index) {
         playedCards.add(currentPlayer.playCard(index));
-    }
-
-    public void tryPlayCards(int[] indices) {
-        if (GameRules.allowedPlay(currentPlayer.getCard(indices[0]), getTopPlayedCard())) {
-            // first card provided is allowed, check if all cards have same value
-            Card[] toPlay = getCardsToPlay(indices);
-            if (GameRules.stackable(toPlay)) {
-                for (int i : indices) {
-                    playCard(i);
-                }
-            } else {
-                badMoveGoAgain();
-            }
-        } else {
-            badMoveGoAgain();
-        }
-    }
-
-    private Card[] getCardsToPlay(int[] indices) {
-        Card[] toPlay = new Card[indices.length];
-        for (int i = 0; i < toPlay.length; i++) {
-            toPlay[i] = currentPlayer.getCard(i);
-        }
-        return toPlay;
     }
 
     private void announceBadMove() {
@@ -175,5 +167,27 @@ public class Game {
 
     public void currentPlayerDrawCard() {
         currentPlayer.drawCard(deck.drawCard());
+    }
+
+    public void endCurrentPlayerTurn() {
+        if (currentPlayer.hasPlayedCard()) {
+            currentPlayer.endTurn();
+        } else {
+            announceMustPlayCard();
+        }
+    }
+
+    private void announceMustPlayCard() {
+        for (GameListener listener : listeners) {
+            listener.announceMustPlayCard();
+        }
+    }
+
+    public void tryPlayMoreCards(int index) {
+        if (GameRules.stackable(currentPlayer.getCard(index), getTopPlayedCard())) {
+            playCard(index);
+        } else {
+            badMoveGoAgain();
+        }
     }
 }
