@@ -10,16 +10,31 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" prefHeight="650.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.oopp.team16.controller.GameViewController">
+<AnchorPane fx:id="mainPane" prefHeight="383.0" prefWidth="800.0" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.oopp.team16.controller.GameViewController">
   <children>
-    <ImageView fx:id="iconDeck" fitHeight="90.0" fitWidth="57.0" layoutX="447.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="627.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@ui/resources/unocards/Draw4.png" />
-         </image></ImageView>
-    <ImageView fx:id="iconLastCard" fitHeight="90.0" fitWidth="57.0" layoutX="277.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@ui/resources/unocards/Uno.png" />
-         </image></ImageView>
+            <Image url="@ui/resources/GameViewBackground.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="buttonPlayDeck" layoutX="454.0" layoutY="236.0" mnemonicParsing="false">
+         <graphic>
+          <ImageView fitHeight="90.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ui/resources/unocards/Draw4.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="buttonLastCard" layoutX="263.0" layoutY="234.0" mnemonicParsing="false">
+         <graphic>
+          <ImageView fitHeight="90.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ui/resources/unocards/Uno.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     <Label fx:id="labelCurrentPlayer" alignment="CENTER" contentDisplay="CENTER" layoutX="250.0" layoutY="420.0" prefHeight="31.0" prefWidth="286.0" textAlignment="CENTER">
       <font>
         <Font name="System Bold" size="19.0" />
@@ -32,7 +47,7 @@
       </font>
     </Label>
     <ImageView fx:id="imageViewWishColor" fitHeight="40.0" fitWidth="40.0" layoutX="372.0" layoutY="278.0" pickOnBounds="true" preserveRatio="true" />
-    <HBox fx:id="hboxInfo" alignment="CENTER" layoutX="207.0" layoutY="611.0" prefHeight="25.0" prefWidth="338.0">
+    <HBox fx:id="hboxInfo" alignment="CENTER" layoutX="217.0" layoutY="421.0" prefHeight="25.0" prefWidth="338.0">
       <children>
         <Label fx:id="labelInfo" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="255.0" text="You cannot counter. Draw xx cards." textAlignment="CENTER">
           <font>
@@ -46,7 +61,7 @@
         </Button>
       </children>
     </HBox>
-    <Label fx:id="labelChallengeCounter" alignment="CENTER" contentDisplay="CENTER" layoutX="297.0" layoutY="352.0" prefHeight="17.0" prefWidth="190.0" text="Draw 12 cards" textAlignment="CENTER">
+    <Label fx:id="labelChallengeCounter" alignment="CENTER" contentDisplay="CENTER" layoutX="302.0" layoutY="185.0" prefHeight="17.0" prefWidth="190.0" text="Draw 12 cards" textAlignment="CENTER">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
