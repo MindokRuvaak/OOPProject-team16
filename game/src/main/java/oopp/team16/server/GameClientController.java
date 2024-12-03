@@ -15,9 +15,7 @@ public class GameClientController {
 
         // Start a new thread to listen to server messages
         new Thread(this::listenForServerMessages).start();
-
         Scanner scanner = new Scanner(System.in);
-
 
         // Main game loop for sending commands
         while (true) {
@@ -47,6 +45,7 @@ public class GameClientController {
 
         System.out.println("Enter the server address (e.g., localhost or an IP):");
         String serverAddress = scanner.nextLine();
+
         System.out.println("Enter the server port:");
         int port = scanner.nextInt();
         scanner.nextLine(); // Consume newline left-over

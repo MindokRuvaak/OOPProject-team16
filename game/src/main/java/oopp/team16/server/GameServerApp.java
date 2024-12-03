@@ -37,6 +37,7 @@ public class GameServerApp {
             }
         } finally {
             if (gameServer != null) {
+                gameServer.getConnectionController().closeConnections();
                 gameServer.getShutdownManager().stopServer(gameServer.getServerSocket());
             }
             scanner.close();

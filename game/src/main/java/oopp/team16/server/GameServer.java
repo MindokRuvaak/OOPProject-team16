@@ -25,17 +25,21 @@ public class GameServer {
     public void startup() {
         this.serverSocket = startupManager.startServer(port);
         if (serverSocket != null) {
-            logger.info("Server started. Waiting for connections...");
+            logger.info("Starting to accept connections");
 
             this.connectionController = new ConnectionController(serverSocket, maxPlayers);
 
             connectionController.acceptConnections();
+            logger.info("Waiting for connections...");
         } else {
             logger.severe("Server failed to start.");
         }
     }
 
     //public void shutdown(){}
+    public ConnectionController getConnectionController() {
+        return connectionController;
+    }
 
     public ShutdownManager getShutdownManager() {
         return shutdownManager;

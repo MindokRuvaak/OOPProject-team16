@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class ConnectionController {
     private static final Logger logger = Logger.getLogger(ConnectionController.class.getName());
     private ServerSocket serverSocket;
-    private List<ClientManager> clients;
+    private final List<ClientManager> clients;
     private int maxPlayers;
 
     public ConnectionController(ServerSocket serverSocket, int maxPlayers) {
