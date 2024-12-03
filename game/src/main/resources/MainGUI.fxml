@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" prefHeight="383.0" prefWidth="800.0" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.oopp.team16.controller.GameViewController">
+<AnchorPane fx:id="mainPane" prefHeight="383.0" prefWidth="800.0" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController">
   <children>
       <ImageView fitHeight="627.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>

@@ -1,4 +1,4 @@
-package main.java.oopp.team16.controller;
+package oopp.team16.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

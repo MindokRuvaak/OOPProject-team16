@@ -1,4 +1,4 @@
-package main.java.oopp.team16.view;
+package oopp.team16.view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +20,7 @@ public class GameView {
     private void initializeUI() {
         try {
             // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainGUI.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainGUI.fxml"));
             Parent root = loader.load();
 
             // Set up the scene
