@@ -7,6 +7,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
+import javafx.animation.TranslateTransition;
+import javafx.geometry.Point2D;
+import javafx.util.Duration;
 
 
 public class GameViewController {
@@ -15,22 +18,7 @@ public class GameViewController {
     private Label labelLogo;
 
     @FXML
-    private ImageView iconDeck;
-
-    @FXML
-    private ImageView iconLastCard;
-
-    @FXML
     private Label labelCurrentPlayer;
-
-    @FXML
-    private Circle circleWishColor;
-
-    @FXML
-    private Label labelWishColor;
-
-    @FXML
-    private ImageView imageViewWishColor;
 
     @FXML
     private HBox hboxInfo;
@@ -42,7 +30,11 @@ public class GameViewController {
     private Button buttonInfo;
 
     @FXML
-    private Label labelChallengeCounter;
+    private Button buttonPlayDeck;
+
+    @FXML
+    private Button buttonLastCard;
+
 
     @FXML
     private Label labelPlayer2Name;
@@ -57,13 +49,24 @@ public class GameViewController {
     private Button buttonStart;
 
     @FXML
-    private MenuItem menuItemBack;
-
-    @FXML
     private Button buttonNewGame;
 
-    @FXML
-    private Button buttonSettings;
+    @FXML private HBox playerHand; // Add this to your FXML file
+
+
+    private final double CARD_HEIGHT = 90.0;
+    private final double CARD_WIDTH = 57.0;
+
+    private final double CARD_SPACING_LARGE = 14.0;
+    private final double CARD_SPACING_MEDIUM = 0.0;
+    private final double CARD_SPACING_SMALL = - 25.0;
+    private final double CARD_SPACING_ULTRA_SMALL = - 35.0;
+
+    private Point2D PLAYER_STARTING_POINT;
+    private final Point2D AI_1_STARTING_POINT = new Point2D(100.0, 75.0);
+    private Point2D AI_2_STARTING_POINT;
+    private Point2D AI_3_STARTING_POINT;
+
 
     public void initialize() {
         buttonInfo.setOnAction(event -> {
@@ -75,7 +78,8 @@ public class GameViewController {
             buttonStart.setDisable(true);
         });
 
-    }
 
+    }
     // further event handling methods
+
 }

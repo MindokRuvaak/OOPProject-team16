@@ -71,10 +71,5 @@
         <Font name="System Bold" size="14.0" />
       </font>
     </Button>
-    <Label fx:id="labelLogo" layoutX="285.0" layoutY="387.0" text="Welcome to UNO!">
-      <font>
-        <Font name="System Bold" size="28.0" />
-      </font>
-    </Label>
   </children>
 </AnchorPane>
