@@ -8,9 +8,8 @@ public class ClientManager implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
     private PrintWriter out;
-    private BufferedReader in;
 
-    public ClientManager(Socket socket, ConnectionController connectionController) {
+    public ClientManager(Socket socket) {
         this.clientSocket = socket;
     }
 
@@ -18,7 +17,7 @@ public class ClientManager implements Runnable {
     public void run() {
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             String message;
             while ((message = in.readLine()) != null) {
@@ -32,8 +31,6 @@ public class ClientManager implements Runnable {
             closeConnection();
         }
     }
-
-
 
     public void closeConnection() {
         try {

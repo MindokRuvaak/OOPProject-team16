@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ConnectionController {
-    private static final Logger logger = Logger.getLogger(ConnectionController.class.getName());
-    private ServerSocket serverSocket;
+public class ConnectionManager {
+    private static final Logger logger = Logger.getLogger(ConnectionManager.class.getName());
+    private final ServerSocket serverSocket;
     private final List<ClientManager> clients;
-    private int maxPlayers;
+    private final int maxPlayers;
 
-    public ConnectionController(ServerSocket serverSocket, int maxPlayers) {
+    public ConnectionManager(ServerSocket serverSocket, int maxPlayers) {
         this.serverSocket = serverSocket;
         this.clients = new ArrayList<>();
         this.maxPlayers = maxPlayers;
@@ -26,7 +26,7 @@ public class ConnectionController {
                 Socket clientSocket = serverSocket.accept();
                 logger.info("Accepted connection from " + clientSocket.getInetAddress().getHostAddress());
 
-                ClientManager clientHandler = new ClientManager(clientSocket, this);
+                ClientManager clientHandler = new ClientManager(clientSocket);
                 synchronized (clients) {
                     clients.add(clientHandler);
                 }
@@ -37,7 +37,6 @@ public class ConnectionController {
                 logger.info("Waiting for connections timed out. Retrying...");
             } catch (IOException ex) {
                 logger.warning("Error accepting connection");
-                logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
             }
         }
         logger.info("Max players connected. No longer accepting connections.");

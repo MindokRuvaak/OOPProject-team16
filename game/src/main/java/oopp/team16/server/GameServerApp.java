@@ -22,12 +22,10 @@ public class GameServerApp {
 
         try {
             Model model = new Model();
-
             gameServer = new GameServer(model, port, maxPlayers);
             gameServer.startup();
-
-            System.out.println("Server is running on port " + port);
-            System.out.println("Press Enter to stop the server...");
+            logger.info("Server is running on port " + port);
+            logger.info("Press Enter to stop the server...");
             scanner.nextLine();
 
         } catch (Exception ex) {
@@ -38,7 +36,7 @@ public class GameServerApp {
         } finally {
             if (gameServer != null) {
                 gameServer.getConnectionController().closeConnections();
-                gameServer.getShutdownManager().stopServer(gameServer.getServerSocket());
+                gameServer.getShutdownManager().stopServer(gameServer.getServerSocket()); //här bör shutdownmanager användas? såsom startup tidigare
             }
             scanner.close();
         }
