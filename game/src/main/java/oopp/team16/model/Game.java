@@ -2,6 +2,7 @@ package oopp.team16.model;
 
 import java.util.*;
 
+import javafx.application.Platform;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.GameLogic;
@@ -17,7 +18,8 @@ public class Game {
     private final Deck deck;
     private final Stack<Card> playedCards;
     private final int startingHandSize;
-    private GameLogic gamelogic;
+    private boolean played;
+
 
     public Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
@@ -26,15 +28,30 @@ public class Game {
         this.deck = deck;
         deck.shuffle();
         playedCards = new Stack<>();
+        this.played = false;
     }
+
+    public boolean getPlayed(){return played;}
 
     public void init(Collection<Player> players) {
         this.players.addAll(players);
         this.turnOrder = players.iterator();
         setUpGame();
         System.out.println("do i come here?");
-     //   gameLoop();
+        startGameLoop();
+    }
 
+    private void startGameLoop() {
+        new Thread(() -> {
+            // Start the game loop in a new thread
+            gameLoop();
+
+            // After the game loop ends, update UI on the JavaFX application thread
+            Platform.runLater(() -> {
+                notifyListeners();  // Notify listeners (or update the UI)
+                System.out.println("Game Over! The winner is: " + getCurrentPlayer().getName());
+            });
+        }).start();
     }
 
     public LinkedList<Player> getPlayers() {
@@ -99,7 +116,8 @@ public class Game {
         playedCards.add(deck.drawCard());// add one card to start
         System.out.println("givingo ut a hand");
         nextTurn();
-        System.out.println("who is" + getCurrentPlayer());
+        nextTurn();
+        System.out.println("who is" + getCurrentPlayer().getName());
 
     }
 
@@ -135,8 +153,15 @@ public class Game {
     public void tryPlayCard(int index) {
         if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
             playCard(index);
+            played = true;
+            System.out.println(played);
+            System.out.println("går det? att spela kortet");
+            notifyListeners();
         } else {
             badMoveGoAgain();
+            played = false;
+            System.out.println(played);
+            System.out.println("går inte att spela kortet");
         }
     }
 

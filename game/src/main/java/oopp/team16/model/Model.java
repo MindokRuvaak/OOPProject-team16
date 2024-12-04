@@ -1,10 +1,9 @@
 package oopp.team16.model;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import javafx.application.Platform;
+import javafx.scene.layout.HBox;
 import oopp.team16.model.gameLogic.CreateStdDeck;
 import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
@@ -14,7 +13,8 @@ public class Model implements GameListener {
     private List<ModelListener> listeners;
     public final Game game;
     private final DeckFactory df;
-    public final List<Player> players;
+    private final List<Player> players;
+
 
     public Model() {
         listeners = new ArrayList<>();
@@ -23,33 +23,18 @@ public class Model implements GameListener {
         game = new Game(df.createDeck(), 7);
         game.AddListener(this);
     }
+    public List<Player> getListOfPlayers() {
+        return players;
+    }
+
 
     public void initGame() {
         getPlayers();
         game.init(players);
-        startGameLoop();
+       // startGameLoop();
         System.out.println("we are in hte game looooop");
     }
 
-    private void startGameLoop() {
-        // Run the game loop on a new thread to prevent blocking the UI thread
-        new Thread(() -> {
-            // Ensure that game loop runs in a background thread
-            game.gameLoop();  // Run the game logic
-            System.out.println("we are in the gameLOOp");
-
-            // After each turn, you may need to update the UI (use Platform.runLater)
-            Platform.runLater(() -> {
-                // Update UI: display the hand of the current player
-                notifyListeners();  // Notify the listeners to update the UI
-            });
-
-            // Handle the end of the game when it finishes
-            Platform.runLater(() -> {
-                System.out.println("Game Over! The winner is: " + game.getCurrentPlayer().getName());
-            });
-        }).start();
-    }
 
     public Player getCurrentPlayer() {
         return game.getCurrentPlayer();
@@ -90,9 +75,9 @@ public class Model implements GameListener {
         // Clear the existing players collection and add the hard-coded players
         players.clear();
         players.add(player1);
-        System.out.println("added players" + player1.getName());
+        System.out.println("added player  " + player1.getName());
         players.add(player2);
-        System.out.println("added players" + player2.getName());
+        System.out.println("added player   " + player2.getName());
 
     }
 
