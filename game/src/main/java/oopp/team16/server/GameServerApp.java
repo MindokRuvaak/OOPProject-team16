@@ -14,6 +14,7 @@ public class GameServerApp {
 
         System.out.println("Enter server port:");
         int port = scanner.nextInt();
+
         System.out.println("Enter max number of players:");
         int maxPlayers = scanner.nextInt();
         scanner.nextLine(); // Consume newline left-over
@@ -24,7 +25,6 @@ public class GameServerApp {
             Model model = new Model();
             gameServer = new GameServer(model, port, maxPlayers);
             gameServer.startup();
-            logger.info("Server is running on port " + port);
             logger.info("Press Enter to stop the server...");
             scanner.nextLine();
 
@@ -35,9 +35,7 @@ public class GameServerApp {
             }
         } finally {
             if (gameServer != null) {
-                gameServer.getConnectionController().closeConnections();
-                gameServer.getShutdownManager().stopServer(gameServer.getServerSocket()); //här bör shutdownmanager användas? såsom startup tidigare
-            }
+                gameServer.shutdown();            }
             scanner.close();
         }
     }

@@ -11,7 +11,7 @@ public class StartupManager {
     public ServerSocket startServer(int port) {
         ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(port, 50, InetAddress.getByName("0.0.0.0"));
+            serverSocket = new ServerSocket(port, 50, InetAddress.getByName("0.0.0.0")); //sista två parametrar är kanske inte nödvändiga ?
             logger.info("Server started and listening on " +
                 serverSocket.getInetAddress().getHostAddress() + ":" + port);
         } catch (IOException e) {

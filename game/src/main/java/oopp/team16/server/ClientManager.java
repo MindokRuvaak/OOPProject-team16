@@ -9,7 +9,7 @@ public class ClientManager implements Runnable {
     private final Socket clientSocket;
     private PrintWriter out;
 
-    public ClientManager(Socket socket) {
+    public ClientManager(Socket socket, ConnectionManager connectionManager) {
         this.clientSocket = socket;
     }
 
@@ -37,11 +37,9 @@ public class ClientManager implements Runnable {
             if (clientSocket != null && !clientSocket.isClosed()) {
                 clientSocket.close();
             }
-            //connectionController.removeClient(this);
         } catch (IOException ex) {
             logger.warning("Error closing client connection: " + ex.getMessage());
         }
     }
 
-    //public void removeClient(){} behövs denna? kanske bra att ha. graceful shutdown yadda yadda
 }

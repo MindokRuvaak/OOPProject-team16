@@ -25,26 +25,21 @@ public class GameServer {
     public void startup() {
         this.serverSocket = startupManager.startServer(port);
         if (serverSocket != null) {
-            logger.info("beep");
-
+            logger.info("Server is now accepting connections...");
             this.connectionManager = new ConnectionManager(serverSocket, maxPlayers);
             connectionManager.acceptConnections();
-            logger.info("Waiting for connections...");
         } else {
             logger.severe("Server failed to start.");
         }
     }
 
-    //public void shutdown(){}
-    public ConnectionManager getConnectionController() {
-        return connectionManager;
+    public void shutdown() {
+        if (shutdownManager != null) {
+            connectionManager.closeConnections();
+            shutdownManager.stopServer(serverSocket);
+        }
+        logger.info("GameServer shutdown completed.");
     }
 
-    public ShutdownManager getShutdownManager() {
-        return shutdownManager;
-    }
 
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
 }

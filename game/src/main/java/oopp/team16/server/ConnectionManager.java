@@ -3,7 +3,6 @@ package oopp.team16.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -21,30 +20,39 @@ public class ConnectionManager {
     }
 
     public void acceptConnections() {
-        while (clients.size() < maxPlayers) {
-            try {
+        try {
+            while (clients.size() < maxPlayers) {
                 Socket clientSocket = serverSocket.accept();
                 logger.info("Accepted connection from " + clientSocket.getInetAddress().getHostAddress());
 
-                ClientManager clientHandler = new ClientManager(clientSocket);
+                ClientManager clientManager = new ClientManager(clientSocket, this);
                 synchronized (clients) {
-                    clients.add(clientHandler);
+                    clients.add(clientManager);
                 }
-                new Thread(clientHandler).start();
+                new Thread(clientManager).start();
 
                 logger.info("Current players connected: " + clients.size() + "/" + maxPlayers);
-            } catch (SocketTimeoutException ex) {
-                logger.info("Waiting for connections timed out. Retrying...");
-            } catch (IOException ex) {
-                logger.warning("Error accepting connection");
+            }
+            logger.info("Max players connected. No longer accepting connections.");
+        } catch (IOException ex) {
+            logger.warning("Error accepting connection: " + ex.getMessage());
+        }
+    }
+
+    public void removeClient(ClientManager client) {
+        synchronized (clients) {
+            if (clients.remove(client)) {
+                logger.info("Client removed. Current players connected: " + clients.size() + "/" + maxPlayers);
+            } else {
+                logger.warning("Client was not found in the list.");
             }
         }
-        logger.info("Max players connected. No longer accepting connections.");
     }
 
     public void closeConnections() {
         for (ClientManager client : clients) {
             client.closeConnection();
+            removeClient(client);
         }
         logger.info("All connections closed.");
     }
