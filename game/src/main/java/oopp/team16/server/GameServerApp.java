@@ -1,12 +1,9 @@
 package oopp.team16.server;
 
-import oopp.team16.model.Model;
-
 import java.util.logging.Logger;
 import java.util.Scanner;
 
 public class GameServerApp {
-
     private static final Logger logger = Logger.getLogger(GameServerApp.class.getName());
 
     public static void main(String[] args) {
@@ -22,8 +19,8 @@ public class GameServerApp {
         GameServer gameServer = null;
 
         try {
-            Model model = new Model();
-            gameServer = new GameServer(model, port, maxPlayers);
+            //Model model = new Model();
+            gameServer = new GameServer(port, maxPlayers);
             gameServer.startup();
             logger.info("Press Enter to stop the server...");
             scanner.nextLine();

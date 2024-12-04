@@ -7,10 +7,12 @@ import java.util.logging.Logger;
 public class ClientManager implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
+    private final ConnectionManager connectionManager;
     private PrintWriter out;
 
     public ClientManager(Socket socket, ConnectionManager connectionManager) {
         this.clientSocket = socket;
+        this.connectionManager = connectionManager;
     }
 
     @Override
@@ -37,6 +39,7 @@ public class ClientManager implements Runnable {
             if (clientSocket != null && !clientSocket.isClosed()) {
                 clientSocket.close();
             }
+            connectionManager.removeClient(this);
         } catch (IOException ex) {
             logger.warning("Error closing client connection: " + ex.getMessage());
         }

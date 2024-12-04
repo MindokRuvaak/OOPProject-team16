@@ -1,7 +1,5 @@
 package oopp.team16.server;
 
-import oopp.team16.model.Model;
-
 import java.net.ServerSocket;
 import java.util.logging.Logger;
 
@@ -14,7 +12,7 @@ public class GameServer {
     private final int port;
     private final int maxPlayers;
 
-    public GameServer(Model model, int port, int maxPlayers) {
+    public GameServer(int port, int maxPlayers) {
         this.port = port;
         this.maxPlayers = maxPlayers;
         this.startupManager = new StartupManager();
@@ -35,7 +33,7 @@ public class GameServer {
 
     public void shutdown() {
         if (shutdownManager != null) {
-            connectionManager.closeConnections();
+            connectionManager.closeConnections(); //graceful shutdown typ
             shutdownManager.stopServer(serverSocket);
         }
         logger.info("GameServer shutdown completed.");

@@ -19,6 +19,7 @@ public class GameClient {
             clientSocket = new Socket(serverAddress, port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            logger.info("Connected to " + serverAddress + ":" + port);
         } catch (IOException e) {
             logger.severe("Error connecting to server: " + e.getMessage());
             throw new RuntimeException("Connection failed", e);
@@ -46,7 +47,7 @@ public class GameClient {
         return null;
     }
 
-    public void closeConnection() {
+    public void closeConnection() { // detta är för om klienten vill closeconnection. ska kallas på av en controller
         try {
             if (in != null) in.close();
             if (out != null) out.close();

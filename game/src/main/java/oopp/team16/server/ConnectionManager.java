@@ -52,7 +52,6 @@ public class ConnectionManager {
     public void closeConnections() {
         for (ClientManager client : clients) {
             client.closeConnection();
-            removeClient(client);
         }
         logger.info("All connections closed.");
     }
