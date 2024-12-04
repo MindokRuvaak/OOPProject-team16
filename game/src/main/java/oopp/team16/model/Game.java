@@ -32,7 +32,13 @@ public class Game {
         this.players.addAll(players);
         this.turnOrder = players.iterator();
         setUpGame();
-        gameLoop();
+        System.out.println("do i come here?");
+     //   gameLoop();
+
+    }
+
+    public LinkedList<Player> getPlayers() {
+        return players;
     }
 
     public Player getCurrentPlayer() {
@@ -43,19 +49,8 @@ public class Game {
         return playedCards.peek();
     }
 
-    public void initializeGame() {
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
-            for (int j = 0; j < 7; j++) {
-                if (!deck.isEmpty()) {
-                    Card card = deck.drawCard();
-                    player.drawCard(card);
-                }
-            }
-        }
-    }
 
-    private void gameLoop() {
+    public void gameLoop() {
         boolean noWinner = true;
         while (noWinner) {
             nextTurn();
@@ -102,6 +97,10 @@ public class Game {
     private void setUpGame() {
         givePLayersCards(startingHandSize);// give all players a starting hand
         playedCards.add(deck.drawCard());// add one card to start
+        System.out.println("givingo ut a hand");
+        nextTurn();
+        System.out.println("who is" + getCurrentPlayer());
+
     }
 
     private void givePLayersCards(int n) {
@@ -114,16 +113,6 @@ public class Game {
         for (Player p : players) {
             p.drawCard(deck.drawCard());
         }
-    }
-
-    public List<Card> playableCards(Player player, Stack<Card> cardPile) {
-        List<Card> playableHand = new ArrayList<>();
-        for (Card card : player.getHand()) {
-            if (gamelogic.canPlay(card, cardPile.peek())) {
-                playableHand.add(card);
-            }
-        }
-        return playableHand;
     }
 
     private void takeTurn() {
