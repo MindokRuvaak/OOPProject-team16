@@ -86,6 +86,12 @@ public class GameViewController {
     private Button playDoneButton;
     @FXML
     private AnchorPane inputCard;
+    @FXML
+    private Label errorCard;
+    @FXML
+    private Button endTurnButton;
+    @FXML
+    private Button buttonUno;
     private final double CARD_HEIGHT = 90.0;
     private final double CARD_WIDTH = 57.0;
 
@@ -124,7 +130,22 @@ public class GameViewController {
            buttonDisplayHand.setVisible(false);
         });
     }
+    public void uno(){
 
+    }
+    public void drawCard(){
+        buttonPlayDeck.setOnAction(event ->{
+            m.drawCard();
+            System.out.println("drawed a card");
+            displayHand(m.getCurrentPlayer(), playersHand.get(m.getCurrentPlayer()));
+        });
+    }
+    public void endTurn(){
+        endTurnButton.setOnAction(event -> {
+            m.endTurn();
+            System.out.println(m.getCurrentPlayer().getName() + "ended turn");
+        });
+    }
     public void cardView(){
         playCardButton.setOnAction(event -> {
             inputCard.setVisible(true);
@@ -166,37 +187,41 @@ public class GameViewController {
     }
 
     public void playCard(int cardIndex) {
+        try {
         HBox hbox = playersHand.get(m.getCurrentPlayer());
-
         if (hbox == null) {
             System.err.println("No HBox found for player: " + m.getCurrentPlayer().getName());
-            return;
+            throw new IllegalStateException("No HBox found for player: " + m.getCurrentPlayer().getName());
         }
         if (cardIndex < 0 || cardIndex > hbox.getChildren().size()) {
             System.err.println("Invalid card index!");
+            throw new IllegalArgumentException("You cannot play this card");
         }
 
-
-        if(m.game.getPlayed()) {
             m.playCard(cardIndex);
-
+        if(m.game.getPlayed()) {
             hbox.getChildren().remove(cardIndex - 1);
             System.out.println("kommer jag hit?");
             displayTopCard();
             System.out.println("kommer jag hit???+ visa kort");
         }
-        else System.out.println("you cant play that card");
+        } catch (IllegalStateException | IndexOutOfBoundsException | IllegalArgumentException e) {
+            System.err.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
+//should also go to view
     public void displayTopCard(){
         Card startingCard = m.getTopPlayedCard();
         if (startingCard != null) {
             ImageView cardView = createCard(startingCard);
             imageStartingCard.setImage(cardView.getImage());
         }
-        else System.err.println("imageStartingCard is not initialized.");
-    }
 
+    }
 
 // move to view
     public ImageView createCard(Card card) {
@@ -217,6 +242,9 @@ public class GameViewController {
         return imageView;
     }
 
+
+
+    //should go to view
     public void displayHands() {
      /*   for (Player p : m.getListOfPlayers()) {
             System.out.println("printing cards for " + p.getName());
@@ -229,16 +257,9 @@ public class GameViewController {
             displayHand(p, playersHand.get(p));
             System.out.println("printing cards for" + p.getName());
         }
-        /*
-        System.out.println("printing player 1 cards");
-        displayHand(m.getListOfPlayers().get(0), player1Hand);
-        System.out.println("all done printing player 1 cards");
-        System.out.println("printing player 2 cards");
-        displayHand(m.getListOfPlayers().get(1),player2Hand);
-        System.out.println("all done printing player 2 cards");
-
-         */
     }
+
+    //should go to view
     @FXML
     public void displayHand(Player player,HBox hbox) {
         if (player == null) {

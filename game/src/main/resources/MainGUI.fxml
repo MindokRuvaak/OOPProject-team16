@@ -18,7 +18,7 @@
             <Image url="@ui/resources/GameViewBackground.png" />
          </image>
       </ImageView>
-      <Button fx:id="buttonPlayDeck" layoutX="454.0" layoutY="236.0" mnemonicParsing="false">
+      <Button fx:id="buttonPlayDeck" layoutX="454.0" layoutY="236.0" mnemonicParsing="false" onAction="#drawCard">
          <graphic>
           <ImageView fitHeight="90.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -92,7 +92,10 @@
             </Label>
             <TextField fx:id="intInput" layoutX="14.0" layoutY="88.0" />
             <Button fx:id="playDoneButton" layoutX="76.0" layoutY="137.0" mnemonicParsing="false" onAction="#closeCardCiew" text="Done" />
+            <Label fx:id="errorCard" layoutX="76.0" layoutY="63.0" text="                       " />
          </children>
       </AnchorPane>
+      <Button fx:id="endTurnButton" layoutX="370.0" layoutY="152.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn" />
+      <Button fx:id="buttonUno" layoutX="733.0" layoutY="206.0" mnemonicParsing="false" onAction="#uno" text="UNO" />
   </children>
 </AnchorPane>
