@@ -32,12 +32,18 @@ public class GameServer {
     }
 
     public void shutdown() {
-        if (shutdownManager != null) {
-            connectionManager.closeConnections(); //graceful shutdown typ
-            shutdownManager.stopServer(serverSocket);
+        if (connectionManager != null) {
+            connectionManager.closeConnections(); // Gracefully close and remove all clients
+        } else {
+            logger.warning("ConnectionManager is null. Skipping connection cleanup.");
         }
+
+        if (shutdownManager != null) {
+            shutdownManager.stopServer(serverSocket); // Stop the server
+        } else {
+            logger.warning("ShutdownManager is null. Server may not stop cleanly.");
+        }
+
         logger.info("GameServer shutdown completed.");
     }
-
-
 }

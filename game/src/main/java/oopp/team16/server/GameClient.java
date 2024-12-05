@@ -34,7 +34,7 @@ public class GameClient {
         }
     }
 
-    public String receiveMessage() {
+    /*public String receiveMessage() {
         try {
             if (in != null) {
                 return in.readLine(); // Reads a single line from the server
@@ -45,7 +45,7 @@ public class GameClient {
             logger.severe("Error reading from server: " + e.getMessage());
         }
         return null;
-    }
+    }*/
 
     public void closeConnection() { // detta är för om klienten vill closeconnection. ska kallas på av en controller
         try {

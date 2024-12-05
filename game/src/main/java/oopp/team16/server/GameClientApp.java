@@ -7,7 +7,7 @@ public class GameClientApp {
         Scanner scanner = new Scanner(System.in);
 
         String serverAddress;
-        int port = 0;
+        int port;
 
         while (true) {
             System.out.println("Enter the server address (e.g., localhost or an IP):");

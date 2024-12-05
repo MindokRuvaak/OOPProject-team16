@@ -7,12 +7,10 @@ import java.util.logging.Logger;
 public class ClientManager implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
-    private final ConnectionManager connectionManager;
     private PrintWriter out;
 
-    public ClientManager(Socket socket, ConnectionManager connectionManager) {
+    public ClientManager(Socket socket) {
         this.clientSocket = socket;
-        this.connectionManager = connectionManager;
     }
 
     @Override
@@ -26,23 +24,23 @@ public class ClientManager implements Runnable {
                 logger.info("Received message from client: " + message);
             }
         } catch (IOException ex) {
+            if ("Socket closed".equals(ex.getMessage())) return; // Skip logging for "Socket closed"
             logger.warning("Client disconnected or error occurred: " + ex.getMessage());
-        } finally {
-            // Log when connection is being closed
-            logger.info("Closing connection for client: " + clientSocket.getInetAddress().getHostAddress());
-            closeConnection();
         }
     }
 
-    public void closeConnection() {
+        public void closeConnection() {
         try {
             if (clientSocket != null && !clientSocket.isClosed()) {
                 clientSocket.close();
+                logger.info("Closing connection for client: " + clientSocket.getInetAddress().getHostAddress());
             }
-            connectionManager.removeClient(this);
         } catch (IOException ex) {
             logger.warning("Error closing client connection: " + ex.getMessage());
         }
     }
 
+    public Socket getClientSocket() { // behövs denna?
+        return clientSocket;
+    }
 }

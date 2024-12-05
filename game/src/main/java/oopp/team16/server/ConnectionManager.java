@@ -25,7 +25,7 @@ public class ConnectionManager {
                 Socket clientSocket = serverSocket.accept();
                 logger.info("Accepted connection from " + clientSocket.getInetAddress().getHostAddress());
 
-                ClientManager clientManager = new ClientManager(clientSocket, this);
+                ClientManager clientManager = new ClientManager(clientSocket);
                 synchronized (clients) {
                     clients.add(clientManager);
                 }
@@ -44,17 +44,23 @@ public class ConnectionManager {
             if (clients.remove(client)) {
                 logger.info("Client removed. Current players connected: " + clients.size() + "/" + maxPlayers);
             } else {
-                logger.warning("Client was not found in the list.");
+                logger.info(client.getClientSocket().getInetAddress().getHostAddress() + " already removed or not found.");
             }
         }
     }
 
     public void closeConnections() {
-        for (ClientManager client : clients) {
-            client.closeConnection();
-        }
-        logger.info("All connections closed.");
-    }
+        synchronized (clients) {
+            List<ClientManager> clientsCopy = new ArrayList<>(clients);
 
+            for (ClientManager client : clientsCopy) {
+                if (!client.getClientSocket().isClosed()) {
+                    client.closeConnection();
+                }
+                removeClient(client); // Safe removal
+            }
+            logger.info("All connections closed and clients removed.");
+        }
+    }
 }
 

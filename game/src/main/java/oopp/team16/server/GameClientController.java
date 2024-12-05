@@ -14,7 +14,7 @@ public class GameClientController {
     public void start() {
 
         // Start a new thread to listen to server messages
-        new Thread(this::listenForServerMessages).start();
+        //new Thread(this::listenForServerMessages).start();
         Scanner scanner = new Scanner(System.in);
 
         // Main game loop for sending commands
@@ -25,7 +25,7 @@ public class GameClientController {
         }
     }
 
-    private void listenForServerMessages() {
+    /*private void listenForServerMessages() {
         try {
             // Continuously listen for incoming messages from the server
             while (true) {
@@ -38,5 +38,5 @@ public class GameClientController {
         } catch (Exception e) {
             logger.severe("Error while listening to server: " + e.getMessage());
         }
-    }
+    }*/
 }
