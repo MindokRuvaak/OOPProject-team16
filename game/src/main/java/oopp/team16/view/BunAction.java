@@ -2,7 +2,7 @@ package oopp.team16.view;
 
 import javax.swing.*;
 
-import javafx.stage.Stage;
+//import javafx.stage.Stage;
 import oopp.team16.controller.UnoController;
 
 import java.awt.event.ActionEvent;

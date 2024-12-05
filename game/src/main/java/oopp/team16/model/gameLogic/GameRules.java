@@ -1,6 +1,8 @@
 package oopp.team16.model.gameLogic;
 
 import oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.Cards.CardType;
+import oopp.team16.model.gameLogic.Cards.NumCard;
 
 public class GameRules {
 

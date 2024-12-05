@@ -2,6 +2,7 @@ package oopp.team16.model.gameLogic.Cards;
 
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
+//not for mvp
 public class SpecialCard implements Card{
 
     //ska ha en action, ta in i konstruktorn?
@@ -9,8 +10,9 @@ public class SpecialCard implements Card{
     private ActionStrategy action; //final ?
     private final BaseCard baseCard;
 
-    public SpecialCard(Color color, CardType cardType){ //behöver ha en cardtype ? kan ha en action istället
-        this.baseCard = new BaseCard(color, cardType);
+    //mayebe not have value in here
+    public SpecialCard(Color color, CardType cardType, int value){ //behöver ha en cardtype ?
+        this.baseCard = new BaseCard(color, cardType, value);
 
     }
 
@@ -22,5 +24,11 @@ public class SpecialCard implements Card{
     @Override
     public CardType getType() {
         return baseCard.getType();
+    }
+
+
+    @Override
+    public int getValue() {
+        return baseCard.getValue();
     }
 }
