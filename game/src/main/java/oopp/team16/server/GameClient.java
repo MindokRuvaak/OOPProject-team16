@@ -47,7 +47,7 @@ public class GameClient {
         return null;
     }*/
 
-    public void closeConnection() { // detta är för om klienten vill closeconnection. ska kallas på av en controller
+    public void closeConnection() { // detta är för om klienten vill closea connection. ska kallas på av en controller
         try {
             if (in != null) in.close();
             if (out != null) out.close();
