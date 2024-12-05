@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private List<Card> hand; 
+    private List<Card> hand;
     private int score;  // hur räknar vi score
-    private String name;  
+    private String name;
     // turn taken info
     private boolean playedCard;
     private int cardsDrawn;
@@ -26,6 +26,7 @@ public class Player {
         //TODO: sorted hand
         this.hand.add(card);
         this.cardsDrawn++;
+        System.out.println(cardsDrawn);
     }
 
     public Card playCard(int index){
@@ -58,7 +59,9 @@ public class Player {
     }
 
     public boolean hasPlayedCard(){
+        System.out.println("have i played a card alredy? print true" + playedCard);
         return this.playedCard;
+
     }
 
     public boolean drawnThree(){

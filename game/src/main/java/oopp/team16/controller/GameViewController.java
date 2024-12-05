@@ -19,6 +19,7 @@ import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -92,6 +93,10 @@ public class GameViewController {
     private Button endTurnButton;
     @FXML
     private Button buttonUno;
+    @FXML
+    private AnchorPane winningPane;
+    @FXML
+    private Label labelWinner;
     private final double CARD_HEIGHT = 90.0;
     private final double CARD_WIDTH = 57.0;
 
@@ -131,18 +136,27 @@ public class GameViewController {
         });
     }
     public void uno(){
-
     }
+    public void winner(){
+        for (HBox hbox : playersHand.values()) {
+            if(hbox.getChildren().isEmpty()) {
+                winningPane.setVisible(true);
+            }
+        }
+    }
+
     public void drawCard(){
         buttonPlayDeck.setOnAction(event ->{
             m.drawCard();
             System.out.println("drawed a card");
-            displayHand(m.getCurrentPlayer(), playersHand.get(m.getCurrentPlayer()));
+            Card[] hand = m.getCurrentPlayer().getHand();
+            displayCard(m.getCurrentPlayer(), playersHand.get(m.getCurrentPlayer()), hand[hand.length-1]);
         });
     }
     public void endTurn(){
         endTurnButton.setOnAction(event -> {
             m.endTurn();
+            m.getCurrentPlayer().resetTurnInfo();
             System.out.println(m.getCurrentPlayer().getName() + "ended turn");
         });
     }
@@ -179,8 +193,9 @@ public class GameViewController {
             String input = intInput.getText(); // Get the index input as a string
             try {
                 int index = Integer.parseInt(input); // Convert input to integer
-                playCard(index); // Call the method to play the card
-                System.out.println(index);
+                    playCard(index); // Call the method to play the card
+                    System.out.println(index);
+
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
             }
@@ -197,14 +212,28 @@ public class GameViewController {
             System.err.println("Invalid card index!");
             throw new IllegalArgumentException("You cannot play this card");
         }
-
+        if(!m.getCurrentPlayer().hasPlayedCard()) {
             m.playCard(cardIndex);
-        if(m.game.getPlayed()) {
-            hbox.getChildren().remove(cardIndex - 1);
-            System.out.println("kommer jag hit?");
-            displayTopCard();
-            System.out.println("kommer jag hit???+ visa kort");
+            if (m.game.getPlayed()) {// check if card is the same colour or same value
+                System.out.println("the card is playable");
+                hbox.getChildren().remove(cardIndex - 1);
+                System.out.println("kommer jag hit?");
+                System.out.println("first card");
+                displayTopCard();
+                System.out.println("kommer jag hit???+ visa kort");
+            }
         }
+
+        else {
+            System.out.println("have alredy played a card");
+            m.playMoreCards(cardIndex);
+            if(m.game.getPlayedValue()) {
+                System.out.println("playing same value");
+                hbox.getChildren().remove(cardIndex - 1);
+                displayTopCard();
+            }
+        }
+
         } catch (IllegalStateException | IndexOutOfBoundsException | IllegalArgumentException e) {
             System.err.println("Error: " + e.getMessage());
         } catch (Exception e) {
@@ -260,7 +289,6 @@ public class GameViewController {
     }
 
     //should go to view
-    @FXML
     public void displayHand(Player player,HBox hbox) {
         if (player == null) {
             System.err.println("Error: current player is null");
@@ -274,5 +302,14 @@ public class GameViewController {
             hbox.getChildren().add(cardView); // Add the card to the HBox
             System.out.println("printing done");
         }
+    }
+
+    public void displayCard(Player player, HBox hbox, Card card) {
+       if(player == null) {
+           System.out.println("error current player is null");
+           return;
+       }
+       ImageView cardView = createCard(card);
+       hbox.getChildren().add(cardView);
     }
 }

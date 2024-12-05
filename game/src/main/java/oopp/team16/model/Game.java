@@ -19,6 +19,7 @@ public class Game {
     private final Stack<Card> playedCards;
     private final int startingHandSize;
     private boolean played;
+    private boolean playedValue;
 
 
     public Game(Deck deck, int startingHandSize) {
@@ -29,8 +30,9 @@ public class Game {
         deck.shuffle();
         playedCards = new Stack<>();
         this.played = false;
+        playedValue = false;
     }
-
+    public boolean getPlayedValue(){return playedValue;}
     public boolean getPlayed(){return played;}
 
     public void init(Collection<Player> players) {
@@ -155,7 +157,7 @@ public class Game {
             playCard(index);
             played = true;
             System.out.println(played);
-            System.out.println("går det? att spela kortet");
+            System.out.println("det går att spela kortet");
             notifyListeners();
         } else {
             badMoveGoAgain();
@@ -181,6 +183,7 @@ public class Game {
 
     public void currentPlayerDrawCard() {
         currentPlayer.drawCard(deck.drawCard());
+
     }
 
     public void endCurrentPlayerTurn() {
@@ -200,8 +203,10 @@ public class Game {
     public void tryPlayMoreCards(int index) {
         if (GameRules.stackable(currentPlayer.getCard(index), getTopPlayedCard())) {
             playCard(index);
+            playedValue = true;
         } else {
             badMoveGoAgain();
+            playedValue = false;
         }
     }
 }
