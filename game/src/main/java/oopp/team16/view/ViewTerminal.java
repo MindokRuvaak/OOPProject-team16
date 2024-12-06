@@ -2,16 +2,16 @@ package oopp.team16.view;
 
 import java.util.Scanner;
 
-import oopp.team16.controller.Controller;
+import oopp.team16.controller.ControllerTerminal;
 import oopp.team16.model.Model;
 
 public class ViewTerminal implements View {
 
     Model m;
-    Controller c;
+    ControllerTerminal c;
     Scanner input = new Scanner(System.in);
 
-    public ViewTerminal(Model m, Controller c) {
+    public ViewTerminal(Model m, ControllerTerminal c) {
         this.m = m;
         this.c = c;
 
