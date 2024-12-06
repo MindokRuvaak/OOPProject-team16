@@ -9,19 +9,19 @@ public class Deck {
     Stack<Card> cardStack;
 
 
-    private Deck(){
+    private Deck() {
         cardStack = new Stack<>();
     }
 
-    Deck(Stack<Card> stack){
+    Deck(Stack<Card> stack) {
         this();
         cardStack.addAll(stack);
     }
 
 
-    public Card drawCard(){
+    public Card drawCard() {
         return cardStack.pop();
-}
+    }
 
     public int getSize() {
         return cardStack.size();
@@ -36,11 +36,11 @@ public class Deck {
         this.shuffle();
     }
 
-    public void shuffle(){
+    public void shuffle() {
         Collections.shuffle(cardStack);
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return cardStack.isEmpty();
     }
 

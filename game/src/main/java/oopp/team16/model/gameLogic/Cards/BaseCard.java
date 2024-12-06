@@ -1,15 +1,13 @@
 package oopp.team16.model.gameLogic.Cards;
-
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class BaseCard implements Card {
-
     private final Color color;
-    private final Value value;
+    private final CardType type;
 
-    public BaseCard(Color color, Value value){
+    public BaseCard(Color color, CardType type){
         this.color = color;
-        this.value = value;
+        this.type = type;
     }
 
     @Override
@@ -18,13 +16,13 @@ public class BaseCard implements Card {
     }
 
     @Override
-    public Value getValue(){
-        return this.value;
+    public CardType getType(){
+        return this.type;
     }
 
     @Override
     public String toString(){
-        return color.toString() + " " + value.toString();
+        return color.toString() + " " + type.toString();
     }
 
 }
