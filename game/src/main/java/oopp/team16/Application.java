@@ -17,7 +17,7 @@ public class Application {
         
         c = new Controller(m);
         
-        v = new ViewTerminal(c);
+        v = new ViewTerminal(m, c);
         m.addListener(v);
         
         m.initGame();

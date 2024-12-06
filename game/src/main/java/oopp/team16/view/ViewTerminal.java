@@ -3,36 +3,33 @@ package oopp.team16.view;
 import java.util.Scanner;
 
 import oopp.team16.controller.Controller;
+import oopp.team16.model.Model;
 
 public class ViewTerminal implements View {
 
-    // Model m; 
+    Model m;
     Controller c;
     Scanner input = new Scanner(System.in);
 
-    public ViewTerminal(Controller c) {
+    public ViewTerminal(Model m, Controller c) {
+        this.m = m;
         this.c = c;
+        
         System.out.println("\nTo play, enter the character inside the brackets < >\n");
     }
 
     private void printGameState() {
         StringBuilder printMessage = new StringBuilder("\n\n");
         printMessage.append("Player: ");
-        printMessage.append(c.getCurrentPlayerID());
+        printMessage.append(m.getCurrentPlayerID());
         printMessage.append("'s turn.\n");
 
         printMessage.append("Current card in play: ");
-        printMessage.append(c.getTopPlayedCardString());
+        printMessage.append(m.getTopPlayedCardString());
         printMessage.append("\n");
 
         System.out.println(printMessage.toString());
     }
-
-    // redundant
-    // @Override
-    // public void update() {
-    //     printGameState();
-    // }
 
     @Override
     public void requestPlayers() {
@@ -82,16 +79,14 @@ public class ViewTerminal implements View {
         input.nextLine();
     }
 
-    // enklaste: modell håller all info, view titttar på modellen och ritar upp den. 
-    // hur ska view uppdatera? modell skickar signal, view tittar och på 
+    // enklaste: modell håller all info, view titttar på modellen och ritar upp den.
+    // hur ska view uppdatera? modell skickar signal, view tittar och på
     // ok view beroende av modell, men fxml inte!
-
 
     private void turnActions(String[] hand, boolean hasPlayedCard) {
         System.out.print("> ");
         String ans = input.nextLine();
-        clearTerminal();
-        printGameState();
+        // printGameState();
         handleInput(ans, hand.length, hasPlayedCard);
     }
 
@@ -110,11 +105,7 @@ public class ViewTerminal implements View {
                 int toPlay = Integer.parseInt(ans);
                 if (0 < toPlay || toPlay <= handSize) {
                     givenCorrectInput = true;
-                    if (!hasPlayedCard) {
-                        c.playCard(toPlay);
-                    } else {
-                        c.playExtraCard(toPlay);
-                    }
+                    c.playCard(toPlay);
                 }
             } else if (ans.matches("[Ee]$")) {
                 givenCorrectInput = true;
@@ -140,11 +131,13 @@ public class ViewTerminal implements View {
 
     @Override
     public void announceBadMove() {
+        clearTerminal();
         System.out.println("That selected card cannot be played!");
     }
 
     @Override
     public void announceWinner(String name) {
+        clearTerminal();
         System.out.println("The winner is " + name + "!!");
     }
 
@@ -158,6 +151,7 @@ public class ViewTerminal implements View {
 
     @Override
     public void announceMustPlayCard() {
+        clearTerminal();
         System.out.println("You must play a card before ending your turn!");
     }
 

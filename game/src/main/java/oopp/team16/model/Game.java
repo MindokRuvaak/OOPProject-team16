@@ -140,7 +140,20 @@ public class Game {
         listeners.add(gameListener);
     }
 
-    void tryPlayCard(int index) {
+
+    void tryPlay(int index) {
+        if (index >= currentPlayer.getHandSize() || index < 0) {
+            // TODO: announce wrong input
+        } else {
+            if (!currentPlayer.hasPlayedCard()) {
+                tryPlayCard(index);
+            } else  {
+                tryPlayMoreCards(index);
+            } 
+        }
+    }
+
+    private void tryPlayCard(int index) {
         if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
             playCard(index);
         } else {

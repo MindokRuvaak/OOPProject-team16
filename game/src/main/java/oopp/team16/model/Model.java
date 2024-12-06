@@ -32,14 +32,6 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
         game.startGame();
     }
 
-    public Player getCurrentPlayer() {
-        return game.getCurrentPlayer();
-    }
-
-    public Card getTopPlayedCard() {
-        return game.getTopPlayedCard();
-    }
-
     public void addPlayer(String name) {
         players.add(new Player(name));
     }
@@ -89,7 +81,7 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
 
     public void playCard(int cardNumber) {
         // change from card number displayed to player to corresponding card index in hand array
-        game.tryPlayCard(cardNumber - 1); 
+        game.tryPlay(cardNumber - 1); 
     }
 
     @Override
@@ -114,10 +106,6 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
         game.endCurrentPlayerTurn();
     }
 
-    public void playMoreCards(int toPlay) {
-        game.tryPlayMoreCards(toPlay - 1); //again change to index
-    }
-
     @Override
     public void startPlayerTurn(Player currentPlayer) {
         for (ModelListener listener : listeners) {
@@ -130,5 +118,13 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
         for (ModelListener listener : listeners) {
             listener.announceMustPlayCard();
         }
+    }
+
+    public String getCurrentPlayerID() {
+        return game.getCurrentPlayer().getName();
+    }
+
+    public String getTopPlayedCardString() {
+        return game.getTopPlayedCard().toString();
     }
 }
