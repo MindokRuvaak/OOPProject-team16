@@ -4,7 +4,7 @@ import oopp.team16.model.gameLogic.Player;
 
 public interface GameListener {
 
-    void update();
+    // void update();
 
     void takePlayerTurn(Player currentPlayer);
 
@@ -12,7 +12,7 @@ public interface GameListener {
 
     void announceWinner(String name);
 
-    void startNextPlayerTurn(Player currentPlayer);
+    void startPlayerTurn(Player currentPlayer);
 
     void announceMustPlayCard();
 

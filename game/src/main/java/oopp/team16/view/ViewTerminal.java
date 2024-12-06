@@ -6,6 +6,7 @@ import oopp.team16.controller.Controller;
 
 public class ViewTerminal implements View {
 
+    // Model m; 
     Controller c;
     Scanner input = new Scanner(System.in);
 
@@ -27,10 +28,11 @@ public class ViewTerminal implements View {
         System.out.println(printMessage.toString());
     }
 
-    @Override
-    public void update() {
-        // printGameState();
-    }
+    // redundant
+    // @Override
+    // public void update() {
+    //     printGameState();
+    // }
 
     @Override
     public void requestPlayers() {
@@ -79,6 +81,11 @@ public class ViewTerminal implements View {
         System.out.println("Press enter to start your turn.");
         input.nextLine();
     }
+
+    // enklaste: modell håller all info, view titttar på modellen och ritar upp den. 
+    // hur ska view uppdatera? modell skickar signal, view tittar och på 
+    // ok view beroende av modell, men fxml inte!
+
 
     private void turnActions(String[] hand, boolean hasPlayedCard) {
         System.out.print("> ");
