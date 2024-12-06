@@ -1,23 +1,15 @@
 package oopp.team16.model.gameLogic.Cards;
 
-//interface, kort beror på interface
+//göra samma som färg
 public enum CardType{
-    NUMBER("NumberCard"),
-    REVERSE("SpecialCard"),
-    WILDCARD("SpecialCard"),
-    DRAW_TWO("SpecialCard"),
-    DRAW_FOUR("SpecialCard"),
-    SKIP("SpecialCard");
+    NUMBER,
+    REVERSE,
+    WILDCARD,
+    DRAW_TWO,
+    DRAW_FOUR,
+    SKIP;
 
 
-    private final String t;
-    CardType(String t){
-        this.t = t;
-    }
-
-   public String getType() {
-       return t;
-   }
 
 
 

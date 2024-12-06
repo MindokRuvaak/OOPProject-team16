@@ -1,10 +1,10 @@
 package oopp.team16.model.gameLogic.Cards.Colors;
 public class StdColors implements Color {
     private final String colorName;
-    public static StdColors GREEN = new StdColors("green");
-    public static StdColors BLUE = new StdColors("blue");
-    public static StdColors RED = new StdColors("red");
-    public static StdColors YELLOW = new StdColors("yellow");
+    private static StdColors GREEN = new StdColors("green");
+    private static StdColors BLUE = new StdColors("blue");
+    private static StdColors RED = new StdColors("red");
+    private static StdColors YELLOW = new StdColors("yellow");
 
     //make a nocolor color? or black
 

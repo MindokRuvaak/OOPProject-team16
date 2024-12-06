@@ -18,7 +18,7 @@ public class Model implements GameListener {
         listeners = new ArrayList<>();
         df = new CreateStdDeck();
         players = new ArrayList<>();
-        game = new Game(df.createDeck(), 1);
+        game = new Game(df.createDeck(), 7);
         game.AddListener(this);
     }
 
@@ -62,11 +62,12 @@ public class Model implements GameListener {
 
     @Override
     public void takePlayerTurn(Player currentPlayer) {
+        // should maybe not allow multiple listeners?
+        // only one listener (view)? 
         for (ModelListener listener : listeners) {
-            listener.takeTurn(ToStringArray((currentPlayer.getHand())));
+            listener.takeTurn(ToStringArray((currentPlayer.getHand())),currentPlayer.hasPlayedCard());
         }
     }
-
 
     private String[] ToStringArray(Card[] hand) {
         String[] handStrings = new String[hand.length];
@@ -78,7 +79,7 @@ public class Model implements GameListener {
 
     public void playCard(int cardNumber) {
         // change from card number displayed to player to corresponding card index in hand array
-        game.playCard(cardNumber - 1); 
+        game.tryPlayCard(cardNumber - 1); 
     }
 
     @Override
@@ -99,4 +100,25 @@ public class Model implements GameListener {
         }
     }
 
+    public void endTurn() {
+        game.endCurrentPlayerTurn();
+    }
+
+    public void playMoreCards(int toPlay) {
+        game.tryPlayMoreCards(toPlay - 1); //again change to index
+    }
+
+    @Override
+    public void startNextPlayerTurn(Player currentPlayer) {
+        for (ModelListener listener : listeners) {
+            listener.startNextPlayerTurn(currentPlayer.getName());
+        }
+    }
+
+    @Override
+    public void announceMustPlayCard() {
+        for (ModelListener listener : listeners) {
+            listener.announceMustPlayCard();
+        }
+    }
 }

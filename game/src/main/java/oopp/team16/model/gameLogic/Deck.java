@@ -36,7 +36,7 @@ public class Deck {
         this.shuffle();
     }
 
-    public void shuffle() {
+    public void shuffle(){
         Collections.shuffle(cardStack);
     }
 

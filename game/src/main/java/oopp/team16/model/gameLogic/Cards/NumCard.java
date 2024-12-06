@@ -2,12 +2,11 @@ package oopp.team16.model.gameLogic.Cards;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class NumCard implements Card {
-    //extend or have a basecard??? ask on TA meeting maybe
     private final int value;
     private final BaseCard bCard;
 
     public NumCard(Color color, int value) {
-        this.bCard = new BaseCard(color, CardType.NUMBER);
+        this.bCard = new BaseCard(color, CardType.NUMBER, value);
         this.value = value;
     }
 
@@ -27,7 +26,8 @@ public class NumCard implements Card {
 
     @Override
     public String toString() {
-        return bCard.getColor().toString() + getValue();
+        return bCard.getColor().toString() + " " + getValue();
     }
+
 
 }

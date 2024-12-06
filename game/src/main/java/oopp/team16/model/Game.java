@@ -5,6 +5,7 @@ import java.util.*;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.GameLogic;
+import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
 public class Game {
@@ -58,14 +59,30 @@ public class Game {
         boolean noWinner = true;
         while (noWinner) {
             nextTurn();
-            notifyListeners();
-            takeTurn();
+            startTurn();
+            while (this.currentPlayer.stillTakingTurn()) {
+                takeTurn();
+            }
+            endTurn();
+
             if (!currentPlayer.hasCards()) {
                 noWinner = false;
                 announceWinner(currentPlayer.getName());
                 break;
             }
         }
+    }
+
+    private void startTurn() {
+        this.currentPlayer.startTurn();
+        for (GameListener listener : listeners) {
+            listener.startNextPlayerTurn(currentPlayer);
+        }
+    }
+
+    private void endTurn() {
+        this.currentPlayer.resetTurnInfo();
+        this.currentPlayer.endTurn();
     }
 
     private void announceWinner(String name) {
@@ -79,6 +96,7 @@ public class Game {
             this.turnOrder = this.players.iterator();
         }
         this.currentPlayer = this.turnOrder.next();
+        this.currentPlayer.startTurn();
     }
 
     private void setUpGame() {
@@ -112,6 +130,7 @@ public class Game {
         for (GameListener listener : listeners) {
             listener.takePlayerTurn(currentPlayer);
         }
+
     }
 
     public void notifyListeners() {
@@ -124,14 +143,20 @@ public class Game {
         listeners.add(gameListener);
     }
 
-    public void playCard(int i) {
-        if (GameRules.allowedPlay(currentPlayer.getHand()[i], getTopPlayedCard())) {
-            playedCards.add(currentPlayer.playCard(i));
+    public void tryPlayCard(int index) {
+        if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
+            playCard(index);
         } else {
-            announceBadMove();
-            notifyListeners();
-            takeTurn();
+            badMoveGoAgain();
         }
+    }
+
+    private void badMoveGoAgain() {
+        announceBadMove();
+    }
+
+    private void playCard(int index) {
+        playedCards.add(currentPlayer.playCard(index));
     }
 
     private void announceBadMove() {
@@ -142,5 +167,27 @@ public class Game {
 
     public void currentPlayerDrawCard() {
         currentPlayer.drawCard(deck.drawCard());
+    }
+
+    public void endCurrentPlayerTurn() {
+        if (currentPlayer.hasPlayedCard()) {
+            currentPlayer.endTurn();
+        } else {
+            announceMustPlayCard();
+        }
+    }
+
+    private void announceMustPlayCard() {
+        for (GameListener listener : listeners) {
+            listener.announceMustPlayCard();
+        }
+    }
+
+    public void tryPlayMoreCards(int index) {
+        if (GameRules.stackable(currentPlayer.getCard(index), getTopPlayedCard())) {
+            playCard(index);
+        } else {
+            badMoveGoAgain();
+        }
     }
 }

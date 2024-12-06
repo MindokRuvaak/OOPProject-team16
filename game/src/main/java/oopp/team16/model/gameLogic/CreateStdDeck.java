@@ -8,7 +8,8 @@ import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class CreateStdDeck implements DeckFactory {
 
-    CardFactory cardFactory;
+    CardFactory cardFactory = new CardFactory();
+
 
     @Override
     public Deck createDeck() {

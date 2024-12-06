@@ -1,12 +1,14 @@
-package oopp.team16.model;
+package oopp.team16.model.gameLogic;
 
 import oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.Cards.CardType;
+import oopp.team16.model.gameLogic.Cards.NumCard;
 
 public class GameRules {
 
     private GameRules(){}
 
-    static boolean allowedPlay(Card playerCard, Card playedCard) {
+    public static boolean allowedPlay(Card playerCard, Card playedCard) {
         return sameColour(playerCard, playedCard) || sameFace(playerCard, playedCard);
     }
 
@@ -16,6 +18,10 @@ public class GameRules {
 
     private static boolean sameColour(Card playerCard, Card playedCard) {
         return playerCard.getColor() == playedCard.getColor();
+    }
+
+    public static boolean stackable(Card playerCard, Card playedCard) {
+        return sameFace(playerCard, playedCard);
     }
 
 }

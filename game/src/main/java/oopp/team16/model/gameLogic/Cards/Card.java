@@ -8,5 +8,6 @@ public interface Card {
 
     CardType getType();
 
+    int getValue();  //not ideal, could be used to count score
 
 }
