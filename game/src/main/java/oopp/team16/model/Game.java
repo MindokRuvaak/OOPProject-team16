@@ -2,6 +2,7 @@ package oopp.team16.model;
 
 import java.util.*;
 
+import javafx.application.Platform;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.GameLogic;
@@ -28,7 +29,7 @@ public class Game {
         this.deck.shuffle();
         playedCards = new Stack<>();
     }
-
+    
     void init(Collection<Player> players) {
         this.players.addAll(players);
         this.turnOrder = players.iterator();
@@ -37,6 +38,10 @@ public class Game {
 
     void startGame() {
         gameLoop();
+    }
+
+    public LinkedList<Player> getPlayers() {
+        return players;
     }
 
     Player getCurrentPlayer() {
@@ -99,6 +104,7 @@ public class Game {
     private void setUpGame() {
         givePLayersCards(startingHandSize);// give all players a starting hand
         playedCards.add(deck.drawCard());// add one card to start
+
     }
 
     private void givePLayersCards(int n) {
@@ -153,6 +159,7 @@ public class Game {
 
     void currentPlayerDrawCard() {
         currentPlayer.drawCard(deck.drawCard());
+
     }
 
     void endCurrentPlayerTurn() {
@@ -172,6 +179,7 @@ public class Game {
     void tryPlayMoreCards(int index) {
         if (GameRules.stackable(currentPlayer.getCard(index), getTopPlayedCard())) {
             playCard(index);
+            playedValue = true;
         } else {
             announceBadMove();
         }

@@ -1,8 +1,9 @@
 package oopp.team16.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+import javafx.application.Platform;
+import javafx.scene.layout.HBox;
 import oopp.team16.model.gameLogic.CreateStdDeck;
 import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
@@ -11,9 +12,10 @@ import oopp.team16.model.gameLogic.Cards.Card;
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
 public class Model implements GameListener { //maybe change name ?ModelGameSetup?
     private List<ModelListener> listeners;
-    private final Game game;
+    public final Game game;
     private final DeckFactory df;
     private final List<Player> players;
+
 
     public Model() {
         listeners = new ArrayList<>();
@@ -22,10 +24,16 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
         game = new Game(df.createDeck(), 7);
         game.AddListener(this); 
     }
+    public List<Player> getListOfPlayers() {
+        return players;
+    }
+
 
     public void initGame() {
         getPlayers();
         game.init(players);
+       // startGameLoop();
+        System.out.println("we are in hte game looooop");
     }
 
     public void startGame(){
@@ -46,15 +54,27 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
     }
 
     private void getPlayers() {
-        for (ModelListener listener : listeners) {
+      /*  for (ModelListener listener : listeners) {
             listener.requestPlayers();
         }
+
+       */
+        Player player1 = new Player("Player 1");
+        Player player2 = new Player("Player 2");
+
+        // Clear the existing players collection and add the hard-coded players
+        players.clear();
+        players.add(player1);
+        System.out.println("added player  " + player1.getName());
+        players.add(player2);
+        System.out.println("added player   " + player2.getName());
+
     }
 
     @Override
     public void takePlayerTurn(Player currentPlayer) {
         // should maybe not allow multiple listeners?
-        // only one listener (view)? 
+        // only one listener (view)?
         for (ModelListener listener : listeners) {
             listener.takeTurn(ToStringArray((currentPlayer.getHand())),currentPlayer.hasPlayedCard());
         }
