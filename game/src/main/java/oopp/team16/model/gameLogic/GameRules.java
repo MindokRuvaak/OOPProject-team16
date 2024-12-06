@@ -11,7 +11,7 @@ public class GameRules {
     }
 
     private static boolean sameFace(Card playerCard, Card playedCard) {
-        return playerCard.getType() == playedCard.getType();
+        return playerCard.getValue() == playedCard.getValue();
     }
 
     private static boolean sameColour(Card playerCard, Card playedCard) {
