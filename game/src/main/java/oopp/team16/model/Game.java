@@ -29,7 +29,7 @@ public class Game {
         this.deck.shuffle();
         playedCards = new Stack<>();
     }
-    
+
     void init(Collection<Player> players) {
         this.players.addAll(players);
         this.turnOrder = players.iterator();
@@ -37,7 +37,15 @@ public class Game {
     }
 
     void startGame() {
-        gameLoop();
+        new Thread(() -> {
+            // Start the game loop in a new thread
+            gameLoop();
+
+            // After the game loop ends, update UI on the JavaFX application thread
+            Platform.runLater(() -> {
+                announceWinner(this.currentPlayer.getName());
+            });
+        }).start();
     }
 
     public LinkedList<Player> getPlayers() {
@@ -119,7 +127,6 @@ public class Game {
         }
     }
 
-
     private void takeTurn() {
         for (GameListener listener : listeners) {
             listener.takePlayerTurn(currentPlayer);
@@ -179,7 +186,6 @@ public class Game {
     void tryPlayMoreCards(int index) {
         if (GameRules.stackable(currentPlayer.getCard(index), getTopPlayedCard())) {
             playCard(index);
-            playedValue = true;
         } else {
             announceBadMove();
         }

@@ -2,8 +2,6 @@ package oopp.team16.model;
 
 import java.util.*;
 
-import javafx.application.Platform;
-import javafx.scene.layout.HBox;
 import oopp.team16.model.gameLogic.CreateStdDeck;
 import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
