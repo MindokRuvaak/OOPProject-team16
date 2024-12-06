@@ -13,6 +13,8 @@ import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Player;
+import oopp.team16.view.CreateCardView;
+import oopp.team16.view.View;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,15 +28,6 @@ public class GameViewController implements ModelListener {
 
     @FXML
     private Label labelCurrentPlayer;
-
-    @FXML
-    private HBox hboxInfo;
-
-    @FXML
-    private Label labelInfo;
-
-    @FXML
-    private Button buttonInfo;
 
     @FXML
     private Button buttonPlayDeck;
@@ -90,8 +83,10 @@ public class GameViewController implements ModelListener {
     private AnchorPane winningPane;
     @FXML
     private Label labelWinner;
-    private final double CARD_HEIGHT = 90.0;
-    private final double CARD_WIDTH = 57.0;
+    @FXML
+    private Label labelTurn;
+    private final double CARD_HEIGHT = 60;
+    private final double CARD_WIDTH = 32;
 
     private final double CARD_SPACING_LARGE = 14.0;
     private final double CARD_SPACING_MEDIUM = 0.0;
@@ -108,25 +103,19 @@ public class GameViewController implements ModelListener {
         m.addListener(this);
         m.initGame();
 
-        buttonInfo.setOnAction(event -> {
-            hboxInfo.setVisible(false);
-        });
-
         buttonStart.setOnAction(event -> {
-            // labelLogo.setText("Game Started!");
+            m.startGame();
             buttonStart.setVisible(false);
             inputCard.setVisible(false);
-            // System.out.println("Game Start");
-            // System.out.println("initalize game");
-            // System.out.println("size of players    " + m.getListOfPlayers().size());
-            // System.out.println(m.getCurrentPlayerID());
+            winningPane.setVisible(false);
+            winningPane.setStyle("-fx-background-color: #2ecc71;");
             playersHand.put(m.getListOfPlayers().get(0), player1Hand);
             playersHand.put(m.getListOfPlayers().get(1), player2Hand);
+            labelTurn.setText(m.getCurrentPlayerID() + "'s turn");
         });
+
         buttonDisplayHand.setOnAction(event -> {
-            // System.out.println(m.getCurrentPlayerID());
-            displayHands();
-            displayTopCard();
+            updateDisplay();
             buttonDisplayHand.setVisible(false);
         });
     }
@@ -134,22 +123,29 @@ public class GameViewController implements ModelListener {
     public void uno() {
     }
 
-    public void winner() {
-        for (HBox hbox : playersHand.values()) {
-            if (hbox.getChildren().isEmpty()) {
-                winningPane.setVisible(true);
-            }
-        }
+    @Override
+    public void announceWinner(String name) {
+        winningPane.setVisible(true);
+        winningPane.toFront();
+        winningPane.setOpacity(1.0);
+        winningPane.setStyle("-fx-background-color: #2ecc71;");
+        labelWinner.setText("Winner is " + name);
     }
 
     public void drawCard() {
         buttonPlayDeck.setOnAction(event -> {
             m.drawCard();
-            System.out.println("drawed a card");
             Card[] hand = m.getCurrentPlayerHand();
             displayCard(m.getCurrentPlayer(), playersHand.get(m.getCurrentPlayer()), hand[hand.length - 1]);
         });
     }
+
+    
+    @Override
+    public void startNextPlayerTurn(String name) {
+        labelTurn.setText(name + "'s' turn");
+    }
+
 
     public void endTurn() {
         endTurnButton.setOnAction(event -> {
@@ -230,6 +226,7 @@ public class GameViewController implements ModelListener {
     public void updateDisplay() {
         displayTopCard();
         displayHands();
+        labelTurn.setText(m.getCurrentPlayerID() + "'s' turn");
     }
 
     // move to view
@@ -256,7 +253,6 @@ public class GameViewController implements ModelListener {
         // hardcode right now 2 hands.
         for (Player p : m.getListOfPlayers()) {
             displayHand(p, playersHand.get(p));
-            // System.out.println("printing cards for" + p.getName());
         }
     }
 
@@ -269,10 +265,8 @@ public class GameViewController implements ModelListener {
         hbox.getChildren().clear(); // Clear existing cards in case of updates
 
         for (Card card : player.getHand()) {
-            // System.out.println("printing soon");
             ImageView cardView = createCard(card); // Create an ImageView for each card
             hbox.getChildren().add(cardView); // Add the card to the HBox
-            // System.out.println("printing done");
         }
     }
 
@@ -301,20 +295,9 @@ public class GameViewController implements ModelListener {
 
     }
 
-    @Override
-    public void announceWinner(String name) {
-        
-    }
-
-    @Override
-    public void startNextPlayerTurn(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'startNextPlayerTurn'");
-    }
 
     @Override
     public void announceMustPlayCard() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'announceMustPlayCard'");
+        
     }
 }

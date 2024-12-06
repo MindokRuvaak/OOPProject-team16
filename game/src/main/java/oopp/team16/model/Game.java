@@ -62,7 +62,6 @@ public class Game {
 
     // Main game loop,
     private void gameLoop() {
-        // TODO: add checking for empty deck and reset deck
         boolean noWinner = true;
         while (noWinner) {
             nextTurn(); // switch current player
@@ -83,7 +82,6 @@ public class Game {
             deck.add(playedCards);
             playedCards.empty();
             playedCards.add(top);
-            System.out.println("Shuffled");
         }
     }
 
