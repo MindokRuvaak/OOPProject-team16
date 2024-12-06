@@ -21,6 +21,7 @@ public class GameServerApp {
 
         try {
             //Model model = new Model();   // behövs inte just nu då multiplayer inte har gameplay än
+            //JSON för att skicka uppdateringar mellan model och clients med server som intermediary
             gameServer = new GameServer(port, maxPlayers);
             gameServer.startup();
             logger.info("Press Enter to stop the server...");
