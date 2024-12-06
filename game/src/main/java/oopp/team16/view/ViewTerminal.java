@@ -49,7 +49,7 @@ public class ViewTerminal implements View {
         try {
             n = Integer.parseInt(nStr);
         } catch (NumberFormatException e) {
-            System.out.println("Pease enter a digit between 2 and 9.");
+            System.out.println("Please enter a digit between 2 and 9.");
             // these numbers are not enforced yet!
         }
         return n;
@@ -78,10 +78,6 @@ public class ViewTerminal implements View {
         System.out.println("Press enter to start your turn.");
         input.nextLine();
     }
-
-    // enklaste: modell håller all info, view titttar på modellen och ritar upp den.
-    // hur ska view uppdatera? modell skickar signal, view tittar och på
-    // ok view beroende av modell, men fxml inte!
 
     private void turnActions(String[] hand, boolean hasPlayedCard) {
         System.out.print("> ");
@@ -114,7 +110,7 @@ public class ViewTerminal implements View {
             } // these should be the only options possible for the regex
         }
         if (!givenCorrectInput) {
-            System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
+            System.out.println("Please enter one of the numbers corresponding to a card in your hand.\n" + //
                     "Or enter + to draw a card, E to end your turn.");
             waitForUserConfirmation();
         }
@@ -133,7 +129,6 @@ public class ViewTerminal implements View {
 
     @Override
     public void announceBadMove() {
-        // clearTerminal();
         System.out.println("That selected card cannot be played!");
         waitForUserConfirmation();
     }
@@ -154,7 +149,6 @@ public class ViewTerminal implements View {
 
     @Override
     public void announceMustPlayCard() {
-        // clearTerminal();
         System.out.println("You must play a card before ending your turn!");
         waitForUserConfirmation();
     }

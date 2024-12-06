@@ -22,6 +22,7 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
         game = new Game(df.createDeck(), 7);
         game.AddListener(this); 
     }
+    
     public List<Player> getListOfPlayers() {
         return players;
     }
@@ -30,8 +31,6 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
     public void initGame() {
         getPlayers();
         game.init(players);
-       // startGameLoop();
-        System.out.println("we are in hte game looooop");
     }
 
     public void startGame(){
@@ -52,27 +51,13 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
     }
 
     private void getPlayers() {
-      /*  for (ModelListener listener : listeners) {
+       for (ModelListener listener : listeners) {
             listener.requestPlayers();
         }
-
-       */
-        Player player1 = new Player("Player 1");
-        Player player2 = new Player("Player 2");
-
-        // Clear the existing players collection and add the hard-coded players
-        players.clear();
-        players.add(player1);
-        System.out.println("added player  " + player1.getName());
-        players.add(player2);
-        System.out.println("added player   " + player2.getName());
-
     }
 
     @Override
     public void takePlayerTurn(Player currentPlayer) {
-        // should maybe not allow multiple listeners?
-        // only one listener (view)?
         for (ModelListener listener : listeners) {
             listener.takeTurn(ToStringArray((currentPlayer.getHand())),currentPlayer.hasPlayedCard());
         }
@@ -133,5 +118,14 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
 
     public String getTopPlayedCardString() {
         return game.getTopPlayedCard().toString();
+    }
+    public Card[] getCurrentPlayerHand() {
+        return game.getCurrentPlayer().getHand();
+    }
+    public Player getCurrentPlayer() {
+        return game.getCurrentPlayer();
+    }
+    public Card getTopPlayedCard() {
+        return game.getTopPlayedCard();
     }
 }

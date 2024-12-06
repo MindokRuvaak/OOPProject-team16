@@ -26,7 +26,6 @@ public class Player {
         //TODO: ensure hand alsways sorted
         this.hand.add(card);
         this.cardsDrawn++;
-        System.out.println(cardsDrawn);
     }
 
     public Card playCard(int index){
@@ -59,7 +58,6 @@ public class Player {
     }
 
     public boolean hasPlayedCard(){
-        System.out.println("have i played a card alredy? print true" + playedCard);
         return this.playedCard;
 
     }

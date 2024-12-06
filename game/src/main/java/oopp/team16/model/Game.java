@@ -68,11 +68,22 @@ public class Game {
             nextTurn(); // switch current player
             startTurn();
             while (this.currentPlayer.stillTakingTurn()) {
+                reUpDeck();
                 takeTurn();
             }
             endTurn();
 
             noWinner = checkWinner();
+        }
+    }
+
+    private void reUpDeck() {
+        if(deck.isEmpty()){
+            Card  top = playedCards.pop();
+            deck.add(playedCards);
+            playedCards.empty();
+            playedCards.add(top);
+            System.out.println("Shuffled");
         }
     }
 
