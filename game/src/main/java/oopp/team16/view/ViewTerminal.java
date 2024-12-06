@@ -14,7 +14,7 @@ public class ViewTerminal implements View {
     public ViewTerminal(Model m, Controller c) {
         this.m = m;
         this.c = c;
-        
+
         System.out.println("\nTo play, enter the character inside the brackets < >\n");
     }
 
@@ -65,7 +65,7 @@ public class ViewTerminal implements View {
 
     @Override
     public void takeTurn(String[] hand, boolean hasPlayedCard) {
-        // clearTerminal();
+        clearTerminal();
         if (hasPlayedCard) {
             System.out.println("Play more cards?");
         }
@@ -86,7 +86,6 @@ public class ViewTerminal implements View {
     private void turnActions(String[] hand, boolean hasPlayedCard) {
         System.out.print("> ");
         String ans = input.nextLine();
-        // printGameState();
         handleInput(ans, hand.length, hasPlayedCard);
     }
 
@@ -103,9 +102,11 @@ public class ViewTerminal implements View {
                 givenCorrectInput = true;
             } else if (ans.matches("^\\d+$")) {
                 int toPlay = Integer.parseInt(ans);
-                if (0 < toPlay || toPlay <= handSize) {
+                if (0 < toPlay && toPlay <= handSize) {
                     givenCorrectInput = true;
                     c.playCard(toPlay);
+                } else {
+                    givenCorrectInput = false;
                 }
             } else if (ans.matches("[Ee]$")) {
                 givenCorrectInput = true;
@@ -115,6 +116,7 @@ public class ViewTerminal implements View {
         if (!givenCorrectInput) {
             System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
                     "Or enter + to draw a card, E to end your turn.");
+            waitForUserConfirmation();
         }
     }
 
@@ -131,14 +133,16 @@ public class ViewTerminal implements View {
 
     @Override
     public void announceBadMove() {
-        clearTerminal();
+        // clearTerminal();
         System.out.println("That selected card cannot be played!");
+        waitForUserConfirmation();
     }
 
     @Override
     public void announceWinner(String name) {
         clearTerminal();
         System.out.println("The winner is " + name + "!!");
+        waitForUserConfirmation();
     }
 
     @Override
@@ -151,8 +155,9 @@ public class ViewTerminal implements View {
 
     @Override
     public void announceMustPlayCard() {
-        clearTerminal();
+        // clearTerminal();
         System.out.println("You must play a card before ending your turn!");
+        waitForUserConfirmation();
     }
 
 }
