@@ -142,7 +142,6 @@ public class ViewTerminal implements View {
     public void announceWinner(String name) {
         clearTerminal();
         System.out.println("The winner is " + name + "!!");
-        waitForUserConfirmation();
     }
 
     @Override
