@@ -1,58 +1,193 @@
 package oopp.team16.model;
 
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
-import oopp.team16.model.gameLogic.Card;
+import javafx.application.Platform;
+import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Deck;
+import oopp.team16.model.gameLogic.GameLogic;
+import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
 public class Game {
-    
+
+    private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
-    // private int currentPlayer; // might not be necessary?
+    private Iterator<Player> turnOrder;
+    private Player currentPlayer;
     private final Deck deck;
     private final Stack<Card> playedCards;
+    private final int startingHandSize;
+    private GameLogic gamelogic; // can be final? Unnecessary?
+    // alot of overlap between GameLogic and GameRules
 
-    public Game(Deck deck){
-        players = new LinkedList<>();
+    public Game(Deck deck, int startingHandSize) {
+        this.listeners = new ArrayList<>();
+        this.players = new LinkedList<>();
+        this.startingHandSize = startingHandSize;
         this.deck = deck;
-        deck.shuffle();
+        this.deck.shuffle();
         playedCards = new Stack<>();
     }
 
-
-    public void createPlayer(String id){
-        players.add(new Player(id));
+    void init(Collection<Player> players) {
+        this.players.addAll(players);
+        this.turnOrder = players.iterator();
+        setUpGame();
     }
 
-    public void init() {
-        ///give all players 7 cards each
-        playedCards.add(deck.drawCard());
-        // gameLoop();
+    void startGame() {
+        new Thread(() -> {
+            // Start the game loop in a new thread
+            gameLoop();
+
+            // After the game loop ends, update UI on the JavaFX application thread
+            Platform.runLater(() -> {
+                announceWinner(this.currentPlayer.getName());
+            });
+        }).start();
     }
 
-    public String getCurrentPlayerID() {
-        return "player";
+    public LinkedList<Player> getPlayers() {
+        return players;
     }
 
-    public Card getTopPlayedCard() {
-        Card c = playedCards.peek();
-        playedCards.add(c);
-        return c;
+    Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
-    public String getTopPlayedCardString() {
-        return getTopPlayedCard().toString();
+    Card getTopPlayedCard() {
+        return playedCards.peek();
     }
 
+    // Main game loop,
     private void gameLoop() {
-        Player currentPlayer = players.getFirst();
-        while (true) {
-            // players.push(currentPlayer);
+        // TODO: add checking for empty deck and reset deck
+        boolean noWinner = true;
+        while (noWinner) {
+            nextTurn(); // switch current player
+            startTurn();
+            while (this.currentPlayer.stillTakingTurn()) {
+                takeTurn();
+            }
+            endTurn();
 
-            
+            noWinner = checkWinner();
         }
     }
 
+    private boolean checkWinner() {
+        boolean noWinner = true;
+        if (!currentPlayer.hasCards()) {
+            noWinner = false;
+            announceWinner(currentPlayer.getName());
+        }
+        return noWinner;
+    }
+
+    private void startTurn() {
+        this.currentPlayer.startTurn();
+        for (GameListener listener : listeners) {
+            listener.startPlayerTurn(currentPlayer);
+        }
+    }
+
+    private void endTurn() {
+        this.currentPlayer.resetTurnInfo();
+    }
+
+    private void announceWinner(String name) {
+        for (GameListener listener : listeners) {
+            listener.announceWinner(name);
+        }
+    }
+
+    private void nextTurn() {
+        if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
+            this.turnOrder = this.players.iterator(); // reset iterator
+        }
+        this.currentPlayer = this.turnOrder.next();
+    }
+
+    private void setUpGame() {
+        givePLayersCards(startingHandSize);// give all players a starting hand
+        playedCards.add(deck.drawCard());// add one card to start
+
+    }
+
+    private void givePLayersCards(int n) {
+        for (int i = 0; i < n; i++) {
+            givePlayersCard();
+        }
+    }
+
+    private void givePlayersCard() {
+        for (Player p : players) {
+            p.drawCard(deck.drawCard());
+        }
+    }
+
+    private void takeTurn() {
+        for (GameListener listener : listeners) {
+            listener.takePlayerTurn(currentPlayer);
+        }
+
+    }
+
+    public void AddListener(GameListener gameListener) {
+        listeners.add(gameListener);
+    }
+
+    void tryPlay(int index) {
+        if (!currentPlayer.hasPlayedCard()) {
+            tryPlayCard(index);
+        } else {
+            tryPlayMoreCards(index);
+        }
+    }
+
+    private void tryPlayCard(int index) {
+        if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
+            playCard(index);
+        } else {
+            announceBadMove();
+        }
+    }
+
+    private void playCard(int index) {
+        playedCards.add(currentPlayer.playCard(index));
+    }
+
+    private void announceBadMove() {
+        for (GameListener listener : listeners) {
+            listener.badMove();
+        }
+    }
+
+    void currentPlayerDrawCard() {
+        currentPlayer.drawCard(deck.drawCard());
+
+    }
+
+    void endCurrentPlayerTurn() {
+        if (currentPlayer.hasPlayedCard()) {// TODO: can end turn if drawn 3 cards
+            currentPlayer.endTurn();
+        } else {
+            announceMustPlayCard();
+        }
+    }
+
+    private void announceMustPlayCard() {
+        for (GameListener listener : listeners) {
+            listener.announceMustPlayCard();
+        }
+    }
+
+    void tryPlayMoreCards(int index) {
+        if (GameRules.stackable(currentPlayer.getCard(index), getTopPlayedCard())) {
+            playCard(index);
+        } else {
+            announceBadMove();
+        }
+    }
 }

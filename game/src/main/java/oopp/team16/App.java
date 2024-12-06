@@ -1,27 +1,21 @@
 package oopp.team16;
 
-import oopp.team16.controller.UnoController;
-import oopp.team16.view.StartView;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import oopp.team16.view.GameView;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-/**
- * Hello world!
- */
-public final class App {
-    private App() {
-    }
-    static UnoController unoCC;
+public class App extends Application {
 
-    /**
-     * Says hello to the world.
-     * @param args The arguments of the program.
-     */
-    public static void main(String[] args) throws UnknownHostException {
-        System.out.println("Hello World!");
-        StartView sv = new StartView(/* unoCC */);
+    @Override
+    public void start(Stage primaryStage) {
+        GameView gameView = new GameView(primaryStage);
+        gameView.show();
     }
 
-
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
