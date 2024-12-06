@@ -17,72 +17,70 @@ public class Game {
     private final Deck deck;
     private final Stack<Card> playedCards;
     private final int startingHandSize;
-    private GameLogic gamelogic;
+    private GameLogic gamelogic; // can be final? Unnecessary?
+    // alot of overlap between GameLogic and GameRules
 
     public Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
         this.players = new LinkedList<>();
         this.startingHandSize = startingHandSize;
         this.deck = deck;
-        deck.shuffle();
+        this.deck.shuffle();
         playedCards = new Stack<>();
     }
 
-    public void init(Collection<Player> players) {
+    void init(Collection<Player> players) {
         this.players.addAll(players);
         this.turnOrder = players.iterator();
         setUpGame();
+    }
+
+    void startGame() {
         gameLoop();
     }
 
-    public Player getCurrentPlayer() {
+    Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public Card getTopPlayedCard() {
+    Card getTopPlayedCard() {
         return playedCards.peek();
     }
 
-    public void initializeGame() {
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
-            for (int j = 0; j < 7; j++) {
-                if (!deck.isEmpty()) {
-                    Card card = deck.drawCard();
-                    player.drawCard(card);
-                }
-            }
-        }
-    }
-
+    // Main game loop,
     private void gameLoop() {
+        // TODO: add checking for empty deck and reset deck
         boolean noWinner = true;
         while (noWinner) {
-            nextTurn();
+            nextTurn(); // switch current player
             startTurn();
             while (this.currentPlayer.stillTakingTurn()) {
                 takeTurn();
             }
             endTurn();
 
-            if (!currentPlayer.hasCards()) {
-                noWinner = false;
-                announceWinner(currentPlayer.getName());
-                break;
-            }
+            noWinner = checkWinner();
         }
+    }
+
+    private boolean checkWinner() {
+        boolean noWinner = true;
+        if (!currentPlayer.hasCards()) {
+            noWinner = false;
+            announceWinner(currentPlayer.getName());
+        }
+        return noWinner;
     }
 
     private void startTurn() {
         this.currentPlayer.startTurn();
         for (GameListener listener : listeners) {
-            listener.startNextPlayerTurn(currentPlayer);
+            listener.startPlayerTurn(currentPlayer);
         }
     }
 
     private void endTurn() {
         this.currentPlayer.resetTurnInfo();
-        this.currentPlayer.endTurn();
     }
 
     private void announceWinner(String name) {
@@ -92,11 +90,10 @@ public class Game {
     }
 
     private void nextTurn() {
-        if (!this.turnOrder.hasNext()) {
-            this.turnOrder = this.players.iterator();
+        if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
+            this.turnOrder = this.players.iterator(); // reset iterator
         }
         this.currentPlayer = this.turnOrder.next();
-        this.currentPlayer.startTurn();
     }
 
     private void setUpGame() {
@@ -116,15 +113,6 @@ public class Game {
         }
     }
 
-    public List<Card> playableCards(Player player, Stack<Card> cardPile) {
-        List<Card> playableHand = new ArrayList<>();
-        for (Card card : player.getHand()) {
-            if (gamelogic.canPlay(card, cardPile.peek())) {
-                playableHand.add(card);
-            }
-        }
-        return playableHand;
-    }
 
     private void takeTurn() {
         for (GameListener listener : listeners) {
@@ -133,26 +121,24 @@ public class Game {
 
     }
 
-    public void notifyListeners() {
-        for (GameListener listener : listeners) {
-            listener.update();
-        }
-    }
-
     public void AddListener(GameListener gameListener) {
         listeners.add(gameListener);
     }
 
-    public void tryPlayCard(int index) {
-        if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
-            playCard(index);
+    void tryPlay(int index) {
+        if (!currentPlayer.hasPlayedCard()) {
+            tryPlayCard(index);
         } else {
-            badMoveGoAgain();
+            tryPlayMoreCards(index);
         }
     }
 
-    private void badMoveGoAgain() {
-        announceBadMove();
+    private void tryPlayCard(int index) {
+        if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
+            playCard(index);
+        } else {
+            announceBadMove();
+        }
     }
 
     private void playCard(int index) {
@@ -165,12 +151,12 @@ public class Game {
         }
     }
 
-    public void currentPlayerDrawCard() {
+    void currentPlayerDrawCard() {
         currentPlayer.drawCard(deck.drawCard());
     }
 
-    public void endCurrentPlayerTurn() {
-        if (currentPlayer.hasPlayedCard()) {
+    void endCurrentPlayerTurn() {
+        if (currentPlayer.hasPlayedCard()) {// TODO: can end turn if drawn 3 cards
             currentPlayer.endTurn();
         } else {
             announceMustPlayCard();
@@ -183,11 +169,11 @@ public class Game {
         }
     }
 
-    public void tryPlayMoreCards(int index) {
+    void tryPlayMoreCards(int index) {
         if (GameRules.stackable(currentPlayer.getCard(index), getTopPlayedCard())) {
             playCard(index);
         } else {
-            badMoveGoAgain();
+            announceBadMove();
         }
     }
 }

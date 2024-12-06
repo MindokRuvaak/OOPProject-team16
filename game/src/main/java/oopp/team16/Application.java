@@ -17,9 +17,10 @@ public class Application {
         
         c = new Controller(m);
         
-        v = new ViewTerminal(c);
-        m.AddListener(v);
+        v = new ViewTerminal(m, c);
+        m.addListener(v);
         
         m.initGame();
+        m.startGame();
     }
 }

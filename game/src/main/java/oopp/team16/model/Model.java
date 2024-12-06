@@ -8,7 +8,8 @@ import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Card;
 
-public class Model implements GameListener {
+// TODO: model does not need to be GameListener, make relevant view and controllers GL instead
+public class Model implements GameListener { //maybe change name ?ModelGameSetup?
     private List<ModelListener> listeners;
     private final Game game;
     private final DeckFactory df;
@@ -19,7 +20,7 @@ public class Model implements GameListener {
         df = new CreateStdDeck();
         players = new ArrayList<>();
         game = new Game(df.createDeck(), 7);
-        game.AddListener(this);
+        game.AddListener(this); 
     }
 
     public void initGame() {
@@ -27,31 +28,21 @@ public class Model implements GameListener {
         game.init(players);
     }
 
-    public Player getCurrentPlayer() {
-        return game.getCurrentPlayer();
-    }
-
-    public Card getTopPlayedCard() {
-        return game.getTopPlayedCard();
+    public void startGame(){
+        game.startGame();
     }
 
     public void addPlayer(String name) {
         players.add(new Player(name));
     }
 
-    public void AddListener(ModelListener l) {
+    
+    public void addListener(ModelListener l) {
         listeners.add(l);
     }
 
-    public void notifyListeners() {
-        for (ModelListener listener : listeners) {
-            listener.update();
-        }
-    }
-
-    @Override
-    public void update() {
-        notifyListeners();
+    public void addGameListener(GameListener gl){
+        game.AddListener(gl);
     }
 
     private void getPlayers() {
@@ -79,7 +70,7 @@ public class Model implements GameListener {
 
     public void playCard(int cardNumber) {
         // change from card number displayed to player to corresponding card index in hand array
-        game.tryPlayCard(cardNumber - 1); 
+        game.tryPlay(cardNumber - 1); 
     }
 
     @Override
@@ -104,12 +95,8 @@ public class Model implements GameListener {
         game.endCurrentPlayerTurn();
     }
 
-    public void playMoreCards(int toPlay) {
-        game.tryPlayMoreCards(toPlay - 1); //again change to index
-    }
-
     @Override
-    public void startNextPlayerTurn(Player currentPlayer) {
+    public void startPlayerTurn(Player currentPlayer) {
         for (ModelListener listener : listeners) {
             listener.startNextPlayerTurn(currentPlayer.getName());
         }
@@ -120,5 +107,13 @@ public class Model implements GameListener {
         for (ModelListener listener : listeners) {
             listener.announceMustPlayCard();
         }
+    }
+
+    public String getCurrentPlayerID() {
+        return game.getCurrentPlayer().getName();
+    }
+
+    public String getTopPlayedCardString() {
+        return game.getTopPlayedCard().toString();
     }
 }
