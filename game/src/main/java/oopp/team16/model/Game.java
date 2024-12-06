@@ -113,15 +113,6 @@ public class Game {
         }
     }
 
-    // List<Card> playableCards(Player player, Stack<Card> cardPile) {
-    // List<Card> playableHand = new ArrayList<>();
-    // for (Card card : player.getHand()) {
-    // if (gamelogic.canPlay(card, cardPile.peek())) {
-    // playableHand.add(card);
-    // }
-    // }
-    // return playableHand;
-    // }
 
     private void takeTurn() {
         for (GameListener listener : listeners) {
@@ -129,12 +120,6 @@ public class Game {
         }
 
     }
-
-    // public void notifyListeners() {
-    // for (GameListener listener : listeners) {
-    // listener.update();
-    // }
-    // }
 
     public void AddListener(GameListener gameListener) {
         listeners.add(gameListener);
@@ -155,10 +140,6 @@ public class Game {
             announceBadMove();
         }
     }
-
-    // private void badMoveGoAgain() {
-    // announceBadMove();
-    // }
 
     private void playCard(int index) {
         playedCards.add(currentPlayer.playCard(index));

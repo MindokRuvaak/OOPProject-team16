@@ -45,17 +45,6 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
         game.AddListener(gl);
     }
 
-    // public void notifyListeners() {
-    //     for (ModelListener listener : listeners) {
-    //         listener.update();
-    //     }
-    // }
-
-    // @Override
-    // public void update() {
-    //     notifyListeners();
-    // }
-
     private void getPlayers() {
         for (ModelListener listener : listeners) {
             listener.requestPlayers();
