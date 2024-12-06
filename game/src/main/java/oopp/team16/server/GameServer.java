@@ -10,6 +10,8 @@ public class GameServer {
     private final int port;
     private final int maxPlayers;
 
+    //TODO: kika vad som bör vara private och public. typ allt är public just nu.
+
     public GameServer(int port, int maxPlayers) {
         this.port = port;
         this.maxPlayers = maxPlayers;
