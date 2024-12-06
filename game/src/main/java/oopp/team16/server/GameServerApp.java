@@ -10,7 +10,8 @@ public class GameServerApp {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter server port:");
-        int port = scanner.nextInt();
+        int port = scanner.nextInt();               // detta får ju ändras på samma sätt som gameclientapp ändras.
+                                                    // lättast att kanske ha en start server knapp i settings? idk vad som är bäst
 
         System.out.println("Enter max number of players:");
         int maxPlayers = scanner.nextInt();
@@ -19,7 +20,7 @@ public class GameServerApp {
         GameServer gameServer = null;
 
         try {
-            //Model model = new Model();
+            //Model model = new Model();   // behövs inte just nu då multiplayer inte har gameplay än
             gameServer = new GameServer(port, maxPlayers);
             gameServer.startup();
             logger.info("Press Enter to stop the server...");

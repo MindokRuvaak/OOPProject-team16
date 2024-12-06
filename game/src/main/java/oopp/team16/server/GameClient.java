@@ -9,12 +9,14 @@ public class GameClient {
     private Socket clientSocket;
     private BufferedReader in;
     private PrintWriter out;
+    private final GameClientController controller;
 
     public GameClient(String serverAddress, int port) {
+        this.controller = new GameClientController(this);
         connectToServer(serverAddress, port);
     }
 
-    public void connectToServer(String serverAddress, int port) {
+    private void connectToServer(String serverAddress, int port) {
         try {
             clientSocket = new Socket(serverAddress, port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -32,6 +34,10 @@ public class GameClient {
         } else {
             logger.warning("Attempted to send a message but the output stream is null.");
         }
+    }
+
+    public GameClientController getController() {
+        return controller;
     }
 
     /*public String receiveMessage() {

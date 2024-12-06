@@ -10,9 +10,11 @@ public class GameClientApp {
         int port;
 
         while (true) {
-            System.out.println("Enter the server address (e.g., localhost or an IP):");
+            System.out.println("Enter the server address (e.g., localhost or an IP):");  //allt detta behövs ändras, gameclientapp kan fortfarande existera som gameclient_init(?)
+                                                                                         // och ta in samma parametrar från user input. vi slipper då while-loops, men behöver andra checks istället.
+
             serverAddress = scanner.nextLine();
-            if (!serverAddress.isEmpty()) break;
+            if (!serverAddress.isEmpty()) break; // in i nästa while
             System.out.println("Server address cannot be empty.");
         }
 
@@ -20,7 +22,7 @@ public class GameClientApp {
             try {
                 System.out.println("Enter the server port (e.g., 12345):");
                 port = Integer.parseInt(scanner.nextLine());
-                if (port > 0 && port <= 65535) break; // Valid port range
+                if (port > 0 && port <= 65535) break; // valid port range
                 System.out.println("Invalid port. Please enter a number between 1 and 65535.");
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a numeric port.");
@@ -29,8 +31,7 @@ public class GameClientApp {
 
         try {
             GameClient gameClient = new GameClient(serverAddress, port);
-            GameClientController controller = new GameClientController(gameClient);
-            controller.start();
+            gameClient.getController().start();
         } catch (RuntimeException e) {
             System.out.println("Could not connect to server. Please try again later.");
         } finally {

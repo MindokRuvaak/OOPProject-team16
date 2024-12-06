@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 public class ClientManager implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
-    private PrintWriter out;
+    private PrintWriter out; //kommer användas senare?
 
     public ClientManager(Socket socket) {
         this.clientSocket = socket;
@@ -17,7 +17,7 @@ public class ClientManager implements Runnable {
     public void run() {
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // ska denna vara ett field tsm med printwriter? idk
 
             String message;
             while ((message = in.readLine()) != null) {
@@ -40,7 +40,7 @@ public class ClientManager implements Runnable {
         }
     }
 
-    public Socket getClientSocket() { // behövs denna?
+    public Socket getClientSocket() { // behövs denna? just nu ja
         return clientSocket;
     }
 }

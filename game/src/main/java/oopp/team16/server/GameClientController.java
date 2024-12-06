@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class GameClientController {
-    private static final Logger logger = Logger.getLogger(GameClientController.class.getName());
+    //private static final Logger logger = Logger.getLogger(GameClientController.class.getName());
     private final GameClient gameClient;
 
     public GameClientController(GameClient gameClient) {
@@ -13,11 +13,11 @@ public class GameClientController {
 
     public void start() {
 
-        // Start a new thread to listen to server messages
+        // ny tråd som kan lyssna på servermeddelanden. detta behövs nog men på ett annat sätt när view inte är terminalbaserad
         //new Thread(this::listenForServerMessages).start();
         Scanner scanner = new Scanner(System.in);
 
-        // Main game loop for sending commands
+        // Main game loop for sending commands // detta bör då också ändras eftersom detta är för en terminalbaserad implementation
         while (true) {
             System.out.println("Enter a command:");
             String command = scanner.nextLine();
