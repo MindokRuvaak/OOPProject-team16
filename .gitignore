@@ -18,7 +18,6 @@ out/
 
 
 **/old**
-
-*.class
 *.xlsx
+*.class
 *.iml

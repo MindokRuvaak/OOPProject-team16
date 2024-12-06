@@ -17,7 +17,6 @@ public class BunAction {
     public JButton drawButton = new JButton("Draw card");
     public JButton playCardButton = new JButton("Play a Card");
     public JTextField portNumber = new JTextField("Enter the port");
-
     private UnoController unoCC;
     public BunAction(){
     //    this.unoCC = unoCC;
