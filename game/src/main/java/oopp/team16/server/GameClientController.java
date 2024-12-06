@@ -3,9 +3,10 @@ package oopp.team16.server;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+
 public class GameClientController {
-    //private static final Logger logger = Logger.getLogger(GameClientController.class.getName());
     private final GameClient gameClient;
+    //private static final Logger logger = Logger.getLogger(GameClientController.class.getName());
 
     public GameClientController(GameClient gameClient) {
         this.gameClient = gameClient;

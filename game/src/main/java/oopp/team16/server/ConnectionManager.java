@@ -15,8 +15,8 @@ public class ConnectionManager {
 
     public ConnectionManager(ServerSocket serverSocket, int maxPlayers) {
         this.serverSocket = serverSocket;
-        this.clients = new ArrayList<>();
         this.maxPlayers = maxPlayers;
+        this.clients = new ArrayList<>();
     }
 
     public void acceptConnections() {
@@ -39,7 +39,7 @@ public class ConnectionManager {
         }
     }
 
-    public void removeClient(ClientManager client) {
+    private void removeClient(ClientManager client) {
         synchronized (clients) {
             if (clients.remove(client)) {
                 logger.info("Client removed. Current players connected: " + clients.size() + "/" + maxPlayers);
