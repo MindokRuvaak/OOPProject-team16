@@ -17,7 +17,8 @@ public class Game {
     private final Deck deck;
     private final Stack<Card> playedCards;
     private final int startingHandSize;
-    private GameLogic gamelogic; //can be final?
+    private GameLogic gamelogic; //can be final? Unnecessary?
+    // alot of overlap between GameLogic and GameRules
 
     public Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
@@ -51,19 +52,24 @@ public class Game {
         //TODO: add checking for empty deck and reset deck 
         boolean noWinner = true;
         while (noWinner) {
-            nextTurn(); //set next switch current player
-            startTurn(); //
+            nextTurn(); //switch current player
+            startTurn(); 
             while (this.currentPlayer.stillTakingTurn()) {
                 takeTurn();
             }
             endTurn();
 
-            if (!currentPlayer.hasCards()) {
-                noWinner = false;
-                announceWinner(currentPlayer.getName());
-                break;
-            }
+            noWinner = checkWinner();
         }
+    }
+
+    private boolean checkWinner() {
+        boolean noWinner = true;
+        if (!currentPlayer.hasCards()) {
+            noWinner = false;
+            announceWinner(currentPlayer.getName());
+        }
+        return noWinner;
     }
 
     private void startTurn() {
@@ -75,7 +81,6 @@ public class Game {
 
     private void endTurn() {
         this.currentPlayer.resetTurnInfo();
-        this.currentPlayer.endTurn();
     }
 
     private void announceWinner(String name) {
@@ -139,13 +144,13 @@ public class Game {
         if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
             playCard(index);
         } else {
-            badMoveGoAgain();
+            announceBadMove();
         }
     }
 
-    private void badMoveGoAgain() {
-        announceBadMove();
-    }
+    // private void badMoveGoAgain() {
+    //     announceBadMove();
+    // }
 
     private void playCard(int index) {
         playedCards.add(currentPlayer.playCard(index));
@@ -179,7 +184,7 @@ public class Game {
         if (GameRules.stackable(currentPlayer.getCard(index), getTopPlayedCard())) {
             playCard(index);
         } else {
-            badMoveGoAgain();
+            announceBadMove();
         }
     }
 }

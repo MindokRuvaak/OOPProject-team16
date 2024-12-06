@@ -23,7 +23,7 @@ public class Player {
     }
 
     public void drawCard(Card card){
-        //TODO: sorted hand
+        //TODO: ensure hand alsways sorted
         this.hand.add(card);
         this.cardsDrawn++;
     }
