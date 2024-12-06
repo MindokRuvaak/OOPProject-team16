@@ -68,9 +68,9 @@ public class Game {
         return playedCards.peek();
     }
 
-
+    public boolean noWinner = true;
     public void gameLoop() {
-        boolean noWinner = true;
+
         while (noWinner) {
             nextTurn();
             startTurn();

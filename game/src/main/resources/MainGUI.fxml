@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -8,7 +7,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainPane" prefHeight="383.0" prefWidth="800.0" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController">
@@ -22,7 +20,7 @@
          <graphic>
           <ImageView fitHeight="90.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@ui/resources/unocards/Draw4.png" />
+                  <Image url="@ui/resources/unocards/Uno.png" />
                </image>
             </ImageView>
          </graphic>
@@ -32,48 +30,8 @@
         <Font name="System Bold" size="19.0" />
       </font>
     </Label>
-    <Circle fx:id="circleWishColor" fill="DODGERBLUE" layoutX="392.0" layoutY="298.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-    <Label fx:id="labelWishColor" layoutX="375.0" layoutY="246.0" text="Color">
-      <font>
-        <Font name="System Bold" size="12.0" />
-      </font>
-    </Label>
     <ImageView fx:id="imageViewWishColor" fitHeight="40.0" fitWidth="40.0" layoutX="372.0" layoutY="278.0" pickOnBounds="true" preserveRatio="true" />
-    <HBox fx:id="hboxInfo" alignment="CENTER" layoutX="217.0" layoutY="421.0" prefHeight="25.0" prefWidth="338.0">
-      <children>
-        <Label fx:id="labelInfo" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="255.0" text="You cannot counter. Draw xx cards." textAlignment="CENTER">
-          <font>
-            <Font name="System Bold" size="13.0" />
-          </font>
-        </Label>
-        <Button fx:id="buttonInfo" mnemonicParsing="false" text="OK">
-          <HBox.margin>
-            <Insets left="15.0" />
-          </HBox.margin>
-        </Button>
-      </children>
-    </HBox>
-    <Label fx:id="labelChallengeCounter" alignment="CENTER" contentDisplay="CENTER" layoutX="302.0" layoutY="185.0" prefHeight="17.0" prefWidth="190.0" text="Draw 12 cards" textAlignment="CENTER">
-      <font>
-        <Font name="System Bold" size="14.0" />
-      </font>
-    </Label>
-    <Label fx:id="labelPlayer2Name" alignment="CENTER" contentDisplay="CENTER" layoutX="661.0" layoutY="107.0" prefHeight="19.0" prefWidth="106.0" text="Computer 2" textAlignment="CENTER">
-      <font>
-        <Font name="System Bold" size="13.0" />
-      </font>
-    </Label>
-    <Label fx:id="labelPlayer3Name" alignment="CENTER" contentDisplay="CENTER" layoutX="36.0" layoutY="107.0" prefHeight="19.0" prefWidth="106.0" text="Computer 3" textAlignment="CENTER">
-      <font>
-        <Font name="System Bold" size="13.0" />
-      </font>
-    </Label>
-    <Label fx:id="labelPlayer1Name" alignment="CENTER" contentDisplay="CENTER" layoutX="340.0" layoutY="38.0" prefHeight="19.0" prefWidth="106.0" text="Computer 1" textAlignment="CENTER">
-      <font>
-        <Font name="System Bold" size="13.0" />
-      </font>
-    </Label>
-      <HBox fx:id="player1Hand" layoutY="359.0" prefHeight="90.0" prefWidth="800.0" />
+    <HBox fx:id="hboxInfo" alignment="CENTER" layoutX="217.0" layoutY="421.0" prefHeight="25.0" prefWidth="338.0" />
     <Button fx:id="buttonStart" layoutX="370.0" layoutY="117.0" mnemonicParsing="false" onAction="#initialize" text="START">
       <font>
         <Font name="System Bold" size="14.0" />
@@ -97,5 +55,24 @@
       </AnchorPane>
       <Button fx:id="endTurnButton" layoutX="370.0" layoutY="152.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn" />
       <Button fx:id="buttonUno" layoutX="733.0" layoutY="206.0" mnemonicParsing="false" onAction="#uno" text="UNO" />
+      <AnchorPane fx:id="winningPane" layoutX="163.0" layoutY="178.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="labelWinner" layoutX="25.0" layoutY="52.0" text="Winner is " />
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="81.0" fitWidth="74.0" layoutX="86.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@ui/resources/avatars/avatar10.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="81.0" fitWidth="74.0" layoutX="86.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@ui/resources/avatars/avatar1.png" />
+         </image>
+      </ImageView>
+      <HBox fx:id="player1Hand" layoutX="2.0" layoutY="390.0" prefHeight="60.0" prefWidth="800.0" />
+      <Label fx:id="labelTurn" layoutX="354.0" layoutY="219.0" text="Label" />
+      <Label layoutX="101.0" layoutY="290.0" text="Player 2" />
+      <Label layoutX="102.0" layoutY="144.0" text="Player 1" />
   </children>
 </AnchorPane>

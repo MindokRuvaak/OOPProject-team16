@@ -14,9 +14,12 @@ import javafx.scene.layout.HBox;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import oopp.team16.model.Model;
+import oopp.team16.model.ModelListener;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
+import oopp.team16.view.CreateCardView;
+import oopp.team16.view.View;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,14 +36,6 @@ public class GameViewController {
     @FXML
     private Label labelCurrentPlayer;
 
-    @FXML
-    private HBox hboxInfo;
-
-    @FXML
-    private Label labelInfo;
-
-    @FXML
-    private Button buttonInfo;
 
     @FXML
     private Button buttonPlayDeck;
@@ -97,8 +92,11 @@ public class GameViewController {
     private AnchorPane winningPane;
     @FXML
     private Label labelWinner;
-    private final double CARD_HEIGHT = 90.0;
-    private final double CARD_WIDTH = 57.0;
+    @FXML
+    private Label labelTurn;
+    private final double CARD_HEIGHT = 60;
+    private final double CARD_WIDTH = 32;
+
 
     private final double CARD_SPACING_LARGE = 14.0;
     private final double CARD_SPACING_MEDIUM = 0.0;
@@ -111,15 +109,14 @@ public class GameViewController {
     private Point2D AI_3_STARTING_POINT;
     private final Map<Player, HBox> playersHand = new HashMap<>();
 
-    public void initialize() {
-        buttonInfo.setOnAction(event -> {
-            hboxInfo.setVisible(false);
-        });
 
+    public void initialize() {
         buttonStart.setOnAction(event -> {
                 //   labelLogo.setText("Game Started!");
                 buttonStart.setVisible(false);
                 inputCard.setVisible(false);
+                winningPane.setVisible(false);
+                winningPane.setStyle("-fx-background-color: #2ecc71;");
                 System.out.println("Game Start");
                 m.initGame();
             System.out.println("initalize game");
@@ -127,6 +124,8 @@ public class GameViewController {
                 System.out.println(m.getCurrentPlayer().getName());
                 playersHand.put(m.getListOfPlayers().get(0), player1Hand);
                 playersHand.put(m.getListOfPlayers().get(1), player2Hand);
+                labelTurn.setText("Player 2 turn");
+
             });
         buttonDisplayHand.setOnAction(event -> {
             System.out.println(m.getCurrentPlayer().getName());
@@ -137,12 +136,15 @@ public class GameViewController {
     }
     public void uno(){
     }
+
     public void winner(){
-        for (HBox hbox : playersHand.values()) {
-            if(hbox.getChildren().isEmpty()) {
-                winningPane.setVisible(true);
-            }
-        }
+       if(!m.game.noWinner) {
+           winningPane.setVisible(true);
+           winningPane.toFront();
+           winningPane.setOpacity(1.0);
+           winningPane.setStyle("-fx-background-color: #2ecc71;");
+           labelWinner.setText("Winner is " + m.getCurrentPlayer().getName());
+       }
     }
 
     public void drawCard(){
@@ -155,11 +157,14 @@ public class GameViewController {
     }
     public void endTurn(){
         endTurnButton.setOnAction(event -> {
+            winner();
             m.endTurn();
+            labelTurn.setText(m.getCurrentPlayer().getName() + " turn");
             m.getCurrentPlayer().resetTurnInfo();
             System.out.println(m.getCurrentPlayer().getName() + "ended turn");
         });
     }
+
     public void cardView(){
         playCardButton.setOnAction(event -> {
             inputCard.setVisible(true);
@@ -174,6 +179,7 @@ public class GameViewController {
             inputCard.setVisible(false);
         });
     }
+
     /*
     @FXML
     public void addPlayer(){
@@ -253,23 +259,6 @@ public class GameViewController {
     }
 
 // move to view
-    public ImageView createCard(Card card) {
-        String imagePath = "/ui/resources/unocards/" + card.getColor() + "_" + card.getValue() + ".png";
-        Image image;
-        try {
-            image = new Image(getClass().getResourceAsStream(imagePath));
-        } catch (Exception e) {
-            image = new Image(getClass().getResourceAsStream("/ui/resources/unocards/card_back.png"));
-            System.err.println("Could not load image: " + imagePath);
-        }
-
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(CARD_HEIGHT);  // Adjust these constants as needed
-        imageView.setFitWidth(CARD_WIDTH);
-        imageView.setSmooth(true);
-
-        return imageView;
-    }
 
 
 
@@ -312,4 +301,23 @@ public class GameViewController {
        ImageView cardView = createCard(card);
        hbox.getChildren().add(cardView);
     }
+    public ImageView createCard(Card card) {
+        String imagePath = "/ui/resources/unocards/" + card.getColor() + "_" + card.getValue() + ".png";
+        Image image;
+        try {
+            image = new Image(getClass().getResourceAsStream(imagePath));
+        } catch (Exception e) {
+            image = new Image(getClass().getResourceAsStream("/ui/resources/unocards/card_back.png"));
+            System.err.println("Could not load image: " + imagePath);
+        }
+
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(CARD_HEIGHT);  // Adjust these constants as needed
+        imageView.setFitWidth(CARD_WIDTH);
+        imageView.setSmooth(true);
+
+        return imageView;
+    }
+
+
 }
