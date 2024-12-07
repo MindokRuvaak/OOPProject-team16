@@ -13,9 +13,6 @@ import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Player;
-import oopp.team16.view.CreateCardView;
-import oopp.team16.view.View;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -140,12 +137,10 @@ public class GameViewController implements ModelListener {
         });
     }
 
-    
     @Override
     public void startNextPlayerTurn(String name) {
         labelTurn.setText(name + "'s' turn");
     }
-
 
     public void endTurn() {
         endTurnButton.setOnAction(event -> {
@@ -223,6 +218,7 @@ public class GameViewController implements ModelListener {
 
     }
 
+    // move to view
     public void updateDisplay() {
         displayTopCard();
         displayHands();
@@ -270,6 +266,7 @@ public class GameViewController implements ModelListener {
         }
     }
 
+    // move to view
     public void displayCard(Player player, HBox hbox, Card card) {
         if (player == null) {
             System.out.println("error current player is null");
@@ -285,19 +282,20 @@ public class GameViewController implements ModelListener {
         m.addPlayer("Player 2");
     }
 
-    @Override
-    public void takeTurn(String[] hand, boolean playedCardYet) {
+    // TODO: implement observer pattern methods
 
+    @Override
+    public void takeTurn(String[] hand, boolean playedCardYet) { // TODO: fix signature
+        // TODO: implement
     }
 
     @Override
     public void announceBadMove() {
-
+        // TODO: implement
     }
-
 
     @Override
     public void announceMustPlayCard() {
-        
+        // TODO: implement
     }
 }

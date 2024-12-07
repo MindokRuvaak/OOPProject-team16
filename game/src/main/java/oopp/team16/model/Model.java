@@ -8,32 +8,30 @@ import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Card;
 
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
-public class Model implements GameListener { //maybe change name ?ModelGameSetup?
+public class Model implements GameListener { // maybe change name ?ModelGameSetup?
     private List<ModelListener> listeners;
     public final Game game;
     private final DeckFactory df;
     private final List<Player> players;
-
 
     public Model() {
         listeners = new ArrayList<>();
         df = new CreateStdDeck();
         players = new ArrayList<>();
         game = new Game(df.createDeck(), 7);
-        game.AddListener(this); 
+        game.AddListener(this);
     }
-    
+
     public List<Player> getListOfPlayers() {
         return players;
     }
-
 
     public void initGame() {
         getPlayers();
         game.init(players);
     }
 
-    public void startGame(){
+    public void startGame() {
         game.startGame();
     }
 
@@ -41,17 +39,16 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
         players.add(new Player(name));
     }
 
-    
     public void addListener(ModelListener l) {
         listeners.add(l);
     }
 
-    public void addGameListener(GameListener gl){
+    public void addGameListener(GameListener gl) {
         game.AddListener(gl);
     }
 
     private void getPlayers() {
-       for (ModelListener listener : listeners) {
+        for (ModelListener listener : listeners) {
             listener.requestPlayers();
         }
     }
@@ -59,7 +56,7 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
     @Override
     public void takePlayerTurn(Player currentPlayer) {
         for (ModelListener listener : listeners) {
-            listener.takeTurn(ToStringArray((currentPlayer.getHand())),currentPlayer.hasPlayedCard());
+            listener.takeTurn(ToStringArray((currentPlayer.getHand())), currentPlayer.hasPlayedCard());
         }
     }
 
@@ -72,8 +69,9 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
     }
 
     public void playCard(int cardNumber) {
-        // change from card number displayed to player to corresponding card index in hand array
-        game.tryPlay(cardNumber - 1); 
+        // change from card number displayed to player to corresponding card index in
+        // hand array
+        game.tryPlay(cardNumber - 1);
     }
 
     @Override
@@ -119,12 +117,17 @@ public class Model implements GameListener { //maybe change name ?ModelGameSetup
     public String getTopPlayedCardString() {
         return game.getTopPlayedCard().toString();
     }
+
+    // TODO: temporary methods, can change GameViewController's methods to not
+    // require the card or player classes and reduce dependencies / lower coupling
     public Card[] getCurrentPlayerHand() {
         return game.getCurrentPlayer().getHand();
     }
+
     public Player getCurrentPlayer() {
         return game.getCurrentPlayer();
     }
+
     public Card getTopPlayedCard() {
         return game.getTopPlayedCard();
     }
