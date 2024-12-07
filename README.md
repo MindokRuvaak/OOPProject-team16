@@ -4,7 +4,7 @@ This is the project of team 16 for the course Object Orientated Programming Proj
 We are making uno :)
 ## Peer review
 The main branch *should* always be in a runnable state with the latest finnished and implemented features. 
-We have a user guide document with description and an overview of how to play and run the code. 
+We have a user guide document with description and an overview of how to play and run the code. For more information on the project as a whole please see the RAD.
 
 ### known issues
 If you use AppWindow.java to start the game, there will be exceptions printed in the terminal, but the game works. We are working on fixing this.
