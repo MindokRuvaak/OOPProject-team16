@@ -3,6 +3,7 @@ package oopp.team16.server;
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
+import com.google.gson.Gson;
 
 public class ClientManager implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
@@ -40,9 +41,11 @@ public class ClientManager implements Runnable {
         }
     }
 
-    public void sendMessageToClient(String message) {
+    public void sendMessageToClient(GameMessage message) {
         if (out != null) {
-            out.println(message);
+            Gson gson = new Gson();
+            String jsonMessage = gson.toJson(message);
+            out.println(jsonMessage);
             out.flush();
         } else {
             logger.warning("Output stream is null for client.");

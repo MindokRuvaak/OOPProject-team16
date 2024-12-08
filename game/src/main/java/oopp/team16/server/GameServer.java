@@ -32,12 +32,13 @@ public class GameServer {
         }
     }
 
-    public void broadcastMessage(String message) {
-        List<ClientManager> clients = connectionManager.getClients();
-        for (ClientManager client : clients) {
-            client.sendMessageToClient(message);
+    public void broadcastMessage(GameMessage message) {
+        String jsonMessage = serializeMessage(message); // Convert GameMessage to JSON
+        for (ClientManager client : connectionManager.getClients()) {
+            client.sendMessage(jsonMessage); // Send JSON to each client
         }
     }
+
 
     public void shutdown() {
         if (connectionManager != null) {

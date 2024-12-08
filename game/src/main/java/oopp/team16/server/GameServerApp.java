@@ -27,11 +27,19 @@ public class GameServerApp {
             while (true) {
                 System.out.println("Send a command to all connected clients:");
                 String command = scanner.nextLine();
+
                 if ("shutdown".equalsIgnoreCase(command.trim())) {
                     System.out.println("Shutting down the server...");
                     break;
                 }
-                gameServer.broadcastMessage(command);
+                // Create a GameMessage from the command
+                GameMessage message = parseCommand(command);
+
+                if (message != null) {
+                    gameServer.broadcastMessage(message); // Broadcast the GameMessage
+                } else {
+                    System.out.println("Invalid command. Try again.");
+                }
             }
         } catch (Exception ex) {
             logger.severe("An error occurred: " + ex.getMessage());

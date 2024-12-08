@@ -1,5 +1,7 @@
 package oopp.team16.server;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
@@ -38,18 +40,20 @@ public class GameClient {
         }
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(GameMessage message) {
         try {
             if (out != null) {
-                out.println(message); // Sends a single line to the server
-                out.flush();
+                String jsonMessage = new Gson().toJson(message); // Convert GameMessage object to JSON
+                out.println(jsonMessage); // Send JSON to server
+                out.flush(); // Ensure the message is sent immediately
             } else {
                 logger.warning("Output stream is null.");
             }
         } catch (Exception e) {
-            logger.severe("Error sending message to server: " + e.getMessage());
+            logger.severe("Error sending message: " + e.getMessage());
         }
     }
+
 
     public String receiveMessage() {
         try {
