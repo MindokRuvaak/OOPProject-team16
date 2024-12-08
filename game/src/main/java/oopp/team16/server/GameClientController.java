@@ -36,7 +36,7 @@ public class GameClientController {
         }
     }
 
-    private GameMessage parseCommand(String command) {
+    /*private GameMessage parseCommand(String command) { //
         GameMessage message = new GameMessage();
         String[] parts = command.split(" ", 2); // Split command into type and arguments
 
@@ -73,7 +73,7 @@ public class GameClientController {
         }
 
         return message;
-    }
+    }*/
 
     private void listenForServerMessages() {
         try {
