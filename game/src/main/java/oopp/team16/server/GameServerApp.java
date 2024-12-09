@@ -10,22 +10,29 @@ public class GameServerApp {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter server port:");
-        int port = scanner.nextInt();               // detta får ju ändras på samma sätt som gameclientapp ändras.
-                                                    // lättast att kanske ha en start server knapp i settings? idk vad som är bäst
+        int port = scanner.nextInt();
 
         System.out.println("Enter max number of players:");
         int maxPlayers = scanner.nextInt();
-        scanner.nextLine(); // Consume newline left-over
+        scanner.nextLine(); // Consume the newline left over
 
         GameServer gameServer = null;
 
         try {
-            //Model model = new Model();   // behövs inte just nu då multiplayer inte har gameplay än
             gameServer = new GameServer(port, maxPlayers);
             gameServer.startup();
-            logger.info("Press Enter to stop the server...");
-            scanner.nextLine();
+            System.out.println("Server started successfully.");
+            System.out.println("Type 'shutdown' to stop the server, or type other commands to simulate gameplay.");
 
+            while (true) {
+                System.out.println("Send a command to all connected clients:");
+                String command = scanner.nextLine();
+                if ("shutdown".equalsIgnoreCase(command.trim())) {
+                    System.out.println("Shutting down the server...");
+                    break;
+                }
+                gameServer.broadcastMessage(command);
+            }
         } catch (Exception ex) {
             logger.severe("An error occurred: " + ex.getMessage());
             for (StackTraceElement element : ex.getStackTrace()) {
@@ -33,8 +40,10 @@ public class GameServerApp {
             }
         } finally {
             if (gameServer != null) {
-                gameServer.shutdown();            }
+                gameServer.shutdown();
+            }
             scanner.close();
+            System.out.println("Server has stopped.");
         }
     }
 }
