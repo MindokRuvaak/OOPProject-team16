@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -15,8 +16,8 @@ public class ConnectionManager {
 
     public ConnectionManager(ServerSocket serverSocket, int maxPlayers) {
         this.serverSocket = serverSocket;
-        this.clients = new ArrayList<>();
         this.maxPlayers = maxPlayers;
+        this.clients = new ArrayList<>();
     }
 
     public void acceptConnections() {
@@ -62,5 +63,9 @@ public class ConnectionManager {
             logger.info("All connections closed and clients removed.");
         }
     }
+    public List<ClientManager> getClients() {
+        return Collections.unmodifiableList(clients); // Prevents direct modification
+    }
+
 }
 

@@ -31,6 +31,7 @@ public class ViewTerminal implements View {
         System.out.println(printMessage.toString());
     }
 
+    // TODO: move input to controller
     @Override
     public void requestPlayers() {
         int n = -1;
@@ -42,6 +43,7 @@ public class ViewTerminal implements View {
         providePlayers(n);
     }
 
+    // TODO: move input to controller
     private int getNumPlayers() {
         System.out.print("How many players?\n> ");
         String nStr = input.nextLine();
@@ -49,12 +51,13 @@ public class ViewTerminal implements View {
         try {
             n = Integer.parseInt(nStr);
         } catch (NumberFormatException e) {
-            System.out.println("Pease enter a digit between 2 and 9.");
+            System.out.println("Please enter a digit between 2 and 9.");
             // these numbers are not enforced yet!
         }
         return n;
     }
 
+    // TODO: move input to controller
     private void providePlayers(int n) {
         for (int i = 0; i < n; i++) {
             System.out.print("Please provide user ID / name of player " + (i + 1) + "\n> ");
@@ -63,6 +66,7 @@ public class ViewTerminal implements View {
         }
     }
 
+    // TODO: change signature, remove inputs, instead create getter in model
     @Override
     public void takeTurn(String[] hand, boolean hasPlayedCard) {
         clearTerminal();
@@ -74,15 +78,13 @@ public class ViewTerminal implements View {
         turnActions(hand, hasPlayedCard);
     }
 
+    // TODO: move input to controller
     private void waitForUserConfirmation() {
         System.out.println("Press enter to start your turn.");
         input.nextLine();
     }
 
-    // enklaste: modell håller all info, view titttar på modellen och ritar upp den.
-    // hur ska view uppdatera? modell skickar signal, view tittar och på
-    // ok view beroende av modell, men fxml inte!
-
+    // TODO: move input to controller
     private void turnActions(String[] hand, boolean hasPlayedCard) {
         System.out.print("> ");
         String ans = input.nextLine();
@@ -94,6 +96,7 @@ public class ViewTerminal implements View {
         System.out.flush();
     }
 
+    // TODO: move to controller
     private void handleInput(String ans, int handSize, boolean hasPlayedCard) {
         boolean givenCorrectInput = false;
         if (ans.matches("^(\\d+|\\+|[Ee])$")) {
@@ -114,12 +117,13 @@ public class ViewTerminal implements View {
             } // these should be the only options possible for the regex
         }
         if (!givenCorrectInput) {
-            System.out.println("Pease enter one of the numbers corresponding to a card in your hand.\n" + //
+            System.out.println("Please enter one of the numbers corresponding to a card in your hand.\n" + //
                     "Or enter + to draw a card, E to end your turn.");
             waitForUserConfirmation();
         }
     }
 
+    // TODO: change signature, remove inputs, instead create getter in model
     private void showHand(String[] hand) {
         System.out.println("Player hand:");
         String[] message = new String[hand.length];
@@ -133,17 +137,18 @@ public class ViewTerminal implements View {
 
     @Override
     public void announceBadMove() {
-        // clearTerminal();
         System.out.println("That selected card cannot be played!");
-        waitForUserConfirmation();
+        waitForUserConfirmation(); 
     }
 
+    // TODO: change signature, remove inputs, instead create getter in model
     @Override
     public void announceWinner(String name) {
         clearTerminal();
         System.out.println("The winner is " + name + "!!");
     }
 
+    // TODO: change signature, remove inputs, instead create getter in model
     @Override
     public void startNextPlayerTurn(String name) {
         clearTerminal();
@@ -154,7 +159,6 @@ public class ViewTerminal implements View {
 
     @Override
     public void announceMustPlayCard() {
-        // clearTerminal();
         System.out.println("You must play a card before ending your turn!");
         waitForUserConfirmation();
     }
