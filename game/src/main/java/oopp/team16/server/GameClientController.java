@@ -16,10 +16,8 @@ public class GameClientController {
     }
 
     public void start() {
-        // Start a thread to listen for server messages
-        new Thread(this::listenForServerMessages).start();
         Scanner scanner = new Scanner(System.in);
-
+        listenForServerMessages();
         // Loop to send user commands
         while (true) {
             System.out.println("Enter a command:");
@@ -38,17 +36,21 @@ public class GameClientController {
 
     private void listenForServerMessages() {
         try {
-            while (true) {
-                String jsonMessage = gameClient.receiveMessage(); // Read JSON string from server
-                if (jsonMessage != null) {
-                    GameMessage receivedMessage = new Gson().fromJson(jsonMessage, GameMessage.class); // Deserialize JSON to GameMessage object
-                    processServerMessage(receivedMessage); // Process the message based on its type
+            new Thread(() -> {
+                while (true) {
+                    String jsonMessage = gameClient.receiveMessage(); // Read JSON string from server
+                    if (jsonMessage != null) {
+                        GameMessage receivedMessage = new Gson().fromJson(jsonMessage, GameMessage.class); // Deserialize JSON to GameMessage object
+                        processServerMessage(receivedMessage); // Process the message based on its type
+                    }
                 }
-            }
-        } catch (Exception e) {
-            logger.severe("Error while listening to server: " + e.getMessage());
+            }).start();
         }
-    }
+        catch(Exception e){
+                logger.severe("Error while listening to server: " + e.getMessage());
+            }
+        }
+
 
     private void processServerMessage(GameMessage message) {
         switch (message.getType()) {
@@ -73,6 +75,7 @@ public class GameClientController {
         }
     }
 }
+
 
 
 
