@@ -1,6 +1,8 @@
+
+/*
 package oopp.team16.controller;
 
-import oopp.team16.view.GameView;
+//import oopp.team16.view.GameView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -16,6 +18,7 @@ public class BunAction {
     public JButton playCardButton = new JButton("Play a Card");
     public JButton nameButton = new JButton("Name");
     public JButton leaveButton = new JButton("Leave");
+    public  JButton unoButton = new JButton("UNO");
     public JTextField portNumber = new JTextField("Enter the port");
     public JTextField name = new JTextField("Enter your name");
 
@@ -29,7 +32,7 @@ public class BunAction {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameView gameView = new GameView();
+                //GameView gameView = new GameView();
             }
         });
 
@@ -88,3 +91,6 @@ public class BunAction {
         return port.matches("\\d{5}");
     }
 }
+
+
+ */

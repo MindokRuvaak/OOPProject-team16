@@ -23,10 +23,11 @@
   <dependencies>
 
     <dependency>
-      <groupId>com.badlogicgames.gdx</groupId>
-      <artifactId>gdx</artifactId>
-      <version>1.13.0</version>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>24-ea+19</version>
     </dependency>
+
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -39,6 +40,16 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>20</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      
     </dependency>
   </dependencies>
   <build>
@@ -165,7 +176,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>8</source><target>8</target></configuration></plugin>
     </plugins>
   </build>
   <reporting>
@@ -177,4 +188,21 @@
       </plugin>
     </plugins>
   </reporting>
+
+
+  <dependencyManagement>
+  
+
+    <dependencies>
+    
+
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>20</version>
+      </dependency>
+
+    </dependencies>
+
+  </dependencyManagement>
 </project>
