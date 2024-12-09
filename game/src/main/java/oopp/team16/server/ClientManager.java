@@ -10,6 +10,7 @@ public class ClientManager implements Runnable {
     private final Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+
     public ClientManager(Socket socket) {
         this.clientSocket = socket;
     }

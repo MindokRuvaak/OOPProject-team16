@@ -36,45 +36,6 @@ public class GameClientController {
         }
     }
 
-    /*private GameMessage parseCommand(String command) { //
-        GameMessage message = new GameMessage();
-        String[] parts = command.split(" ", 2); // Split command into type and arguments
-
-        if (parts.length < 1) {
-            return null; // Invalid command
-        }
-
-        String type = parts[0];
-        message.setType(type);
-        message.setSender("Client"); // Replace with the client's identifier
-
-        // Add additional data based on the command type
-        switch (type) {
-            case "play_card":
-                if (parts.length > 1) {
-                    Map<String, String> data = new HashMap<>();
-                    data.put("card", parts[1]); // e.g., "play_card Red-5"
-                    message.setData(data);
-                } else {
-                    return null; // Missing card data
-                }
-                break;
-            case "skip_turn":
-                message.setData(new HashMap<>()); // Empty map
-                break;
-            case "quit":
-                message.setData(new HashMap<>()); // Empty map
-                System.out.println("Exiting game...");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Unknown command.");
-                return null;
-        }
-
-        return message;
-    }*/
-
     private void listenForServerMessages() {
         try {
             while (true) {
@@ -111,7 +72,6 @@ public class GameClientController {
                 logger.warning("Unknown message type received: " + message.getType());
         }
     }
-
 }
 
 
