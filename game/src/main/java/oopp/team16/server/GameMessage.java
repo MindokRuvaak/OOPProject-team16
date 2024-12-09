@@ -5,7 +5,7 @@ import java.util.Map;
 public class GameMessage {
     private String type;
     private String sender;
-    private Map<String, String> data;
+    private Map<String, Object> data;
 
     // Getters and setters
     public String getType() {
@@ -24,11 +24,11 @@ public class GameMessage {
         this.sender = sender;
     }
 
-    public Map<String, String> getData() {
+    public Map<String, Object> getData() {
         return data;
     }
 
-    public void setData(Map<String, String> data) {
+    public void setData(Map<String, Object> data) {
         this.data = data;
     }
 }
