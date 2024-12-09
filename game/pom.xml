@@ -23,9 +23,16 @@
   <dependencies>
 
     <dependency>
-      <groupId>com.badlogicgames.gdx</groupId>
-      <artifactId>gdx</artifactId>
-      <version>1.13.0</version>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>24-ea+19</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.10</version>
     </dependency>
 
     <dependency>
@@ -48,7 +55,7 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>20</version>
+
     </dependency>
   </dependencies>
   <build>
@@ -187,4 +194,21 @@
       </plugin>
     </plugins>
   </reporting>
+
+
+  <dependencyManagement>
+
+
+    <dependencies>
+
+
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>20</version>
+      </dependency>
+
+    </dependencies>
+
+  </dependencyManagement>
 </project>

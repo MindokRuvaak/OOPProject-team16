@@ -1,6 +1,7 @@
 package oopp.team16.server;
 
 import java.net.ServerSocket;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class GameServer {
@@ -11,6 +12,12 @@ public class GameServer {
     private final int maxPlayers;
 
     //TODO: kika vad som bör vara private och public. typ allt är public just nu.
+    // lös parsecommand grejen
+    // ge gameclient.closeconnection ett hem eller ta bort.
+    // fixa namn åt clients
+    // vet ej om en messagemanager behövs.
+    // finns småkommentarer i olika filer som beskriver mer issues.
+    // nu när vi har en rough view är det möjligt att testa mer.
 
     public GameServer(int port, int maxPlayers) {
         this.port = port;
@@ -31,6 +38,12 @@ public class GameServer {
         }
     }
 
+    public void broadcastMessage(GameMessage message) {
+        List<ClientManager> clients = connectionManager.getClients();
+        for (ClientManager client : clients) {
+            client.sendMessageToClient(message);
+        }
+    }
 
     public void shutdown() {
         if (connectionManager != null) {
@@ -44,4 +57,5 @@ public class GameServer {
 
         logger.info("GameServer shutdown completed.");
     }
+
 }

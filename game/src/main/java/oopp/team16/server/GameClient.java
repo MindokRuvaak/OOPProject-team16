@@ -1,5 +1,7 @@
 package oopp.team16.server;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
@@ -28,19 +30,32 @@ public class GameClient {
         }
     }
 
-    public void sendMessage(String message) {
-        if (out != null) {
-            out.println(message);
-        } else {
-            logger.warning("Attempted to send a message but the output stream is null.");
+    public void closeConnection() { // detta är för om klienten vill closea connection. ska kallas på av en controller
+        try {
+            if (in != null) in.close();
+            if (out != null) out.close();
+            if (clientSocket != null) clientSocket.close();
+        } catch (IOException e) {
+            logger.severe("Error closing connection: " + e.getMessage());
         }
     }
 
-    public GameClientController getController() {
-        return controller;
+    public void sendMessage(GameMessage message) {
+        try {
+            if (out != null) {
+                String jsonMessage = new Gson().toJson(message); // Convert GameMessage object to JSON
+                out.println(jsonMessage); // Send JSON to server
+                out.flush(); // Ensure the message is sent immediately
+            } else {
+                logger.warning("Output stream is null.");
+            }
+        } catch (Exception e) {
+            logger.severe("Error sending message: " + e.getMessage());
+        }
     }
 
-    /*public String receiveMessage() {
+
+    public String receiveMessage() {
         try {
             if (in != null) {
                 return in.readLine(); // Reads a single line from the server
@@ -51,15 +66,9 @@ public class GameClient {
             logger.severe("Error reading from server: " + e.getMessage());
         }
         return null;
-    }*/
+    }
 
-    public void closeConnection() { // detta är för om klienten vill closea connection. ska kallas på av en controller
-        try {
-            if (in != null) in.close();
-            if (out != null) out.close();
-            if (clientSocket != null) clientSocket.close();
-        } catch (IOException e) {
-            logger.severe("Error closing connection: " + e.getMessage());
-        }
+    public GameClientController getController() {
+        return controller;
     }
 }

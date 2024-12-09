@@ -3,12 +3,13 @@ package oopp.team16.server;
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
+import com.google.gson.Gson;
 
 public class ClientManager implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
-    private PrintWriter out; //kommer användas senare?
-
+    private PrintWriter out;
+    private BufferedReader in;
     public ClientManager(Socket socket) {
         this.clientSocket = socket;
     }
@@ -17,7 +18,7 @@ public class ClientManager implements Runnable {
     public void run() {
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // ska denna vara ett field tsm med printwriter? idk
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // ska denna vara ett field tsm med printwriter? idk
 
             String message;
             while ((message = in.readLine()) != null) {
@@ -37,6 +38,17 @@ public class ClientManager implements Runnable {
             }
         } catch (IOException ex) {
             logger.warning("Error closing client connection: " + ex.getMessage());
+        }
+    }
+
+    public void sendMessageToClient(GameMessage message) {
+        if (out != null) {
+            Gson gson = new Gson();
+            String jsonMessage = gson.toJson(message);
+            out.println(jsonMessage);
+            out.flush();
+        } else {
+            logger.warning("Output stream is null for client.");
         }
     }
 
