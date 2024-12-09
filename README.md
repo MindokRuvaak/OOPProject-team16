@@ -10,6 +10,17 @@ We have used Maven to create this project meaning as long as your IDE recognices
 
 https://stackoverflow.com/questions/15046764/intellij-idea-not-recognizing-classes-specified-in-maven-dependencies
 
+If you recieve the following error message; 
+*JavaFX runtime components are missing, and are required to run this application*
+that means the project cannot find your JavaFX installation. To solve this if you use intellij please see: 
+
+https://stackoverflow.com/questions/51478675/error-javafx-runtime-components-are-missing-and-are-required-to-run-this-appli 
+
+If you are using vscode create a launch.json and add 
+
+"vmArgs": "--module-path \"path/to/your/javafx/installation/lib\" --add-modules javafx.controls,javafx.fxml"
+
+to the configuration for the AppWindow launcher. 
 
 
 If you (a peer-reviewer) have issues running the code or encounter a bug please do create a new issue here on git <3
