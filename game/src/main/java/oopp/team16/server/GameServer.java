@@ -54,13 +54,16 @@ public class GameServer {
         if (connectionManager != null) {
             connectionManager.closeConnections();
         } else {
-            logger.warning("ConnectionManager is null. Skipping connection cleanup.");  // detta bör ändras till ett bättre meddelande.
+            logger.warning("No active connections to close.");
         }
 
-        ShutdownManager shutdownManager = new ShutdownManager();
-        shutdownManager.stopServer(serverSocket);
-
+        if (serverSocket != null && !serverSocket.isClosed()) {
+            ShutdownManager shutdownManager = new ShutdownManager();
+            shutdownManager.stopServer(serverSocket);
+            logger.info("Server socket closed.");
+        } else {
+            logger.warning("Server socket was already closed.");
+        }
         logger.info("GameServer shutdown completed.");
     }
-
 }
