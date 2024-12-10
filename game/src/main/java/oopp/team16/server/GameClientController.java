@@ -9,46 +9,59 @@ public class GameClientController {
     private static final Logger logger = Logger.getLogger(GameClientController.class.getName());
     private final GameClient gameClient;
 
+
     public GameClientController(GameClient gameClient) {
         this.gameClient = gameClient;
     }
 
-    public void start() {
+    /*public void start() {
         Scanner scanner = new Scanner(System.in);
+        Gson gson = new Gson();
         listenForServerMessages();
+
         // Loop to send user commands
         while (true) {
-            System.out.println("Enter a command:");
+            logger.info("Enter a JSON command:");
             String command = scanner.nextLine();
+            try {
+                // Deserialize the command into a GameMessage object
+                GameMessage message = gson.fromJson(command, GameMessage.class);
 
-            // Parse command into a GameMessage
-            GameMessage message = parseCommand(command);
-
-            if (message != null) {
-                gameClient.sendMessage(message); // Send the structured message
-            } else {
-                System.out.println("Invalid command. Please try again.");
+                if (message != null && message.getType() != null) {
+                    gameClient.sendMessage(message);
+                    logger.info("Sent message: " + message);
+                } else {
+                    logger.warning("Invalid command format. Ensure the JSON is correctly structured.");
+                }
+            } catch (Exception e) {
+                logger.severe("Error parsing JSON command: " + e.getMessage());
+                logger.warning("User entered an invalid JSON command. Prompting again.");
             }
         }
+    }*/
+
+    public void start() {
+        listenForServerMessages();
+
+        // Send a test message to the server
+        GameMessage message = new GameMessage("test_message", "Client1");
+        message.addData("content", "This is a test message from the client.");
+        gameClient.sendMessage(message);
+        logger.info("Sent test message to server: " + message);
     }
 
-    private void listenForServerMessages() {
-        try {
-            new Thread(() -> {
-                while (true) {
-                    String jsonMessage = gameClient.receiveMessage(); // Read JSON string from server
-                    if (jsonMessage != null) {
-                        GameMessage receivedMessage = new Gson().fromJson(jsonMessage, GameMessage.class); // Deserialize JSON to GameMessage object
-                        processServerMessage(receivedMessage); // Process the message based on its type
-                    }
-                }
-            }).start();
-        }
-        catch(Exception e){
-                logger.severe("Error while listening to server: " + e.getMessage());
-            }
-        }
 
+
+    private void listenForServerMessages() {
+        new Thread(() -> {
+            while (true) {
+                GameMessage receivedMessage = gameClient.receiveMessage(); // Now returns a GameMessage
+                if (receivedMessage != null) {
+                    processServerMessage(receivedMessage);
+                }
+            }
+        }).start();
+    }
 
     private void processServerMessage(GameMessage message) {
         switch (message.getType()) {

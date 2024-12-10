@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 public class GameClient {
     private static final Logger logger = Logger.getLogger(GameClient.class.getName());
+    private static final Gson gson = new Gson();
     private Socket clientSocket;
     private BufferedReader in;
     private PrintWriter out;
@@ -31,38 +32,48 @@ public class GameClient {
         try {
             if (in != null) in.close();
             if (out != null) out.close();
-            if (clientSocket != null) clientSocket.close();
+            if (clientSocket != null && !clientSocket.isClosed()) clientSocket.close();
+            logger.info("Connection to server closed successfully.");
         } catch (IOException e) {
             logger.severe("Error closing connection: " + e.getMessage());
         }
     }
 
     public void sendMessage(GameMessage message) {
+        if (out == null) {
+            logger.warning("Cannot send message: Output stream is not initialized.");
+            return;
+        }
         try {
-            if (out != null) {
-                Gson gson = new Gson();
-                String jsonMessage = gson.toJson(message);
-                out.println(jsonMessage);
-                out.flush();
-            } else {
-                logger.warning("Output stream is null.");
-            }
+            String jsonMessage = gson.toJson(message);
+            out.println(jsonMessage);
+            out.flush();
+            logger.info("Sent message to server: " + jsonMessage);
         } catch (Exception e) {
-            logger.severe("Error sending message: " + e.getMessage());
+            logger.severe("Failed to send message: " + e.getMessage());
         }
     }
 
-
-    public String receiveMessage() {
+    public GameMessage receiveMessage() {
+        if (in == null) {
+            logger.warning("Cannot receive message: Input stream is not initialized.");
+            return null;
+        }
         try {
-            if (in != null) {
-                return in.readLine(); // Reads a single line from the server
+            String jsonMessage = in.readLine();
+            if (jsonMessage != null) {
+                logger.info("Received raw message from server: " + jsonMessage);
+                // Deserialize the JSON string into a GameMessage object
+                return gson.fromJson(jsonMessage, GameMessage.class);
             } else {
-                logger.warning("Input stream is null.");
+                logger.warning("Received null or end-of-stream from server.");
             }
         } catch (IOException e) {
-            logger.severe("Error reading from server: " + e.getMessage());
+            logger.severe("Error reading message from server: " + e.getMessage());
+        } catch (Exception e) {
+            logger.severe("Error deserializing message: " + e.getMessage());
         }
         return null;
     }
+
 }

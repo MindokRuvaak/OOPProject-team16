@@ -63,6 +63,7 @@ public class ConnectionManager {
             logger.info("All connections closed and clients removed.");
         }
     }
+
     public List<ClientManager> getClients() {
         return Collections.unmodifiableList(clients); // Prevents direct modification
     }

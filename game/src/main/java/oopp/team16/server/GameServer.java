@@ -1,5 +1,6 @@
 package oopp.team16.server;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.List;
 import java.util.logging.Logger;
@@ -51,19 +52,22 @@ public class GameServer {
 
 
     public void shutdown() {
+        logger.info("Shutting down GameServer...");
         if (connectionManager != null) {
             connectionManager.closeConnections();
         } else {
-            logger.warning("No active connections to close.");
+            logger.warning("ConnectionManager is null. Skipping connection cleanup.");
         }
 
-        if (serverSocket != null && !serverSocket.isClosed()) {
-            ShutdownManager shutdownManager = new ShutdownManager();
-            shutdownManager.stopServer(serverSocket);
-            logger.info("Server socket closed.");
-        } else {
-            logger.warning("Server socket was already closed.");
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+                logger.info("Server socket closed.");
+            }
+        } catch (IOException e) {
+            logger.severe("Error while closing server socket: " + e.getMessage());
         }
+
         logger.info("GameServer shutdown completed.");
     }
 }

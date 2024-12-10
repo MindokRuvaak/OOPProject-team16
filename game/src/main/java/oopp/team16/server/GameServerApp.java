@@ -1,46 +1,52 @@
 package oopp.team16.server;
 
-import java.util.logging.Logger;
+import com.google.gson.Gson;
+
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class GameServerApp {
     private static final Logger logger = Logger.getLogger(GameServerApp.class.getName());
+    private static final Gson gson = new Gson();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter server port:");
+        logger.info("Enter server port:");
         int port = scanner.nextInt();
 
-        System.out.println("Enter max number of players:");
+        logger.info("Enter max number of players:");
         int maxPlayers = scanner.nextInt();
         scanner.nextLine(); // Consume the newline left over
 
         GameServer gameServer = null;
 
         try {
-            //Model model = new Model();   // behövs inte just nu då multiplayer inte har gameplay än
-            //JSON för att skicka uppdateringar mellan model och clients med server som intermediary
             gameServer = new GameServer(port, maxPlayers);
             gameServer.startup();
-            System.out.println("Server started successfully.");
-            System.out.println("Type 'shutdown' to stop the server, or type other commands to simulate gameplay.");
+            logger.info("Server started successfully.");
+            logger.info("Type 'shutdown' to stop the server, or enter a JSON command to broadcast to all clients.");
 
             while (true) {
-                System.out.println("Send a command to all connected clients:");
-                String command = scanner.nextLine();
+                logger.info("Awaiting command (JSON or 'shutdown'):");
+                String command = scanner.nextLine().trim();
 
-                if ("shutdown".equalsIgnoreCase(command.trim())) {
-                    System.out.println("Shutting down the server...");
+                if ("shutdown".equalsIgnoreCase(command)) {
+                    logger.info("Shutting down the server...");
                     break;
                 }
-                // Create a GameMessage from the command
-                GameMessage message = parseCommand(command);
 
-                if (message != null) {
-                    gameServer.broadcastMessage(message); // Broadcast the GameMessage
-                } else {
-                    System.out.println("Invalid command. Try again.");
+                // Try to deserialize the input into a GameMessage
+                try {
+                    GameMessage message = gson.fromJson(command, GameMessage.class);
+                    if (message != null && message.getType() != null) {
+                        gameServer.broadcastMessage(message);
+                        logger.info("Broadcasted message: " + message);
+                    } else {
+                        logger.warning("Invalid GameMessage structure. Ensure the JSON has a 'type' field.");
+                    }
+                } catch (Exception e) {
+                    logger.warning("Failed to parse command as JSON. Ensure it is a valid GameMessage.");
                 }
             }
         } catch (Exception ex) {
@@ -50,10 +56,11 @@ public class GameServerApp {
             }
         } finally {
             if (gameServer != null) {
+                logger.info("Calling GameServer.shutdown()...");
                 gameServer.shutdown();
             }
             scanner.close();
-            System.out.println("Server has stopped.");
+            logger.info("Server has stopped.");
         }
     }
 }
