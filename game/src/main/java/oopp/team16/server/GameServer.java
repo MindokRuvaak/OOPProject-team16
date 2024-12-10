@@ -41,9 +41,14 @@ public class GameServer {
     public void broadcastMessage(GameMessage message) {
         List<ClientManager> clients = connectionManager.getClients();
         for (ClientManager client : clients) {
-            client.sendMessageToClient(message);
+            try {
+                client.sendMessageToClient(message);
+            } catch (Exception e) {
+                logger.warning("Failed to send message to client: " + client.getClientSocket().getInetAddress() + ". Error: " + e.getMessage());
+            }
         }
     }
+
 
     public void shutdown() {
         if (connectionManager != null) {
