@@ -29,8 +29,8 @@ public class GameClientApp {
 
         try {
             GameClient gameClient = new GameClient(serverAddress, port);
-            gameClient.getController().start();
-
+            GameClientController controller = new GameClientController((gameClient));
+            controller.start();
         } catch (RuntimeException e) {
             System.out.println("Could not connect to server. Please try again later.");
         } finally {

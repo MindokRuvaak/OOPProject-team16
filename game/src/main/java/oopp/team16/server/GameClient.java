@@ -1,8 +1,6 @@
 package oopp.team16.server;
 
 import com.google.gson.Gson;
-import oopp.team16.Utility.GameMessageParser;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
@@ -12,10 +10,8 @@ public class GameClient {
     private Socket clientSocket;
     private BufferedReader in;
     private PrintWriter out;
-    private final GameClientController controller;
 
     public GameClient(String serverAddress, int port) {
-        this.controller = new GameClientController(this);
         connectToServer(serverAddress, port);
     }
 
@@ -44,8 +40,10 @@ public class GameClient {
     public void sendMessage(GameMessage message) {
         try {
             if (out != null) {
-                out.println(GameMessageParser.serialize(message)); // Send JSON to server
-                out.flush(); // Ensure the message is sent immediately
+                Gson gson = new Gson();
+                String jsonMessage = gson.toJson(message);
+                out.println(jsonMessage);
+                out.flush();
             } else {
                 logger.warning("Output stream is null.");
             }
@@ -66,9 +64,5 @@ public class GameClient {
             logger.severe("Error reading from server: " + e.getMessage());
         }
         return null;
-    }
-
-    public GameClientController getController() {
-        return controller;
     }
 }

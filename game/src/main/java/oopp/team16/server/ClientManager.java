@@ -30,13 +30,14 @@ public class ClientManager implements Runnable {
             logger.warning("Client disconnected or error occurred: " + ex.getMessage());
         }
     }
-
         public void closeConnection() {
-        try {
-            if (clientSocket != null && !clientSocket.isClosed()) {
-                clientSocket.close();
-                logger.info("Closing connection for client: " + clientSocket.getInetAddress().getHostAddress());
-            }
+            try {
+                if (clientSocket != null && !clientSocket.isClosed()) {
+                    clientSocket.close();
+                    logger.info("Closing connection for client: " + clientSocket.getInetAddress().getHostAddress());
+                }
+                if (in != null) in.close();
+                if (out != null) out.close();
         } catch (IOException ex) {
             logger.warning("Error closing client connection: " + ex.getMessage());
         }
