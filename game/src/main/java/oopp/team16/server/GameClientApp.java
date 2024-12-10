@@ -8,15 +8,15 @@ public class GameClientApp {
         String serverAddress;
         int port;
 
-        while (true) { //kollar så att address är valid, går att göra bättre med regex? det är ju antingen localhost, eller siffror och punkter.
-            System.out.println("Enter the server address (e.g., localhost or an IP):");  //allt detta behövs ändras, gameclientapp kan fortfarande existera som gameclient_init(?)
+        while (true) { // kollar så att address är valid, går att göra bättre med regex? det är ju antingen localhost, eller siffror och punkter.
+            System.out.println("Enter the server address (e.g., localhost or an IP):");  // allt detta behövs ändras, gameclientapp kan fortfarande existera som gameclient_init(?)
                                                                                          // och ta in samma parametrar från user input. vi slipper då while-loops, men behöver andra checks istället.
             serverAddress = scanner.nextLine();
             if (!serverAddress.isEmpty()) break;
             System.out.println("Server address cannot be empty.");
         }
 
-        while (true) { //kollar så att port är valid, tror den är fine.
+        while (true) { // kollar så att port är valid, tror den är fine.
             try {
                 System.out.println("Enter the server port (e.g., 12345):");
                 port = Integer.parseInt(scanner.nextLine());
