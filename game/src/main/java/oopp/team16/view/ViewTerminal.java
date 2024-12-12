@@ -109,3 +109,4 @@ public class ViewTerminal implements View {
         System.out.print("What color do you declare the wild?\n> ");
     }
 }
+
