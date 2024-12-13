@@ -2,8 +2,10 @@ package oopp.team16.server;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 public class GameClient extends MessageHandler {
+    private static final Logger logger = Logger.getLogger(GameClient.class.getName());
     private Socket clientSocket;
 
     public GameClient(String serverAddress, int port) {
@@ -24,15 +26,12 @@ public class GameClient extends MessageHandler {
     public void closeClientConnection() {
         logger.info("Closing client connection...");
         try {
-            closeStreams(); // Close input/output streams
-            if (clientSocket != null && !clientSocket.isClosed()) {
-                clientSocket.close();
-                logger.info("Client socket closed.");
-            }
+            closeStreams();
+            clientSocket.close();
+            logger.info("Client socket closed.");
         } catch (IOException e) {
             logger.severe("Error during client connection closure: " + e.getMessage());
         }
-        logger.info("Client connection closed successfully.");
     }
 }
 

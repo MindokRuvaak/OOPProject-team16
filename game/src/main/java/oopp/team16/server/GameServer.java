@@ -3,8 +3,10 @@ package oopp.team16.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class GameServer {
+    private static final Logger logger = Logger.getLogger(GameServer.class.getName());
 
     private final int port;
     private final int maxPlayers;
@@ -16,30 +18,17 @@ public class GameServer {
         this.maxPlayers = maxPlayers;
     }
 
-    public void startup() {
-        StartupManager startupManager = new StartupManager();
-        this.serverSocket = startupManager.startServer(port);
-
-        if (serverSocket != null) {
-            this.connectionManager = new ConnectionManager(serverSocket, maxPlayers);
-            connectionManager.acceptConnections();
-        } else {
-        }
+    public void startup() throws IOException {
+        this.serverSocket = new ServerSocket(port);
+        this.connectionManager = new ConnectionManager(serverSocket, maxPlayers);
+        new Thread(connectionManager::acceptConnections, "ConnectionManagerThread").start();
+        logger.info("GameServer started successfully on port " + port);
     }
 
-    public void shutdown() {
-        if (connectionManager != null) {
-            connectionManager.closeConnections();
-        } else {
-        }
-
-        try {
-            if (serverSocket != null && !serverSocket.isClosed()) {
-                serverSocket.close();
-            }
-        } catch (IOException e) {
-        }
-
+    public void shutdown() throws IOException {
+        connectionManager.closeConnections();
+        serverSocket.close();
+        logger.info("GameServer shutdown completed.");
     }
 
     public void broadcastMessage(GameMessage message) {
@@ -48,6 +37,7 @@ public class GameServer {
             try {
                 client.sendMessage(message);
             } catch (Exception e) {
+                logger.warning("Failed to send message to client"  + e.getMessage());
             }
         }
     }
