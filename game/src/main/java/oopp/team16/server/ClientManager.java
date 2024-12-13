@@ -2,8 +2,10 @@ package oopp.team16.server;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 public class ClientManager extends MessageHandler implements Runnable {
+    private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
     private volatile boolean running = true;
 
@@ -17,6 +19,7 @@ public class ClientManager extends MessageHandler implements Runnable {
             initializeStreams(clientSocket.getInputStream(), clientSocket.getOutputStream());
             listenForMessages();
         } catch (IOException e) {
+            logger.warning("Error initializing client connection: " + e.getMessage());
         } finally {
             closeServerConnection();
         }
@@ -26,6 +29,7 @@ public class ClientManager extends MessageHandler implements Runnable {
         while (running) {
             GameMessage message = receiveMessage();
             if (message == null) {
+                logger.info("Client disconnected or invalid message received, stopping listener.");
                 break;
             }
             processClientMessage(message);
@@ -33,29 +37,31 @@ public class ClientManager extends MessageHandler implements Runnable {
     }
 
     private void processClientMessage(GameMessage message) {
-        if (message == null || message.getType() == null) {
-            return;
+
+        logger.info("Processing message of type: " + message.getType());
+
+        switch (message.getType()) {
+            case "playerMove":
+                logger.info("Player " + message.getSender() + " played card: " + message.getData().get("cardPlayed"));
+                break;
+
+            case "chat_message":
+                logger.info("Chat message from " + message.getSender() + ": " + message.getData().get("message"));
+                break;
+
+            default:
+                logger.warning("Unknown message type received: " + message.getType());
         }
-
-        // Add your message-specific handling here
-    }
-
-    public void stopListening() {
-        running = false;
     }
 
     public void closeServerConnection() {
-        stopListening(); // Stop the listener thread
+        running = false;
         closeStreams();
         try {
-            if (clientSocket != null && !clientSocket.isClosed()) {
-                clientSocket.close(); // Close the socket
-            }
+            clientSocket.close();
         } catch (IOException e) {
+            logger.warning("Error closing client socket: " + e.getMessage());
         }
-    }
 
-    public Socket getClientSocket() {
-        return clientSocket;
     }
 }

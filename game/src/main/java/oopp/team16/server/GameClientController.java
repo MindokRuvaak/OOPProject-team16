@@ -20,28 +20,20 @@ public class GameClientController {
         handleUserCommands();
     }
 
-    private void handleUserCommands() {
+    public void handleUserCommands() {
         Scanner scanner = new Scanner(System.in);
         logger.info("Enter commands in JSON format or type 'exit' to quit:");
 
         while (true) {
             String command = scanner.nextLine().trim();
-
             if ("exit".equalsIgnoreCase(command)) {
-                logger.info("Calling GameClient.closeClientConnection...");
                 running = false;
                 gameClient.closeClientConnection();
-                logger.info("Finished calling GameClient.closeClientConnection.");
                 break;
             }
 
-            if (command.isEmpty()) {
-                logger.warning("Empty command received. Please enter a valid JSON command.");
-                continue;
-            }
-
             try {
-                GameMessage message = gson.fromJson(command, GameMessage.class);
+                GameMessage message = gson.fromJson(command, GameMessage.class); //måste kika mer på detta, om jag gör rätt.
                 if (message != null && message.getType() != null) {
                     gameClient.sendMessage(message);
                     logger.info("Sent message to server: " + message);
@@ -49,8 +41,7 @@ public class GameClientController {
                     logger.warning("Invalid JSON format. Ensure the command contains a 'type' field.");
                 }
             } catch (Exception e) {
-                logger.severe("Error parsing JSON command: " + e.getMessage());
-                logger.warning("Invalid command. Please enter a valid JSON string.");
+                logger.warning("Error parsing JSON command: " + e.getMessage());
             }
         }
     }
@@ -68,10 +59,6 @@ public class GameClientController {
     }
 
     private void processServerMessage(GameMessage message) {
-        if (message == null || message.getType() == null) {
-            logger.warning("Received null or malformed GameMessage from server.");
-            return;
-        }
 
         logger.info("Processing message of type: " + message.getType());
 
@@ -85,7 +72,7 @@ public class GameClientController {
                 break;
 
             case "game_state":
-                logger.info("Game state updated.");
+                logger.info("Game state updated: " + message.getData());
                 break;
 
             case "game_over":
@@ -100,4 +87,5 @@ public class GameClientController {
                 logger.warning("Unknown message type received: " + message.getType());
         }
     }
+
 }
