@@ -72,6 +72,7 @@ public class Player {
     }
 
     public void startTurn() {
+        resetTurnInfo();
         this.takingTurn = true;
     }
 
@@ -81,5 +82,12 @@ public class Player {
 
     public boolean stillTakingTurn() {
         return this.takingTurn;
+    }
+
+    // returns string containing the name of player and numer of cards in their hand
+    // seperated by a '':''
+    @Override
+    public String toString() {
+        return getName() + ":" + getHandSize();
     }
 }

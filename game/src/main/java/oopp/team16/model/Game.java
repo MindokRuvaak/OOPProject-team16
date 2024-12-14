@@ -37,15 +37,16 @@ public class Game {
     }
 
     void startGame() {
-        new Thread(() -> {
-            // Start the game loop in a new thread
-            gameLoop();
+        gameLoop();
+    }
 
-            // After the game loop ends, update UI on the JavaFX application thread
-            Platform.runLater(() -> {
-                announceWinner(this.currentPlayer.getName());
-            });
-        }).start();
+    void start() {
+        if (currentPlayer == null) {
+            nextTurn();
+            startTurn();
+            reUpDeck();
+            takeTurn();
+        }
     }
 
     public LinkedList<Player> getPlayers() {
@@ -53,11 +54,15 @@ public class Game {
     }
 
     Player getCurrentPlayer() {
-        return currentPlayer;
+        return this.currentPlayer;
     }
 
     Card getTopPlayedCard() {
         return playedCards.peek();
+    }
+
+    Card[] getPlayerHand() {
+        return this.currentPlayer.getHand();
     }
 
     // Main game loop,
@@ -71,7 +76,6 @@ public class Game {
                 takeTurn();
             }
             endTurn();
-
             noWinner = checkWinner();
         }
     }
@@ -97,7 +101,7 @@ public class Game {
     private void startTurn() {
         this.currentPlayer.startTurn();
         for (GameListener listener : listeners) {
-            listener.startPlayerTurn(currentPlayer);
+            listener.startPlayerTurn();
         }
     }
 
@@ -143,7 +147,7 @@ public class Game {
 
     }
 
-    public void AddListener(GameListener gameListener) {
+    void AddListener(GameListener gameListener) {
         listeners.add(gameListener);
     }
 

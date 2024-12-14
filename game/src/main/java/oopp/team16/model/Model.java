@@ -10,7 +10,7 @@ import oopp.team16.model.gameLogic.Cards.Card;
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
 public class Model implements GameListener { // maybe change name ?ModelGameSetup?
     private List<ModelListener> listeners;
-    public final Game game;
+    private final Game game;
     private final DeckFactory df;
     private final List<Player> players;
 
@@ -22,10 +22,6 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         game.AddListener(this);
     }
 
-    public List<Player> getListOfPlayers() {
-        return players;
-    }
-
     public void initGame() {
         getPlayers();
         game.init(players);
@@ -33,6 +29,10 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
 
     public void startGame() {
         game.startGame();
+    }
+
+    public void start() {
+        game.start();
     }
 
     public void addPlayer(String name) {
@@ -56,7 +56,7 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
     @Override
     public void takePlayerTurn(Player currentPlayer) {
         for (ModelListener listener : listeners) {
-            listener.takeTurn(ToStringArray((currentPlayer.getHand())), currentPlayer.hasPlayedCard());
+            listener.takeTurn(ToStringArray((currentPlayer.getHand())));
         }
     }
 
@@ -97,9 +97,9 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
     }
 
     @Override
-    public void startPlayerTurn(Player currentPlayer) {
+    public void startPlayerTurn() {
         for (ModelListener listener : listeners) {
-            listener.startNextPlayerTurn(currentPlayer.getName());
+            listener.startNextPlayerTurn();
         }
     }
 
@@ -114,21 +114,23 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         return game.getCurrentPlayer().getName();
     }
 
-    public String getTopPlayedCardString() {
+    public String getTopPlayedCard() {
         return game.getTopPlayedCard().toString();
     }
 
-    // TODO: temporary methods, can change GameViewController's methods to not
-    // require the card or player classes and reduce dependencies / lower coupling
-    public Card[] getCurrentPlayerHand() {
-        return game.getCurrentPlayer().getHand();
+    public String[] getCurrentPlayerHand() {
+        return toStrings( game.getPlayerHand());
     }
 
-    public Player getCurrentPlayer() {
-        return game.getCurrentPlayer();
+    public String[] getListOfPlayers() {
+        return toStrings(players.toArray(new Player[0]));
     }
 
-    public Card getTopPlayedCard() {
-        return game.getTopPlayedCard();
+    private <U> String[] toStrings(U[] objectArray) {
+        String[] stringArray = new String[objectArray.length];
+        for (int i = 0; i < objectArray.length; i++) {
+            stringArray[i] = objectArray[i].toString();
+        }
+        return stringArray;
     }
 }
