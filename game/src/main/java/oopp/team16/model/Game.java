@@ -176,4 +176,16 @@ public class Game {
             announceBadMove();
         }
     }
+
+
+//check if these methods should be there
+
+    public void reverseTurn() { //???
+        Collections.reverse(players);
+        turnOrder = players.iterator();
+    }
+
+    public void chooseColor(){
+
+    }
 }
