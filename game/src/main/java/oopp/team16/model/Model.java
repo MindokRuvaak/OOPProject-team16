@@ -94,6 +94,10 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
 
     public void endTurn() {
         game.endCurrentPlayerTurn();
+        if (!game.getCurrentPlayer().stillTakingTurn()) {
+            // if player succesfully ended their turn
+            game.nextTurn();
+        }
     }
 
     @Override
@@ -132,5 +136,9 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
             stringArray[i] = objectArray[i].toString();
         }
         return stringArray;
+    }
+
+    public void nextPlayerTurn() {
+        game.endTurn();
     }
 }

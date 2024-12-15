@@ -2,7 +2,6 @@ package oopp.team16.model;
 
 import java.util.*;
 
-import javafx.application.Platform;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.GameLogic;
@@ -75,7 +74,7 @@ public class Game {
                 reUpDeck();
                 takeTurn();
             }
-            endTurn();
+            // endTurn();
             noWinner = checkWinner();
         }
     }
@@ -105,8 +104,9 @@ public class Game {
         }
     }
 
-    private void endTurn() {
+    void endTurn() {
         this.currentPlayer.resetTurnInfo();
+        this.currentPlayer.endTurn();
     }
 
     private void announceWinner(String name) {
@@ -115,7 +115,7 @@ public class Game {
         }
     }
 
-    private void nextTurn() {
+    void nextTurn() {
         if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
             this.turnOrder = this.players.iterator(); // reset iterator
         }
@@ -184,7 +184,7 @@ public class Game {
 
     void endCurrentPlayerTurn() {
         if (currentPlayer.hasPlayedCard()) {// TODO: can end turn if drawn 3 cards
-            currentPlayer.endTurn();
+            endTurn();
         } else {
             announceMustPlayCard();
         }
