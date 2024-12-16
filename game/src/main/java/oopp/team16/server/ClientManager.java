@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 public class ClientManager implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
-    private PrintWriter out; //kommer användas senare?
-
+    private PrintWriter out;
+    private BufferedReader in;
     public ClientManager(Socket socket) {
         this.clientSocket = socket;
     }
@@ -17,7 +17,7 @@ public class ClientManager implements Runnable {
     public void run() {
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // ska denna vara ett field tsm med printwriter? idk
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // ska denna vara ett field tsm med printwriter? idk
 
             String message;
             while ((message = in.readLine()) != null) {
@@ -37,6 +37,15 @@ public class ClientManager implements Runnable {
             }
         } catch (IOException ex) {
             logger.warning("Error closing client connection: " + ex.getMessage());
+        }
+    }
+
+    public void sendMessageToClient(String message) {
+        if (out != null) {
+            out.println(message);
+            out.flush();
+        } else {
+            logger.warning("Output stream is null for client.");
         }
     }
 
