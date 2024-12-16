@@ -26,7 +26,6 @@ public class CardFactory {
         return new SpecialCard(StdColors.black(), CardType.DRAW_FOUR, value, new DrawFourAction());
     }
 
-
     public Card createWildCard(int value){
         return new SpecialCard(StdColors.black(), CardType.WILDCARD, value, new WildCardAction());
     }
