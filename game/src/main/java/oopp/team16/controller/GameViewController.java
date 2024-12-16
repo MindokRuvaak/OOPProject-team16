@@ -16,6 +16,7 @@ import oopp.team16.model.ModelListener;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO: controller will not need to be ModelListener only view. may have to update observer methods
 public class GameViewController implements ModelListener {
 
     Model m = new Model();
@@ -102,19 +103,21 @@ public class GameViewController implements ModelListener {
     public void initialize() {
         m.addListener(this);
         m.initGame();
+        inputCard.setVisible(false);
+        winningPane.setVisible(false);
+        buttonDisplayHand.setVisible(false);
 
         buttonStart.setOnAction(event -> {
             String[] players = namesOf(m.getListOfPlayers());
             buttonStart.setVisible(false);
-            inputCard.setVisible(false);
-            winningPane.setVisible(false);
             playersHand.put(players[1], this.player2Hand);
             playersHand.put(players[0], this.player1Hand);
+            buttonDisplayHand.setVisible(true);
             m.start();
         });
 
         buttonDisplayHand.setOnAction(event -> {
-            // updateDisplay();
+            updateDisplay();
             buttonDisplayHand.setVisible(false);
         });
 
@@ -122,11 +125,10 @@ public class GameViewController implements ModelListener {
             endTurn();
         });
 
-        
         playDoneButton.setOnAction(event -> {
             closeCardCiew();
         });
-        
+
         buttonPlayDeck.setOnAction(event -> {
             drawCard();
         });
@@ -136,7 +138,7 @@ public class GameViewController implements ModelListener {
         });
     }
 
-    //player data contains name/id and number of cards in hand as name:num, 
+    // player data contains name/id and number of cards in hand as name:num,
     // this returns array in same order, but only with player names
     private String[] namesOf(String[] players) {
         String[] ns = new String[players.length];
@@ -145,6 +147,7 @@ public class GameViewController implements ModelListener {
         }
         return ns;
     }
+
     private String nameOf(String player) {
         return player.split(":")[0];
     }
@@ -182,9 +185,12 @@ public class GameViewController implements ModelListener {
     }
 
     public void endTurn() {
-        m.endTurn();
-        m.nextPlayerTurn();
-        updateDisplay();
+        if (m.endTurn()) {
+            // model.endTurn returns true if player sucessfully has ended their turn
+            m.nextPlayerTurn();
+            updateHide();
+            buttonDisplayHand.setVisible(true);
+        }
     }
 
     public void cardView() {
@@ -204,34 +210,17 @@ public class GameViewController implements ModelListener {
         try {
             int index = Integer.parseInt(input); // Convert input to integer
             playCard(index); // Call the method to play the card
-            System.out.println(index);
-
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a valid number.");
         }
     }
 
     public void playCard(int cardIndex) {
-        String currentPlayer = m.getCurrentPlayerID();
-        try {
-            HBox hbox = playersHand.get(currentPlayer);
-            if (hbox == null) {
-                System.err.println("No HBox found for player: " + currentPlayer);
-                throw new IllegalStateException("No HBox found for player: " + currentPlayer);
-            }
-            if (cardIndex < 0 || cardIndex > hbox.getChildren().size()) {
-                System.err.println("Invalid card index!");
-                throw new IllegalArgumentException("You cannot play this card");
-            }
-            m.playCard(cardIndex);
-
-        } catch (IllegalStateException | IndexOutOfBoundsException | IllegalArgumentException e) {
-            System.err.println("Error: " + e.getMessage());
-        } 
+        m.playCard(cardIndex);
         updateDisplay();
     }
 
-    // should also go to view
+    // move to view
     public void displayTopCard() {
         String startingCard = m.getTopPlayedCard();
         if (startingCard != null) {
@@ -247,6 +236,13 @@ public class GameViewController implements ModelListener {
         displayHands();
     }
 
+    // // move to view
+    public void updateHide() {
+        updateTurnLabel();
+        displayTopCard();
+        hideHands();
+    }
+
     // should go to view
     public void displayHands() {
         for (String p : m.getListOfPlayers()) {
@@ -259,12 +255,19 @@ public class GameViewController implements ModelListener {
         }
     }
 
-    // should go to view
+    // move to view
     public void displayHand(HBox hand) {
         hand.getChildren().clear(); // Clear existing cards
         for (String card : m.getCurrentPlayerHand()) {
             ImageView cardView = createCard(card); // Create an ImageView for each card
             hand.getChildren().add(cardView); // Add the card to the HBox
+        }
+    }
+
+    // move to view
+    private void hideHands() {
+        for (String p : m.getListOfPlayers()) {
+            displayBackOfHand(playersHand.get(nameOf(p)), handSizeOf(p));
         }
     }
 
@@ -309,14 +312,14 @@ public class GameViewController implements ModelListener {
     // TODO: implement observer pattern methods
 
     @Override
-    public void takeTurn(String[] hand) { // TODO: fix signature
-        updateDisplay();
+    public void takeTurn() { // TODO: fix signature
+        updateHide();
     }
 
     @Override
     public void announceBadMove() {
         // TODO: implement
-        System.out.println("cant play card");
+        System.out.println("cant play that card");
     }
 
     @Override

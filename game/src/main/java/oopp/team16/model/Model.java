@@ -54,9 +54,9 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
     }
 
     @Override
-    public void takePlayerTurn(Player currentPlayer) {
+    public void takePlayerTurn() {
         for (ModelListener listener : listeners) {
-            listener.takeTurn(ToStringArray((currentPlayer.getHand())));
+            listener.takeTurn();
         }
     }
 
@@ -92,12 +92,16 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         }
     }
 
-    public void endTurn() {
+    public boolean endTurn() {
         game.endCurrentPlayerTurn();
-        if (!game.getCurrentPlayer().stillTakingTurn()) {
+        boolean hasEnded = !game.getCurrentPlayer().stillTakingTurn();
+        if (hasEnded) {
             // if player succesfully ended their turn
             game.nextTurn();
+            //check if player won
+            game.checkWinner();
         }
+        return hasEnded;
     }
 
     @Override
@@ -139,6 +143,6 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
     }
 
     public void nextPlayerTurn() {
-        game.endTurn();
+        game.startTurn();
     }
 }

@@ -74,30 +74,29 @@ public class Game {
                 reUpDeck();
                 takeTurn();
             }
-            // endTurn();
-            noWinner = checkWinner();
+            noWinner = !checkWinner();
         }
     }
 
     private void reUpDeck() {
-        if(deck.isEmpty()){
-            Card  top = playedCards.pop();
+        if (deck.isEmpty()) {
+            Card top = playedCards.pop();
             deck.add(playedCards);
             playedCards.empty();
             playedCards.add(top);
         }
     }
 
-    private boolean checkWinner() {
-        boolean noWinner = true;
+    boolean checkWinner() {
+        boolean haveWinner = false;
         if (!currentPlayer.hasCards()) {
-            noWinner = false;
+            haveWinner = true;
             announceWinner(currentPlayer.getName());
         }
-        return noWinner;
+        return haveWinner;
     }
 
-    private void startTurn() {
+    void startTurn() {
         this.currentPlayer.startTurn();
         for (GameListener listener : listeners) {
             listener.startPlayerTurn();
@@ -142,7 +141,7 @@ public class Game {
 
     private void takeTurn() {
         for (GameListener listener : listeners) {
-            listener.takePlayerTurn(currentPlayer);
+            listener.takePlayerTurn();
         }
 
     }
@@ -160,7 +159,9 @@ public class Game {
     }
 
     private void tryPlayCard(int index) {
-        if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
+        if ((0 <= index && index < currentPlayer.getHandSize())
+                && GameRules.allowedPlay(currentPlayer.getCard(index),
+                        getTopPlayedCard())) {
             playCard(index);
         } else {
             announceBadMove();

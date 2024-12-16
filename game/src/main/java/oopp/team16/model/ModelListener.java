@@ -8,7 +8,7 @@ public interface ModelListener {
 
     void requestPlayers();
 
-    void takeTurn(String[] hand);
+    void takeTurn();
 
     void announceBadMove();
 

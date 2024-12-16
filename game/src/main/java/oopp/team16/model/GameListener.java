@@ -6,7 +6,7 @@ public interface GameListener {
 
     // void update();
 
-    void takePlayerTurn(Player currentPlayer);
+    void takePlayerTurn();
 
     void badMove();
 

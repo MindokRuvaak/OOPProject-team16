@@ -68,7 +68,8 @@ public class ViewTerminal implements View {
 
     // TODO: change signature, remove inputs, instead create getter in model
     @Override
-    public void takeTurn(String[] hand) {
+    public void takeTurn() {
+        String[] hand = m.getCurrentPlayerHand();
         clearTerminal();
         printGameState();
         showHand(hand);
