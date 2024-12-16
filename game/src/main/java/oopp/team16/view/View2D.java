@@ -1,6 +1,6 @@
-package oopp.team16.view;
+package main.java.oopp.team16.view;
 
-import oopp.team16.controller.ControllerTerminal;
+import main.java.oopp.team16.controller.ControllerTerminal;
 
 public class View2D /* implements View */ {
 

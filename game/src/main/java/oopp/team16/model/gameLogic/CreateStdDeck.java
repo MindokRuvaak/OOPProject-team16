@@ -1,10 +1,10 @@
-package oopp.team16.model.gameLogic;
+package main.java.oopp.team16.model.gameLogic;
 
 import java.util.Stack;
 
-import oopp.team16.model.gameLogic.Cards.*;
-import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
-import oopp.team16.model.gameLogic.Cards.Colors.Color;
+import main.java.oopp.team16.model.gameLogic.Cards.*;
+import main.java.oopp.team16.model.gameLogic.Cards.Colors.StdColors;
+import main.java.oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class CreateStdDeck implements DeckFactory {
 

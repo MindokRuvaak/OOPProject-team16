@@ -1,6 +1,6 @@
-package oopp.team16.view;
+package main.java.oopp.team16.view;
 
-import oopp.team16.model.ModelListener;
+import main.java.oopp.team16.model.ModelListener;
 
 public interface View extends ModelListener {
 

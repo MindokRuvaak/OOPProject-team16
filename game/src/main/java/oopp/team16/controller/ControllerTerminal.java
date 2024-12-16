@@ -1,8 +1,8 @@
-package oopp.team16.controller;
+package main.java.oopp.team16.controller;
 
 import java.util.Arrays;
 
-import oopp.team16.model.Model;
+import main.java.oopp.team16.model.Model;
 
 
 public class ControllerTerminal {
