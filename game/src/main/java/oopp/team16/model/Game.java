@@ -177,9 +177,6 @@ public class Game implements SpecialCardLogic{
         }
     }
 
-
-//check if these methods should be there
-
     public void reverseTurn() {
         Collections.reverse(players);
         turnOrder = players.iterator();
