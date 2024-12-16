@@ -60,14 +60,6 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         }
     }
 
-    private String[] ToStringArray(Card[] hand) {
-        String[] handStrings = new String[hand.length];
-        for (int i = 0; i < handStrings.length; i++) {
-            handStrings[i] = hand[i].toString();
-        }
-        return handStrings;
-    }
-
     public void playCard(int cardNumber) {
         // change from card number displayed to player to corresponding card index in
         // hand array

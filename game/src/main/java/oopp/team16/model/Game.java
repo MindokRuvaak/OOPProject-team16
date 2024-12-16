@@ -143,7 +143,6 @@ class Game {
         for (GameListener listener : listeners) {
             listener.takePlayerTurn();
         }
-
     }
 
     void AddListener(GameListener gameListener) {
