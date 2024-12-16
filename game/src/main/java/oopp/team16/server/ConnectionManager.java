@@ -3,9 +3,9 @@ package oopp.team16.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 public class ConnectionManager {
@@ -13,11 +13,13 @@ public class ConnectionManager {
     private final ServerSocket serverSocket;
     private final List<ClientManager> clients;
     private final int maxPlayers;
+    private final GameServer gameServer; // Reference to GameServer
 
-    public ConnectionManager(ServerSocket serverSocket, int maxPlayers) {
+    public ConnectionManager(ServerSocket serverSocket, int maxPlayers, GameServer gameServer) {
         this.serverSocket = serverSocket;
         this.maxPlayers = maxPlayers;
-        this.clients = Collections.synchronizedList(new ArrayList<>());
+        this.clients = new CopyOnWriteArrayList<>();
+        this.gameServer = gameServer;
     }
 
     public void acceptConnections() {
@@ -26,44 +28,32 @@ public class ConnectionManager {
                 Socket clientSocket = serverSocket.accept();
                 logger.info("Accepted connection from " + clientSocket.getInetAddress().getHostAddress());
 
-                ClientManager clientManager = new ClientManager(clientSocket);
-                synchronized (clients) {
-                    clients.add(clientManager);
-                }
-                new Thread(clientManager).start();
+                ClientManager clientManager = new ClientManager(clientSocket, gameServer);
+                clients.add(clientManager);
+                new Thread(clientManager, "ClientManager-" + clients.size()).start();
                 logger.info("Current players connected: " + clients.size() + "/" + maxPlayers);
             }
             logger.info("Max players connected. No longer accepting connections.");
-        } catch (IOException ex) {
-            logger.warning("Error accepting connection: " + ex.getMessage());
+        } catch (IOException e) {
+            logger.warning("Error accepting connection: " + e.getMessage());
         }
     }
 
-
     public void removeClient(ClientManager client) {
-        synchronized (clients) {
-            if (clients.remove(client)) {
-                logger.info("Client removed. Current players connected: " + clients.size() + "/" + maxPlayers);
-            }
+        if (clients.remove(client)) {
+            logger.info("Client removed. Current players connected: " + clients.size() + "/" + maxPlayers);
         }
     }
 
     public void closeConnections() {
-        logger.info("Closing all client connections...");
-        synchronized (clients) {
-            for (ClientManager client : new ArrayList<>(clients)) {
-                try {
-                    client.closeServerConnection();
-                    removeClient(client);
-                } catch (Exception e) {
-                    logger.warning("Error while closing client connection: " + e.getMessage());
-                }
-            }
+        for (ClientManager client : clients) {
+            client.closeServerConnection();
         }
+        clients.clear();
         logger.info("All client connections closed.");
     }
 
     public List<ClientManager> getClients() {
-        return Collections.unmodifiableList(clients); // Prevent modification
+        return Collections.unmodifiableList(clients); // Prevent external modification
     }
 }

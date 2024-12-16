@@ -2,11 +2,12 @@ package oopp.team16.server;
 
 import com.google.gson.Gson;
 
-import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class GameClientController {
     private static final Logger logger = Logger.getLogger(GameClientController.class.getName());
+    //private static final String SERVER_ADDRESS_REGEX = "^(localhost|\\d{1,3}(\\.\\d{1,3}){3})$";
+
     private final GameClient gameClient;
     private final Gson gson = new Gson();
     private volatile boolean running = true;
@@ -15,34 +16,29 @@ public class GameClientController {
         this.gameClient = gameClient;
     }
 
-    public void start() {
-        listenForServerMessages();
-        handleUserCommands();
+    public void connect(String serverAddress, int port) {
+        try {
+            gameClient.connectToServer(serverAddress, port);
+            logger.info("Successfully connected to server.");
+            listenForServerMessages();
+        } catch (RuntimeException e) {
+            logger.severe("Failed to connect: " + e.getMessage());
+            throw e;
+        }
     }
 
-    public void handleUserCommands() {
-        Scanner scanner = new Scanner(System.in);
-        logger.info("Enter commands in JSON format or type 'exit' to quit:");
+    public void disconnect() {
+        running = false;
+        gameClient.closeClientConnection();
+        logger.info("Disconnected from the server.");
+    }
 
-        while (true) {
-            String command = scanner.nextLine().trim();
-            if ("exit".equalsIgnoreCase(command)) {
-                running = false;
-                gameClient.closeClientConnection();
-                break;
-            }
-
-            try {
-                GameMessage message = gson.fromJson(command, GameMessage.class); //måste kika mer på detta, om jag gör rätt.
-                if (message != null && message.getType() != null) {
-                    gameClient.sendMessage(message);
-                    logger.info("Sent message to server: " + message);
-                } else {
-                    logger.warning("Invalid JSON format. Ensure the command contains a 'type' field.");
-                }
-            } catch (Exception e) {
-                logger.warning("Error parsing JSON command: " + e.getMessage());
-            }
+    public void sendMessage(GameMessage message) {
+        if (gameClient.isConnected()) {
+            gameClient.sendMessage(message);
+            logger.info("Sent message to server: " + message);
+        } else {
+            logger.warning("Cannot send message. Not connected to a server.");
         }
     }
 
@@ -59,32 +55,62 @@ public class GameClientController {
     }
 
     private void processServerMessage(GameMessage message) {
-
         logger.info("Processing message of type: " + message.getType());
 
         switch (message.getType()) {
             case "turn_update":
-                logger.info("It's " + message.getData().get("current_player") + "'s turn.");
+                handleTurnUpdate(message);
                 break;
 
             case "card_played":
-                logger.info(message.getData().get("player") + " played " + message.getData().get("card"));
+                handleCardPlayed(message);
                 break;
 
             case "game_state":
-                logger.info("Game state updated: " + message.getData());
+                handleGameState(message);
                 break;
 
             case "game_over":
-                logger.info("Game Over! Winner: " + message.getData().get("winner"));
+                handleGameOver(message);
                 break;
 
             case "invalid_action":
-                logger.warning("Invalid action: " + message.getData().get("reason"));
+                handleInvalidAction(message);
                 break;
 
             default:
                 logger.warning("Unknown message type received: " + message.getType());
         }
+    }
+
+    // Specific server message handlers
+    private void handleTurnUpdate(GameMessage message) {
+        String currentPlayer = (String) message.getData().get("current_player");
+        logger.info("It's " + currentPlayer + "'s turn.");
+        // Update the view to highlight the current player's turn
+    }
+
+    private void handleCardPlayed(GameMessage message) {
+        String player = (String) message.getData().get("player");
+        String card = (String) message.getData().get("card");
+        logger.info(player + " played " + card);
+        // Update the view to reflect the played card
+    }
+
+    private void handleGameState(GameMessage message) {
+        logger.info("Game state updated: " + message.getData());
+        // Update the local game state and refresh the view
+    }
+
+    private void handleGameOver(GameMessage message) {
+        String winner = (String) message.getData().get("winner");
+        logger.info("Game Over! Winner: " + winner);
+        // Display a game-over screen in the view
+    }
+
+    private void handleInvalidAction(GameMessage message) {
+        String reason = (String) message.getData().get("reason");
+        logger.warning("Invalid action: " + reason);
+        // Show an error message to the user
     }
 }

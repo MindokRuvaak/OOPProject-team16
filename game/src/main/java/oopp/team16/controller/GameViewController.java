@@ -157,7 +157,7 @@ public class GameViewController implements ModelListener {
     }
 
     public void uno() {
-        System.out.println(m.getCurrentPlayerID() + " has decclared UNO!");
+        System.out.println(m.getCurrentPlayerID() + " has declared UNO!");
     }
 
     // TODO: move to view

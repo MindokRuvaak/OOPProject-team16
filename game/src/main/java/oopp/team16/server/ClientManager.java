@@ -7,10 +7,12 @@ import java.util.logging.Logger;
 public class ClientManager extends MessageHandler implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
+    private final GameServer gameServer; // Reference to GameServer for forwarding messages
     private volatile boolean running = true;
 
-    public ClientManager(Socket socket) {
+    public ClientManager(Socket socket, GameServer gameServer) {
         this.clientSocket = socket;
+        this.gameServer = gameServer;
     }
 
     @Override
@@ -32,25 +34,15 @@ public class ClientManager extends MessageHandler implements Runnable {
                 logger.info("Client disconnected or invalid message received, stopping listener.");
                 break;
             }
-            processClientMessage(message);
+            forwardMessageToServer(message);
         }
     }
 
-    private void processClientMessage(GameMessage message) {
-
-        logger.info("Processing message of type: " + message.getType());
-
-        switch (message.getType()) {
-            case "playerMove":
-                logger.info("Player " + message.getSender() + " played card: " + message.getData().get("cardPlayed"));
-                break;
-
-            case "chat_message":
-                logger.info("Chat message from " + message.getSender() + ": " + message.getData().get("message"));
-                break;
-
-            default:
-                logger.warning("Unknown message type received: " + message.getType());
+    private void forwardMessageToServer(GameMessage message) {
+        try {
+            gameServer.processClientMessage(message, this);
+        } catch (Exception e) {
+            logger.warning("Error processing client message: " + e.getMessage());
         }
     }
 
@@ -62,6 +54,5 @@ public class ClientManager extends MessageHandler implements Runnable {
         } catch (IOException e) {
             logger.warning("Error closing client socket: " + e.getMessage());
         }
-
     }
 }
