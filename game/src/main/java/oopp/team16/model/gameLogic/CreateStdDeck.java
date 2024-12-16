@@ -40,14 +40,6 @@ public class CreateStdDeck implements DeckFactory {
 
     private void addSpecialCards(Stack<Card> stack, Color[] colors){
         for (Color color : colors) {
-            for (int i = 0; i <= 9; i++) {
-                stack.push(cardFactory.createNumCard(color, i)); // Single 0 per color
-
-                if (i != 0) { // Two copies for 1–9 cards
-                    stack.push(cardFactory.createNumCard(color, i));
-                }
-
-            }
             for(int i = 0; i < 2; i++){
                 stack.push(cardFactory.createSkipCard(color,10)); //value idk??
                 stack.push(cardFactory.createReverseCard(color, 10));
