@@ -150,7 +150,7 @@ class Game {
     }
 
     void tryPlay(int index) {
-        if (!currentPlayer.hasPlayedCard()) {
+        if (!canEndTurn()) {
             tryPlayCard(index);
         } else {
             tryPlayMoreCards(index);
@@ -183,11 +183,15 @@ class Game {
     }
 
     void endCurrentPlayerTurn() {
-        if (currentPlayer.hasPlayedCard()) {// TODO: can end turn if drawn 3 cards
+        if (canEndTurn()) {
             endTurn();
         } else {
             announceMustPlayCard();
         }
+    }
+
+    private boolean canEndTurn() {
+        return currentPlayer.hasPlayedCard() || currentPlayer.drawnThree();
     }
 
     private void announceMustPlayCard() {
