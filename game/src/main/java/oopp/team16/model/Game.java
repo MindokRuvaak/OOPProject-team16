@@ -8,7 +8,7 @@ import oopp.team16.model.gameLogic.GameLogic;
 import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
-public class Game {
+public class Game implements SpecialCardLogic{
 
     private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
@@ -89,7 +89,7 @@ public class Game {
         }
     }
 
-    private void nextTurn() {
+    public void nextTurn() {
         if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
             this.turnOrder = this.players.iterator(); // reset iterator
         }
@@ -180,12 +180,19 @@ public class Game {
 
 //check if these methods should be there
 
-    public void reverseTurn() { //???
+    public void reverseTurn() {
         Collections.reverse(players);
         turnOrder = players.iterator();
     }
 
     public void chooseColor(){
 
+
     }
+
+    public void nextPlayerDraws(){
+        Player nextPlayer = turnOrder.next();
+        nextPlayer.drawCard(deck.drawCard());
+    }
+
 }

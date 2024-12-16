@@ -6,10 +6,6 @@ public class BaseCard implements Card {
     private final CardType type;
     private final int value;
 
-
-
-
-
     public BaseCard(Color color, CardType type, int value){
         this.color = color;
         this.type = type;
@@ -30,8 +26,6 @@ public class BaseCard implements Card {
     public int getValue(){
         return this.value;
     }
-
-
 
     @Override
     public String toString(){
