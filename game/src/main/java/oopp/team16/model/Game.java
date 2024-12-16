@@ -17,7 +17,7 @@ class Game {
     private final Deck deck;
     private final Stack<Card> playedCards;
     private final int startingHandSize;
-    private GameLogic gamelogic; // can be final? Unnecessary?
+    // private GameLogic gamelogic; // can be final? Unnecessary?
     // alot of overlap between GameLogic and GameRules
 
     Game(Deck deck, int startingHandSize) {
@@ -179,7 +179,6 @@ class Game {
 
     void currentPlayerDrawCard() {
         currentPlayer.drawCard(deck.drawCard());
-
     }
 
     void endCurrentPlayerTurn() {

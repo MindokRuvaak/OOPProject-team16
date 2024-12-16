@@ -5,10 +5,9 @@ import java.util.*;
 import oopp.team16.model.gameLogic.CreateStdDeck;
 import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
-import oopp.team16.model.gameLogic.Cards.Card;
 
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
-public class Model implements GameListener { // maybe change name ?ModelGameSetup?
+public class Model /* implements GameListener */ { // maybe change name ?ModelGameSetup?
     private List<ModelListener> listeners;
     private final Game game;
     private final DeckFactory df;
@@ -19,11 +18,11 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         df = new CreateStdDeck();
         players = new ArrayList<>();
         game = new Game(df.createDeck(), 7);
-        game.AddListener(this);
+        // game.AddListener(this);
     }
 
     public void initGame() {
-        getPlayers();
+        getPlayers(3,5);
         game.init(players);
     }
 
@@ -36,7 +35,7 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
     }
 
     public void addPlayer(String name) {
-        players.add(new Player(name));
+        players.add(new Player(name, players.size()));
     }
 
     public void addListener(ModelListener l) {
@@ -47,16 +46,9 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         game.AddListener(gl);
     }
 
-    private void getPlayers() {
+    private void getPlayers(int lower, int upper) {
         for (ModelListener listener : listeners) {
-            listener.requestPlayers();
-        }
-    }
-
-    @Override
-    public void takePlayerTurn() {
-        for (ModelListener listener : listeners) {
-            listener.takeTurn();
+            listener.requestPlayers(lower, upper);
         }
     }
 
@@ -66,23 +58,10 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         game.tryPlay(cardNumber - 1);
     }
 
-    @Override
-    public void badMove() {
-        for (ModelListener listener : listeners) {
-            listener.announceBadMove();
-        }
-    }
-
     public void drawCard() {
         game.currentPlayerDrawCard();
     }
 
-    @Override
-    public void announceWinner(String name) {
-        for (ModelListener listener : listeners) {
-            listener.announceWinner(name);
-        }
-    }
 
     public boolean endTurn() {
         game.endCurrentPlayerTurn();
@@ -96,22 +75,12 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         return hasEnded;
     }
 
-    @Override
-    public void startPlayerTurn() {
-        for (ModelListener listener : listeners) {
-            listener.startNextPlayerTurn();
-        }
-    }
-
-    @Override
-    public void announceMustPlayCard() {
-        for (ModelListener listener : listeners) {
-            listener.announceMustPlayCard();
-        }
-    }
-
-    public String getCurrentPlayerID() {
+    public String getCurrentPlayerName() {
         return game.getCurrentPlayer().getName();
+    }
+
+    public int getCurrentPlayerID() {
+        return game.getCurrentPlayer().getid();
     }
 
     public String getTopPlayedCard() {
