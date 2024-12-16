@@ -1,4 +1,4 @@
-package oopp.team16.controller;
+package main.java.oopp.team16.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,10 +9,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Point2D;
-import oopp.team16.model.Model;
-import oopp.team16.model.ModelListener;
-import oopp.team16.model.gameLogic.Cards.Card;
-import oopp.team16.model.gameLogic.Player;
+import main.java.oopp.team16.model.Model;
+import main.java.oopp.team16.model.ModelListener;
+import main.java.oopp.team16.model.gameLogic.Cards.Card;
+import main.java.oopp.team16.model.gameLogic.Player;
 import java.util.HashMap;
 import java.util.Map;
 

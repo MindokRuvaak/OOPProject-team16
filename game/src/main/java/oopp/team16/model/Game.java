@@ -1,13 +1,13 @@
-package oopp.team16.model;
+package main.java.oopp.team16.model;
 
 import java.util.*;
 
 import javafx.application.Platform;
-import oopp.team16.model.gameLogic.Cards.Card;
-import oopp.team16.model.gameLogic.Deck;
-import oopp.team16.model.gameLogic.GameLogic;
-import oopp.team16.model.gameLogic.GameRules;
-import oopp.team16.model.gameLogic.Player;
+import main.java.oopp.team16.model.gameLogic.Cards.Card;
+import main.java.oopp.team16.model.gameLogic.Deck;
+import main.java.oopp.team16.model.gameLogic.GameLogic;
+import main.java.oopp.team16.model.gameLogic.GameRules;
+import main.java.oopp.team16.model.gameLogic.Player;
 
 class Game {
 

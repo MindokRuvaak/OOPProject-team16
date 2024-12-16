@@ -1,4 +1,4 @@
-package oopp.team16.view;
+package main.java.oopp.team16.view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

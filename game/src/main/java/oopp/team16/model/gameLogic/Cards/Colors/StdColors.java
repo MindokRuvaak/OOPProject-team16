@@ -1,4 +1,4 @@
-package oopp.team16.model.gameLogic.Cards.Colors;
+package main.java.oopp.team16.model.gameLogic.Cards.Colors;
 public class StdColors implements Color {
     private final String colorName;
     private static StdColors GREEN = new StdColors("green");

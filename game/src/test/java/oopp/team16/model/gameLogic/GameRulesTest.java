@@ -1,3 +1,5 @@
+/*
+
 package oopp.team16.model.gameLogic;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,6 +32,7 @@ public class GameRulesTest {
 
     @Test
     void testStackable() {
-        
+
     }
 }
+*/

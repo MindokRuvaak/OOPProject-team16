@@ -1,11 +1,11 @@
-package oopp.team16.view;
+package main.java.oopp.team16.view;
 
 import java.util.Scanner;
 
-import oopp.team16.controller.ControllerTerminal;
-import oopp.team16.model.Model;
+import main.java.oopp.team16.controller.ControllerTerminal;
+import main.java.oopp.team16.model.Model;
 
-public class ViewTerminal implements View {
+public class ViewTerminal implements main.java.oopp.team16.view.View {
 
     Model m;
     ControllerTerminal c;
@@ -138,7 +138,7 @@ public class ViewTerminal implements View {
     @Override
     public void announceBadMove() {
         System.out.println("That selected card cannot be played!");
-        waitForUserConfirmation(); 
+        waitForUserConfirmation();
     }
 
     // TODO: change signature, remove inputs, instead create getter in model
