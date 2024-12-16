@@ -1,9 +1,9 @@
-package main.java.oopp.team16;
+package oopp.team16;
 
-import main.java.oopp.team16.controller.ControllerTerminal;
-import main.java.oopp.team16.model.Model;
-import main.java.oopp.team16.view.View;
-import main.java.oopp.team16.view.ViewTerminal;
+import oopp.team16.controller.ControllerTerminal;
+import oopp.team16.model.Model;
+import oopp.team16.view.View;
+import oopp.team16.view.ViewTerminal;
 
 public class AppTerminal {
 

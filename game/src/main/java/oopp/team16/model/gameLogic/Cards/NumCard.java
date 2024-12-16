@@ -1,5 +1,5 @@
-package main.java.oopp.team16.model.gameLogic.Cards;
-import main.java.oopp.team16.model.gameLogic.Cards.Colors.Color;
+package oopp.team16.model.gameLogic.Cards;
+import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class NumCard implements Card {
     private final int value;

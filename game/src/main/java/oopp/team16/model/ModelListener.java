@@ -1,4 +1,4 @@
-package main.java.oopp.team16.model;
+package oopp.team16.model;
 
 // import oopp.team16.model.gameLogic.Cards.Card;
 

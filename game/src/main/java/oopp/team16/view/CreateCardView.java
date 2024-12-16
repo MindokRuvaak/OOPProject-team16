@@ -1,8 +1,8 @@
-package main.java.oopp.team16.view;
+package oopp.team16.view;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import main.java.oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.Cards.Card;
 
 public class CreateCardView {
 
