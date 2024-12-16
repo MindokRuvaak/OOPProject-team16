@@ -6,6 +6,8 @@ public class StdColors implements Color {
     private static StdColors RED = new StdColors("red");
     private static StdColors YELLOW = new StdColors("yellow");
 
+    private static StdColors BLACK = new StdColors("black");
+
     //make a nocolor color? or black
 
     private StdColors(String colorName){
@@ -26,6 +28,10 @@ public class StdColors implements Color {
 
     public static StdColors yellow() {
         return YELLOW;
+    }
+
+    public static StdColors black(){
+        return BLACK;
     }
 
     public String getColorName() {

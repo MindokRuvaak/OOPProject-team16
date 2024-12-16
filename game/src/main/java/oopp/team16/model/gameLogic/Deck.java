@@ -7,8 +7,6 @@ import oopp.team16.model.gameLogic.Cards.Card;
 
 public class Deck {
     Stack<Card> cardStack;
-
-
     private Deck() {
         cardStack = new Stack<>();
     }
@@ -17,7 +15,6 @@ public class Deck {
         this();
         cardStack.addAll(stack);
     }
-
 
     public Card drawCard() {
         return cardStack.pop();

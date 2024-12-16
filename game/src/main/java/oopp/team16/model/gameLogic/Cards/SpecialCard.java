@@ -11,8 +11,9 @@ public class SpecialCard implements Card{
     private final BaseCard baseCard;
 
     //mayebe not have value in here
-    public SpecialCard(Color color, CardType cardType, int value){ //behöver ha en cardtype ?
+    public SpecialCard(Color color, CardType cardType, int value, ActionStrategy action){ //behöver ha en cardtype ?
         this.baseCard = new BaseCard(color, cardType, value);
+        this.action = action;
 
     }
 

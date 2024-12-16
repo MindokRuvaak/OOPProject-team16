@@ -19,7 +19,7 @@ public class CreateStdDeck implements DeckFactory {
 
         for (Color color : colors) {
             for (int i = 0; i <= 9; i++) {
-                stack.push(cardFactory.createNumCard(color, i)); // Single 0 per color , use to getValue() instead?
+                stack.push(cardFactory.createNumCard(color, i)); // Single 0 per color
                 if (i != 0) { // Two copies for 1–9 cards
                     stack.push(cardFactory.createNumCard(color, i));
                 }
