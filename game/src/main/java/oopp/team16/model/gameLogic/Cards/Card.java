@@ -1,6 +1,6 @@
-package main.java.oopp.team16.model.gameLogic.Cards;
+package oopp.team16.model.gameLogic.Cards;
 
-import main.java.oopp.team16.model.gameLogic.Cards.Colors.Color;
+import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public interface Card {
 

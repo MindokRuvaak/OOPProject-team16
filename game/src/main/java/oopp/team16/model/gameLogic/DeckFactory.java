@@ -1,4 +1,4 @@
-package main.java.oopp.team16.model.gameLogic;
+package oopp.team16.model.gameLogic;
 
 
 public interface DeckFactory {

@@ -1,11 +1,11 @@
-package main.java.oopp.team16.model;
+package oopp.team16.model;
 
 import java.util.*;
 
-import main.java.oopp.team16.model.gameLogic.CreateStdDeck;
-import main.java.oopp.team16.model.gameLogic.DeckFactory;
-import main.java.oopp.team16.model.gameLogic.Player;
-import main.java.oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.CreateStdDeck;
+import oopp.team16.model.gameLogic.DeckFactory;
+import oopp.team16.model.gameLogic.Player;
+import oopp.team16.model.gameLogic.Cards.Card;
 
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
 public class Model implements GameListener { // maybe change name ?ModelGameSetup?

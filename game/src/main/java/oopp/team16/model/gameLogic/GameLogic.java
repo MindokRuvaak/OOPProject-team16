@@ -1,6 +1,6 @@
-package main.java.oopp.team16.model.gameLogic;
+package oopp.team16.model.gameLogic;
 
-import main.java.oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.Cards.Card;
 
 public class GameLogic {
 

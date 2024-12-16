@@ -1,6 +1,6 @@
-package main.java.oopp.team16.model;
+package oopp.team16.model;
 
-import main.java.oopp.team16.model.gameLogic.Player;
+import oopp.team16.model.gameLogic.Player;
 
 public interface GameListener {
 

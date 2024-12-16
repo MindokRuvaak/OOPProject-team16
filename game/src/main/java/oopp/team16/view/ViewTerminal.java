@@ -1,11 +1,11 @@
-package main.java.oopp.team16.view;
+package oopp.team16.view;
 
 import java.util.Scanner;
 
-import main.java.oopp.team16.controller.ControllerTerminal;
-import main.java.oopp.team16.model.Model;
+import oopp.team16.controller.ControllerTerminal;
+import oopp.team16.model.Model;
 
-public class ViewTerminal implements main.java.oopp.team16.view.View {
+public class ViewTerminal implements oopp.team16.view.View {
 
     Model m;
     ControllerTerminal c;
