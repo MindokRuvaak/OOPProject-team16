@@ -1,13 +1,13 @@
-package main.java.oopp.team16.model;
+package oopp.team16.model;
 
 import java.util.*;
 
 import javafx.application.Platform;
-import main.java.oopp.team16.model.gameLogic.Cards.Card;
-import main.java.oopp.team16.model.gameLogic.Deck;
-import main.java.oopp.team16.model.gameLogic.GameLogic;
-import main.java.oopp.team16.model.gameLogic.GameRules;
-import main.java.oopp.team16.model.gameLogic.Player;
+import java.oopp.team16.model.gameLogic.Cards.Card;
+import java.oopp.team16.model.gameLogic.Deck;
+import java.oopp.team16.model.gameLogic.GameLogic;
+import java.oopp.team16.model.gameLogic.GameRules;
+import java.oopp.team16.model.gameLogic.Player;
 
 class Game {
 
@@ -37,15 +37,16 @@ class Game {
     }
 
     void startGame() {
-        new Thread(() -> {
-            // Start the game loop in a new thread
-            gameLoop();
+        gameLoop();
+    }
 
-            // After the game loop ends, update UI on the JavaFX application thread
-            Platform.runLater(() -> {
-                announceWinner(this.currentPlayer.getName());
-            });
-        }).start();
+    void start() {
+        if (currentPlayer == null) {
+            nextTurn();
+            startTurn();
+            reUpDeck();
+            takeTurn();
+        }
     }
 
     LinkedList<Player> getPlayers() {
@@ -53,11 +54,15 @@ class Game {
     }
 
     Player getCurrentPlayer() {
-        return currentPlayer;
+        return this.currentPlayer;
     }
 
     Card getTopPlayedCard() {
         return playedCards.peek();
+    }
+
+    Card[] getPlayerHand() {
+        return this.currentPlayer.getHand();
     }
 
     // Main game loop,
@@ -70,39 +75,38 @@ class Game {
                 reUpDeck();
                 takeTurn();
             }
-            endTurn();
-
-            noWinner = checkWinner();
+            noWinner = !checkWinner();
         }
     }
 
     private void reUpDeck() {
-        if(deck.isEmpty()){
-            Card  top = playedCards.pop();
+        if (deck.isEmpty()) {
+            Card top = playedCards.pop();
             deck.add(playedCards);
             playedCards.empty();
             playedCards.add(top);
         }
     }
 
-    private boolean checkWinner() {
-        boolean noWinner = true;
+    boolean checkWinner() {
+        boolean haveWinner = false;
         if (!currentPlayer.hasCards()) {
-            noWinner = false;
+            haveWinner = true;
             announceWinner(currentPlayer.getName());
         }
-        return noWinner;
+        return haveWinner;
     }
 
-    private void startTurn() {
+    void startTurn() {
         this.currentPlayer.startTurn();
         for (GameListener listener : listeners) {
-            listener.startPlayerTurn(currentPlayer);
+            listener.startPlayerTurn();
         }
     }
 
-    private void endTurn() {
+    void endTurn() {
         this.currentPlayer.resetTurnInfo();
+        this.currentPlayer.endTurn();
     }
 
     private void announceWinner(String name) {
@@ -111,7 +115,7 @@ class Game {
         }
     }
 
-    private void nextTurn() {
+    void nextTurn() {
         if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
             this.turnOrder = this.players.iterator(); // reset iterator
         }
@@ -138,7 +142,7 @@ class Game {
 
     private void takeTurn() {
         for (GameListener listener : listeners) {
-            listener.takePlayerTurn(currentPlayer);
+            listener.takePlayerTurn();
         }
 
     }
@@ -156,7 +160,9 @@ class Game {
     }
 
     private void tryPlayCard(int index) {
-        if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
+        if ((0 <= index && index < currentPlayer.getHandSize())
+                && GameRules.allowedPlay(currentPlayer.getCard(index),
+                        getTopPlayedCard())) {
             playCard(index);
         } else {
             announceBadMove();
@@ -180,7 +186,7 @@ class Game {
 
     void endCurrentPlayerTurn() {
         if (currentPlayer.hasPlayedCard()) {// TODO: can end turn if drawn 3 cards
-            currentPlayer.endTurn();
+            endTurn();
         } else {
             announceMustPlayCard();
         }

@@ -8,13 +8,13 @@ public interface ModelListener {
 
     void requestPlayers();
 
-    void takeTurn(String[] hand, boolean playedCardYet);
+    void takeTurn();
 
     void announceBadMove();
 
     void announceWinner(String name);
 
-    void startNextPlayerTurn(String name);
+    void startNextPlayerTurn();
 
     void announceMustPlayCard();
 
