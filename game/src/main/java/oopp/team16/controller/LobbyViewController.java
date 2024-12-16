@@ -1,4 +1,4 @@
-package oopp.team16.controller;
+package main.java.oopp.team16.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

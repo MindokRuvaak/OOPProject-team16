@@ -1,4 +1,4 @@
-package oopp.team16.model.gameLogic.Cards;
+package main.java.oopp.team16.model.gameLogic.Cards;
 
 //göra samma som färg
 public enum CardType{

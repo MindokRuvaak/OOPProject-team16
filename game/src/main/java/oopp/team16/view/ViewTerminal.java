@@ -1,11 +1,11 @@
-package oopp.team16.view;
+package main.java.oopp.team16.view;
 
 import java.util.Scanner;
 
-import oopp.team16.controller.ControllerTerminal;
-import oopp.team16.model.Model;
+import main.java.oopp.team16.controller.ControllerTerminal;
+import main.java.oopp.team16.model.Model;
 
-public class ViewTerminal implements View {
+public class ViewTerminal implements main.java.oopp.team16.view.View {
 
     Model m;
     ControllerTerminal c;
@@ -25,7 +25,7 @@ public class ViewTerminal implements View {
         printMessage.append("'s turn.\n");
 
         printMessage.append("Current card in play: ");
-        printMessage.append(m.getTopPlayedCardString());
+        printMessage.append(m.getTopPlayedCard());
         printMessage.append("\n");
 
         System.out.println(printMessage.toString());
@@ -68,14 +68,12 @@ public class ViewTerminal implements View {
 
     // TODO: change signature, remove inputs, instead create getter in model
     @Override
-    public void takeTurn(String[] hand, boolean hasPlayedCard) {
+    public void takeTurn() {
+        String[] hand = m.getCurrentPlayerHand();
         clearTerminal();
-        if (hasPlayedCard) {
-            System.out.println("Play more cards?");
-        }
         printGameState();
         showHand(hand);
-        turnActions(hand, hasPlayedCard);
+        turnActions(hand);
     }
 
     // TODO: move input to controller
@@ -85,10 +83,10 @@ public class ViewTerminal implements View {
     }
 
     // TODO: move input to controller
-    private void turnActions(String[] hand, boolean hasPlayedCard) {
+    private void turnActions(String[] hand) {
         System.out.print("> ");
         String ans = input.nextLine();
-        handleInput(ans, hand.length, hasPlayedCard);
+        handleInput(ans, hand.length);
     }
 
     public final static void clearTerminal() {
@@ -97,7 +95,7 @@ public class ViewTerminal implements View {
     }
 
     // TODO: move to controller
-    private void handleInput(String ans, int handSize, boolean hasPlayedCard) {
+    private void handleInput(String ans, int handSize) {
         boolean givenCorrectInput = false;
         if (ans.matches("^(\\d+|\\+|[Ee])$")) {
             if ("+".equals(ans)) {
@@ -138,7 +136,7 @@ public class ViewTerminal implements View {
     @Override
     public void announceBadMove() {
         System.out.println("That selected card cannot be played!");
-        waitForUserConfirmation(); 
+        waitForUserConfirmation();
     }
 
     // TODO: change signature, remove inputs, instead create getter in model
@@ -148,9 +146,8 @@ public class ViewTerminal implements View {
         System.out.println("The winner is " + name + "!!");
     }
 
-    // TODO: change signature, remove inputs, instead create getter in model
     @Override
-    public void startNextPlayerTurn(String name) {
+    public void startNextPlayerTurn() {
         clearTerminal();
         printGameState();
         waitForUserConfirmation();

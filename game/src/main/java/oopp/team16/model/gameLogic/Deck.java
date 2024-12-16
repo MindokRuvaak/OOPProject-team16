@@ -1,9 +1,9 @@
-package oopp.team16.model.gameLogic;
+package main.java.oopp.team16.model.gameLogic;
 
 import java.util.Collections;
 import java.util.Stack;
 
-import oopp.team16.model.gameLogic.Cards.Card;
+import main.java.oopp.team16.model.gameLogic.Cards.Card;
 
 public class Deck {
     Stack<Card> cardStack;

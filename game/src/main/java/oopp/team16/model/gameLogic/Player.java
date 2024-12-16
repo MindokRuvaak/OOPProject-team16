@@ -1,6 +1,6 @@
-package oopp.team16.model.gameLogic;
+package main.java.oopp.team16.model.gameLogic;
 
-import oopp.team16.model.gameLogic.Cards.Card;
+import main.java.oopp.team16.model.gameLogic.Cards.Card;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +72,7 @@ public class Player {
     }
 
     public void startTurn() {
+        resetTurnInfo();
         this.takingTurn = true;
     }
 
@@ -82,4 +83,37 @@ public class Player {
     public boolean stillTakingTurn() {
         return this.takingTurn;
     }
+
+    // returns string containing the name of player and numer of cards in their hand
+    // seperated by a '':''
+    @Override
+    public String toString() {
+        return getName() + ":" + getHandSize();
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Player other = (Player) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        return true;
+    }
+
 }
