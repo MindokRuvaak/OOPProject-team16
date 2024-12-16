@@ -87,5 +87,4 @@ public class GameClientController {
                 logger.warning("Unknown message type received: " + message.getType());
         }
     }
-
 }

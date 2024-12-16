@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameServerApp {
@@ -49,7 +48,7 @@ public class GameServerApp {
                 }
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "An error occurred while running the server: " + e.getMessage(), e);
+            logger.info("An error occurred while running the server: " + e);
         } finally {
             if (gameServer != null) {
                 logger.info("Shutting down the GameServer...");
