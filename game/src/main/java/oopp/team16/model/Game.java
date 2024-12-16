@@ -9,7 +9,7 @@ import oopp.team16.model.gameLogic.GameLogic;
 import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
-public class Game {
+class Game {
 
     private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
@@ -21,7 +21,7 @@ public class Game {
     private GameLogic gamelogic; // can be final? Unnecessary?
     // alot of overlap between GameLogic and GameRules
 
-    public Game(Deck deck, int startingHandSize) {
+    Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
         this.players = new LinkedList<>();
         this.startingHandSize = startingHandSize;
@@ -48,7 +48,7 @@ public class Game {
         }).start();
     }
 
-    public LinkedList<Player> getPlayers() {
+    LinkedList<Player> getPlayers() {
         return players;
     }
 
@@ -115,7 +115,7 @@ public class Game {
         if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
             this.turnOrder = this.players.iterator(); // reset iterator
         }
-        this.currentPlayer = this.turnOrder.next();
+        this.currentPlayer = this.turnOrder.next();//get next
     }
 
     private void setUpGame() {
@@ -143,7 +143,7 @@ public class Game {
 
     }
 
-    public void AddListener(GameListener gameListener) {
+    void AddListener(GameListener gameListener) {
         listeners.add(gameListener);
     }
 
