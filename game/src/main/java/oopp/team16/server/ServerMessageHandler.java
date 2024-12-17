@@ -17,15 +17,15 @@ public class ServerMessageHandler {
     public void handleMessage(GameMessage message, ClientManager sender) {
         logger.info("Handling message: " + message.getType());
         switch (message.getType()) {
+
             case "playerMove":
                 handlePlayerMove(message, sender);
                 break;
+
             case "endTurn":
                 handleEndTurn(sender);
                 break;
-            case "chatMessage":
-                handleChatMessage(message);
-                break;
+
             default:
                 logger.warning("Unknown message type: " + message.getType());
         }
@@ -47,9 +47,5 @@ public class ServerMessageHandler {
         logger.info("Ending turn for: " + sender.getClientName());
         model.endTurn();
         gameServer.broadcastGameState();
-    }
-
-    private void handleChatMessage(GameMessage message) {
-        gameServer.broadcastMessage(message);
     }
 }

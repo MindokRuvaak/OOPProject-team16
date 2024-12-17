@@ -30,18 +30,11 @@ public class ClientMessageHandler {
                 handleInvalidAction(message);
                 break;
 
-            case "chatMessage":
-                handleChatMessage(message);
-                break;
-
             default:
                 logger.warning("Unknown message type received: " + message.getType());
         }
     }
 
-    /**
-     * Updates the game state on the client view.
-     */
     private void handleGameState(GameMessage message) {
         String topCard = (String) message.getData().get("topCard");
         String currentPlayer = (String) message.getData().get("currentPlayer");
@@ -68,16 +61,6 @@ public class ClientMessageHandler {
         logger.warning("Invalid action received: " + reason);
         //viewController.displayError("Invalid Action: " + reason);
     }
-
-
-    private void handleChatMessage(GameMessage message) {
-        String sender = message.getSender();
-        String chatContent = (String) message.getData().get("message");
-
-        logger.info("Chat message received from " + sender + ": " + chatContent);
-        //viewController.displayChatMessage(sender, chatContent);
-    }
-
 
     private Map<String, Integer> convertHandSizes(Map<String, Double> rawHands) {
         Map<String, Integer> hands = new java.util.HashMap<>();
