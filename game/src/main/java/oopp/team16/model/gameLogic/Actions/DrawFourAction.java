@@ -9,5 +9,5 @@ public class DrawFourAction implements ActionStrategy {
     public void executeAction(SpecialCardLogic game) {
             game.nextPlayerDraws(4);
         }
-    }//color thing
+    //color thing
 }
