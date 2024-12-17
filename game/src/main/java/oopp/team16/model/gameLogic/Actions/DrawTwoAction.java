@@ -6,11 +6,9 @@ import oopp.team16.model.gameLogic.Cards.ActionStrategy;
 
 
 public class DrawTwoAction implements ActionStrategy {
-
     @Override
     public void executeAction(SpecialCardLogic game) {
-        game.nextPlayerDraws();
-        game.nextPlayerDraws();
+        game.nextPlayerDraws(2);
     }
 
 }

@@ -5,10 +5,8 @@ public class StdColors implements Color {
     private static StdColors BLUE = new StdColors("blue");
     private static StdColors RED = new StdColors("red");
     private static StdColors YELLOW = new StdColors("yellow");
+    private static StdColors BLACK = new StdColors("black"); //for wildCards
 
-    private static StdColors BLACK = new StdColors("black");
-
-    //make a nocolor color? or black
 
     private StdColors(String colorName){
         this.colorName = colorName;

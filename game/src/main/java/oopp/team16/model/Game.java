@@ -141,6 +141,7 @@ public class Game implements SpecialCardLogic{
         }
     }
 
+    //måste kolla om det är ett specialkort och då kalla på executeAction, tror här?
     private void playCard(int index) {
         playedCards.add(currentPlayer.playCard(index));
     }
@@ -184,12 +185,14 @@ public class Game implements SpecialCardLogic{
 
     public void chooseColor(){
 
-
     }
 
-    public void nextPlayerDraws(){
+    public void nextPlayerDraws(int num) {
         Player nextPlayer = turnOrder.next();
-        nextPlayer.drawCard(deck.drawCard());
+
+        for (int i = 0; i < num; i++) {
+            nextPlayer.drawCard(deck.drawCard());
+        }
     }
 
 }

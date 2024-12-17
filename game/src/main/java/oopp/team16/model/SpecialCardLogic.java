@@ -4,7 +4,7 @@ public interface SpecialCardLogic {
 
     void nextTurn();
 
-    void nextPlayerDraws();
+    void nextPlayerDraws(int num);
 
     void reverseTurn();
 
