@@ -6,3 +6,31 @@
 #buttonLastCard {
     -fx-background-color: transparent;
 }
+
+#buttonStart {
+  -fx-background-color: transparent;
+}
+
+#inputCard {
+  -fx-background-color: #5B0101;
+}
+
+#playDoneButton {
+  -fx-background-color: transparent;
+}
+
+#buttonUno {
+  -fx-background-color: transparent;
+}
+
+#playCardButton {
+  -fx-background-color: transparent;
+}
+
+#endTurnButton {
+  -fx-background-color: transparent;
+}
+
+#buttonDisplayHand {
+  -fx-background-color: transparent;
+}
