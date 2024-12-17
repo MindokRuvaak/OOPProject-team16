@@ -37,10 +37,8 @@ public class GameServer {
         }
     }
 
-
-
     public void shutdown() {
-        running = false; // Signal that the server is stopping
+        running = false;
         try {
             if (connectionManager != null) {
                 connectionManager.closeConnections();
@@ -57,16 +55,14 @@ public class GameServer {
     public void startGame() {
         logger.info("Starting the game...");
 
-        if (model.getPlayers().isEmpty()) { // Check for players
+        if (model.getPlayers().isEmpty()) {
             logger.severe("Cannot start game: No players have been added.");
             throw new IllegalStateException("No players in the game.");
         }
-
+        model.initGame();
         model.startGame();
         broadcastGameState();
     }
-
-
 
 
     public void processClientMessage(GameMessage message, ClientManager sender) {
@@ -91,32 +87,30 @@ public class GameServer {
             }
         } catch (Exception e) {
             logger.severe("Error processing client message: " + e.getMessage());
-            sendErrorToClient(sender, "An error occurred while processing your request.");
         }
     }
 
-
     private void handleEndTurn(GameMessage message, ClientManager sender) {
-        logger.info("Ending player's turn: " + message.getSender());
-        model.endTurn(); // Ensure this updates the game state
-        broadcastGameState(); // Send updated game state to all clients
-    }
+        logger.info("Ending turn for: " + message.getSender());
 
+        model.endTurn();
+
+        broadcastGameState();
+    }
 
     private void handlePlayerMove(GameMessage message, ClientManager sender) {
         Object cardPlayedObj = message.getData().get("cardPlayed");
 
         int cardPlayed = 0;
         if (cardPlayedObj instanceof Number) {
-            cardPlayed = ((Number) cardPlayedObj).intValue(); // Safely cast to int
+            cardPlayed = ((Number) cardPlayedObj).intValue();
         } else {
             logger.warning("Invalid cardPlayed data type.");
-            sendErrorToClient(sender, "Invalid cardPlayed value.");
             return;
         }
 
-        logger.info("Player played card: " + cardPlayed);
-        model.playCard(cardPlayed); // Update model
+        logger.info(sender.getClientName() + " played card: " + cardPlayed);
+        model.playCard(cardPlayed);
         broadcastGameState();
     }
 
@@ -131,14 +125,15 @@ public class GameServer {
         gameStateMessage.addData("topCard", model.getTopPlayedCard());
         gameStateMessage.addData("currentPlayer", model.getCurrentPlayerID());
         gameStateMessage.addData("hands", model.getListOfPlayers());
-        connectionManager.getClients().forEach(client -> client.sendMessage(gameStateMessage));
+
+        broadcastMessage(gameStateMessage);
     }
 
-
-    private void sendErrorToClient(ClientManager client, String errorMessage) {
-        GameMessage errorMessageObject = new GameMessage("error");
-        errorMessageObject.addData("message", errorMessage);
-        client.sendMessage(errorMessageObject);
+    public void broadcastMessage(GameMessage message) {
+        logger.info("Broadcasting message to all connected clients: " + message);
+        for (ClientManager client : connectionManager.getClients()) {
+            client.sendMessage(message);
+        }
     }
 
     public boolean isRunning() {
