@@ -8,11 +8,13 @@ public class ClientManager extends MessageHandler implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
     private final GameServer gameServer;
+    private final String playerName;
     private volatile boolean running = true;
 
-    public ClientManager(Socket socket, GameServer gameServer) {
+    public ClientManager(Socket socket, GameServer gameServer, String playerName) {
         this.clientSocket = socket;
         this.gameServer = gameServer;
+        this.playerName = playerName;
     }
 
     @Override
@@ -25,6 +27,10 @@ public class ClientManager extends MessageHandler implements Runnable {
         } finally {
             closeServerConnection();
         }
+    }
+
+    public String getClientName() {
+        return playerName;
     }
 
 

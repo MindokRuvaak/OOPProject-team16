@@ -28,12 +28,12 @@ public class ConnectionManager {
                 Socket clientSocket = serverSocket.accept();
                 logger.info("Accepted connection from " + clientSocket.getInetAddress().getHostAddress());
 
-                ClientManager clientManager = new ClientManager(clientSocket, gameServer);
+                String playerName = "Player" + (clients.size() + 1); // Unique player name
+                gameServer.getModel().addPlayer(playerName); // Add player to the Model
+
+                ClientManager clientManager = new ClientManager(clientSocket, gameServer, playerName);
                 clients.add(clientManager);
                 new Thread(clientManager, "ClientManager-" + clients.size()).start();
-
-                // Dynamically add players to the Model
-                gameServer.getModel().addPlayer("Player " + clients.size());
 
                 logger.info("Current players connected: " + clients.size() + "/" + maxPlayers);
             }
@@ -44,6 +44,7 @@ public class ConnectionManager {
             logger.warning("Error accepting connection: " + e.getMessage());
         }
     }
+
 
 
     public void removeClient(ClientManager client) {
