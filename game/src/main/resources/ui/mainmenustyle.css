@@ -53,12 +53,12 @@
 #playerHand > .button {
     display: flex;
     justify-content: center;
-    align-items: center;   
-    gap: 0px;            
+    align-items: center;
+    gap: 0px;
     -fx-background-color: transparent;
 }
 
-#unoCard {     
+#unoCard {
     -fx-background-color: transparent;
 }
 
@@ -67,16 +67,16 @@
 #backCards > .button {
     display: flex;
     justify-content: center;
-    align-items: center;   
-    gap: 0px;            
+    align-items: center;
+    gap: 0px;
     -fx-background-color: transparent;
 }
 
 #handContainer > .button {
     display: flex;
     justify-content: center;
-    align-items: center;   
-    gap: 0px;            
+    align-items: center;
+    gap: 0px;
     -fx-background-color: transparent;
 
 }
@@ -84,21 +84,21 @@
 #handContainer2 > .button {
     display: flex;
     justify-content: center;
-    align-items: center;   
-    gap: 0px;            
+    align-items: center;
+    gap: 0px;
     -fx-background-color: transparent;
 }
 /*
 #handContainer3 > .button {
     display: flex;
     justify-content: center;
-    align-items: center;   
-    gap: 0px;            
+    align-items: center;
+    gap: 0px;
     -fx-background-color: transparent;
     -fx-rotate: -90;
 }
 */
-#playerHandScroll {  
+#playerHandScroll {
     -fx-background: transparent;
     -fx-background-color: transparent;
     -fx-control-inner-background: transparent;
@@ -133,4 +133,8 @@
 }
 #leaveLobbyButton {
     -fx-background-color: transparent;
+}
+
+#hostButton {
+  -fx-background-color: transparent;
 }
