@@ -31,6 +31,15 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         game.init(players);
     }
 
+    public int getPlayerHandSize(String playerName) {
+        for (Player player : players) {
+            if (player.getName().equals(playerName)) {
+                return player.getHandSize();
+            }
+        }
+        return 0; // Return 0 if the player is not found
+    }
+
 
     public void startGame() {
         game.startGame();

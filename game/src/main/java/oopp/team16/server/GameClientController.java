@@ -1,19 +1,21 @@
 package oopp.team16.server;
 
 import com.google.gson.Gson;
+import oopp.team16.controller.GameViewController;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class GameClientController {
     private static final Logger logger = Logger.getLogger(GameClientController.class.getName());
-    //private static final String SERVER_ADDRESS_REGEX = "^(localhost|\\d{1,3}(\\.\\d{1,3}){3})$";
 
     private final GameClient gameClient;
-    private final Gson gson = new Gson();
     private volatile boolean running = true;
+    private final GameViewController viewController; // Reference to the GameViewController
 
-    public GameClientController(GameClient gameClient) {
+    public GameClientController(GameClient gameClient, GameViewController viewController) {
         this.gameClient = gameClient;
+        this.viewController = viewController;
     }
 
     public void connect(String serverAddress, int port) {
@@ -55,50 +57,54 @@ public class GameClientController {
     }
 
     private void processServerMessage(GameMessage message) {
+        logger.info("Processing message of type: " + message.getType());
+
         switch (message.getType()) {
             case "gameState":
-                //viewController.updateGameState(message);
+                handleGameState(message);
                 break;
-            case "invalidMove":
-                //viewController.showError("Invalid move!");
+
+            case "gameOver":
+                handleGameOver(message);
                 break;
-            case "announceWinner":
-                //viewController.announceWinner((String) message.getData().get("winner"));
+
+            case "invalid_action":
+                handleInvalidAction(message);
                 break;
+
             default:
-                logger.warning("Unknown message type: " + message.getType());
+                logger.warning("Unknown message type received: " + message.getType());
         }
     }
 
-
-    // Specific server message handlers
-    private void handleTurnUpdate(GameMessage message) {
-        String currentPlayer = (String) message.getData().get("current_player");
-        logger.info("It's " + currentPlayer + "'s turn.");
-        // Update the view to highlight the current player's turn
-    }
-
-    private void handleCardPlayed(GameMessage message) {
-        String player = (String) message.getData().get("player");
-        String card = (String) message.getData().get("card");
-        logger.info(player + " played " + card);
-        // Update the view to reflect the played card
-    }
-
     private void handleGameState(GameMessage message) {
-        logger.info("Game state updated: " + message.getData());
-        // Update the local game state and refresh the view
+        String topCard = (String) message.getData().get("topCard");
+        String currentPlayer = (String) message.getData().get("currentPlayer");
+        Map<String, Double> rawHands = (Map<String, Double>) message.getData().get("hands");
+
+        Map<String, Integer> hands = convertHandSizes(rawHands);
+
+        viewController.updateGameState(topCard, currentPlayer, hands);
     }
 
     private void handleGameOver(GameMessage message) {
         String winner = (String) message.getData().get("winner");
         logger.info("Game Over! Winner: " + winner);
-        // Display a game-over screen in the view
+
+        viewController.showWinner(winner);
     }
 
     private void handleInvalidAction(GameMessage message) {
         String reason = (String) message.getData().get("reason");
         logger.warning("Invalid action: " + reason);
-        // Show an error message to the user
+        //viewController.displayError("Invalid Action: " + reason);
+    }
+
+    private Map<String, Integer> convertHandSizes(Map<String, Double> rawHands) {
+        Map<String, Integer> hands = new java.util.HashMap<>();
+        for (Map.Entry<String, Double> entry : rawHands.entrySet()) {
+            hands.put(entry.getKey(), entry.getValue().intValue());
+        }
+        return hands;
     }
 }
