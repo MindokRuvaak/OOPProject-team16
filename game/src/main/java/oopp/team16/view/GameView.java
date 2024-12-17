@@ -30,10 +30,8 @@ public class GameView {
             GameViewController controller = loader.getController();
 
             // Initialize GameClient and GameClientController
-            GameClient client = new GameClient("localhost", 12345); // Connect to server
-            GameClientController clientController = new GameClientController(client);
-
-            // Link the GameClientController to the GameViewController
+            GameClient client = new GameClient("localhost", 12345);
+            GameClientController clientController = new GameClientController(client, controller);
             controller.setClientController(clientController);
 
             // Set up the scene

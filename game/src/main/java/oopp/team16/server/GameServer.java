@@ -4,6 +4,8 @@ import oopp.team16.model.Model;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class GameServer {
@@ -53,7 +55,6 @@ public class GameServer {
     }
 
     public void startGame() {
-        logger.info("Starting the game...");
 
         if (model.getPlayers().isEmpty()) {
             logger.severe("Cannot start game: No players have been added.");
@@ -124,10 +125,17 @@ public class GameServer {
         GameMessage gameStateMessage = new GameMessage("gameState");
         gameStateMessage.addData("topCard", model.getTopPlayedCard());
         gameStateMessage.addData("currentPlayer", model.getCurrentPlayerID());
-        gameStateMessage.addData("hands", model.getListOfPlayers());
+
+        // Collect hand sizes
+        Map<String, Integer> hands = new HashMap<>();
+        for (String player : model.getListOfPlayers()) {
+            hands.put(player, model.getPlayerHandSize(player));
+        }
+        gameStateMessage.addData("hands", hands);
 
         broadcastMessage(gameStateMessage);
     }
+
 
     public void broadcastMessage(GameMessage message) {
         logger.info("Broadcasting message to all connected clients: " + message);
