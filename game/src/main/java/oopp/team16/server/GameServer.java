@@ -144,4 +144,9 @@ public class GameServer {
     public boolean isRunning() {
         return running;
     }
+
+    public Model getModel() {
+        return model;
+    }
+
 }

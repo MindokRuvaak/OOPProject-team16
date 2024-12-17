@@ -31,14 +31,20 @@ public class ConnectionManager {
                 ClientManager clientManager = new ClientManager(clientSocket, gameServer);
                 clients.add(clientManager);
                 new Thread(clientManager, "ClientManager-" + clients.size()).start();
+
+                // Dynamically add players to the Model
+                gameServer.getModel().addPlayer("Player " + clients.size());
+
                 logger.info("Current players connected: " + clients.size() + "/" + maxPlayers);
             }
-            logger.info("Max players connected. No longer accepting connections.");
+
+            logger.info("Max players connected. Starting the game...");
             gameServer.startGame();
         } catch (IOException e) {
             logger.warning("Error accepting connection: " + e.getMessage());
         }
     }
+
 
     public void removeClient(ClientManager client) {
         if (clients.remove(client)) {
