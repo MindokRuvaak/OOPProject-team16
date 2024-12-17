@@ -3,6 +3,7 @@ package oopp.team16.model;
 import java.util.*;
 
 import oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.Cards.SpecialCard;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.GameLogic;
 import oopp.team16.model.gameLogic.GameRules;
@@ -141,9 +142,15 @@ public class Game implements SpecialCardLogic{
         }
     }
 
-    //måste kolla om det är ett specialkort och då kalla på executeAction, tror här?
     private void playCard(int index) {
-        playedCards.add(currentPlayer.playCard(index));
+        Card card = currentPlayer.playCard(index);
+        playedCards.add(card);
+
+        if(card instanceof SpecialCard){
+           SpecialCard SC = (SpecialCard) card;
+           SC.getAction().executeAction(this);
+
+        }
     }
 
     private void announceBadMove() {
