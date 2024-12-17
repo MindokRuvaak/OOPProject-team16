@@ -1,48 +1,54 @@
 package oopp.team16.server;
 
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class GameServerApp {
     private static final Logger logger = Logger.getLogger(GameServerApp.class.getName());
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        logger.info("Enter server port:");
-        int port = scanner.nextInt();
+        // Get server port and max players with minimal interaction
+        int port = promptForInt(scanner, "Enter server port (default: 8080):", 8080);
+        int maxPlayers = promptForInt(scanner, "Enter max number of players (default: 4):", 4);
 
-        logger.info("Enter max number of players:");
-        int maxPlayers = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline left over
-
-        GameServer gameServer = null;
+        // Initialize and start the GameServer
+        GameServer gameServer = new GameServer(port, maxPlayers);
+        addShutdownHook(gameServer);
 
         try {
-            logger.info("Initializing GameServer...");
-            gameServer = new GameServer(port, maxPlayers);
+            logger.info("Starting GameServer...");
             gameServer.startup();
+            logger.info("GameServer running on port " + port + ", waiting for players...");
 
-            // Keep the server running until it is explicitly shut down
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                logger.info("Shutdown signal received. Shutting down the server...");
-                gameServer.shutdown();
-            }));
-
-            logger.info("GameServer is running. Waiting for players...");
-
-            // Block the main thread to keep the server alive
+            // Keep the main thread alive
             while (gameServer.isRunning()) {
-                Thread.sleep(1000); // Prevent busy-waiting
+                Thread.sleep(1000);
             }
         } catch (Exception e) {
-            logger.severe("An error occurred while running the GameServer: " + e.getMessage());
+            logger.severe("Error running GameServer: " + e.getMessage());
         } finally {
-            if (gameServer != null) {
-                gameServer.shutdown();
-            }
+            gameServer.shutdown();
             logger.info("GameServerApp has stopped.");
         }
+    }
+
+    private static int promptForInt(Scanner scanner, String message, int defaultValue) {
+        logger.info(message);
+        String input = scanner.nextLine();
+        try {
+            return input.isEmpty() ? defaultValue : Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            logger.warning("Invalid input. Using default: " + defaultValue);
+            return defaultValue;
+        }
+    }
+
+    private static void addShutdownHook(GameServer gameServer) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.info("Shutdown signal received. Shutting down the server...");
+            gameServer.shutdown();
+        }));
     }
 }

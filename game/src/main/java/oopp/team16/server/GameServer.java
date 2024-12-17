@@ -11,6 +11,7 @@ public class GameServer {
 
     private final int port;
     private final int maxPlayers;
+    private volatile boolean running = true;
     private ServerSocket serverSocket;
     private ConnectionManager connectionManager;
     private Model model;
@@ -24,14 +25,21 @@ public class GameServer {
         this.serverSocket = new ServerSocket(port);
         this.model = new Model();
         this.connectionManager = new ConnectionManager(serverSocket, maxPlayers, this);
+        this.running = true;
+
         new Thread(connectionManager::acceptConnections, "ConnectionManagerThread").start();
         logger.info("GameServer started successfully on port " + port);
     }
 
-    public void shutdown() throws IOException {
-        connectionManager.closeConnections();
-        serverSocket.close();
-        logger.info("GameServer shutdown completed.");
+    public void shutdown() {
+        running = false; // Signal that the server is stopping
+        try {
+            connectionManager.closeConnections();
+            serverSocket.close();
+            logger.info("GameServer shutdown completed.");
+        } catch (IOException e) {
+            logger.warning("Error shutting down the server: " + e.getMessage());
+        }
     }
 
     public void processClientMessage(GameMessage message, ClientManager sender) {
@@ -78,5 +86,9 @@ public class GameServer {
         GameMessage errorMessageObject = new GameMessage("error");
         errorMessageObject.addData("message", errorMessage);
         client.sendMessage(errorMessageObject);
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.geometry.Point2D;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
+import oopp.team16.server.GameClientController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -99,6 +100,12 @@ public class GameViewController implements ModelListener {
     private final Map<String, HBox> playersHand = new HashMap<>();
 
     // private String[] players;
+
+    private GameClientController clientController;  //WE DO A LITTLE BIT OF TESTING
+
+    public void setClientController(GameClientController controller) {
+        this.clientController = controller;
+    }
 
     public void initialize() {
         m.addListener(this);

@@ -1,5 +1,6 @@
 package oopp.team16.server;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,8 +45,9 @@ public class GameMessage {
     }
 
     public Map<String, Object> getData() {
-        return data;
+        return Collections.unmodifiableMap(data);
     }
+
 
     public void setData(Map<String, Object> data) {
         this.data = data;

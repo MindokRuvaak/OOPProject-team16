@@ -13,7 +13,8 @@ public class GameClient extends MessageHandler {
     }
 
     public void connectToServer(String serverAddress, int serverPort) {
-        if (clientSocket != null && !clientSocket.isClosed()) {
+
+        if (isConnected()) {
             logger.warning("Already connected to a server.");
             return;
         }

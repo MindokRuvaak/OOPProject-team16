@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 public class ClientManager extends MessageHandler implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
     private final Socket clientSocket;
-    private final GameServer gameServer; // Reference to GameServer for forwarding messages
+    private final GameServer gameServer;
     private volatile boolean running = true;
 
     public ClientManager(Socket socket, GameServer gameServer) {
@@ -19,13 +19,14 @@ public class ClientManager extends MessageHandler implements Runnable {
     public void run() {
         try {
             initializeStreams(clientSocket.getInputStream(), clientSocket.getOutputStream());
-            listenForMessages();
+            listenForMessages(); // Only call listenForMessages once
         } catch (IOException e) {
             logger.warning("Error initializing client connection: " + e.getMessage());
         } finally {
             closeServerConnection();
         }
     }
+
 
     private void listenForMessages() {
         while (running) {
