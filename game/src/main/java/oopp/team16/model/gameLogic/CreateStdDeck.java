@@ -10,7 +10,6 @@ public class CreateStdDeck implements DeckFactory {
 
     CardFactory cardFactory = new CardFactory();
 
-
     @Override
     public Deck createDeck() {
         Stack<Card> stack = new Stack<>();
@@ -20,7 +19,6 @@ public class CreateStdDeck implements DeckFactory {
         addNumberCards(stack, colors);
         addSpecialCards(stack,colors);
         addWildSpecialCards(stack);
-
 
         return new Deck(stack);
     }
@@ -42,8 +40,8 @@ public class CreateStdDeck implements DeckFactory {
         for (Color color : colors) {
             for(int i = 0; i < 2; i++){
                 stack.push(cardFactory.createSkipCard(color,10)); //value idk??
-                stack.push(cardFactory.createReverseCard(color, 10));
-                stack.push(cardFactory.createDrawTwoCard(color,10));
+                stack.push(cardFactory.createReverseCard(color, 11));
+                stack.push(cardFactory.createDrawTwoCard(color,12));
             }
 
         }
@@ -51,13 +49,10 @@ public class CreateStdDeck implements DeckFactory {
 
     private void addWildSpecialCards(Stack<Card> stack){
         for(int i = 0; i < 4; i++){
-            stack.push(cardFactory.createWildCard(10));
-            stack.push(cardFactory.createDrawFourCard(10));
+            stack.push(cardFactory.createWildCard(13));
+            stack.push(cardFactory.createDrawFourCard(14));
         }
     }
-
-
-
 }
 
 
