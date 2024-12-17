@@ -8,19 +8,27 @@ public class GameClient extends MessageHandler {
     private static final Logger logger = Logger.getLogger(GameClient.class.getName());
     private Socket clientSocket;
 
-    public GameClient(String serverAddress, int port) {
-        connectToServer(serverAddress, port);
+    public GameClient(String serverAddress, int serverPort) {
+        connectToServer(serverAddress, serverPort);
     }
 
-    public void connectToServer(String serverAddress, int port) {
+    public void connectToServer(String serverAddress, int serverPort) {
+        if (clientSocket != null && !clientSocket.isClosed()) {
+            logger.warning("Already connected to a server.");
+            return;
+        }
         try {
-            clientSocket = new Socket(serverAddress, port);
+            clientSocket = new Socket(serverAddress, serverPort);
             initializeStreams(clientSocket.getInputStream(), clientSocket.getOutputStream());
-            logger.info("Connected to server: " + serverAddress + ":" + port);
+            logger.info("Connected to server: " + serverAddress + ":" + serverPort);
         } catch (IOException e) {
             logger.severe("Error connecting to server: " + e.getMessage());
             throw new RuntimeException("Connection failed", e);
         }
+    }
+
+    public boolean isConnected() {
+        return clientSocket != null && !clientSocket.isClosed();
     }
 
     public void closeClientConnection() {

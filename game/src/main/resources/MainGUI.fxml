@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" prefHeight="383.0" prefWidth="800.0" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController">
+<AnchorPane fx:id="mainPane" prefHeight="383.0" prefWidth="800.0" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController">
   <children>
-      <ImageView fitHeight="627.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="627.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@ui/resources/GameViewBackground.png" />
          </image>
@@ -72,7 +72,7 @@
       </ImageView>
       <HBox fx:id="player1Hand" layoutX="2.0" layoutY="390.0" prefHeight="60.0" prefWidth="800.0" />
       <Label fx:id="labelTurn" layoutX="354.0" layoutY="219.0" text="Label" />
-      <Label layoutX="101.0" layoutY="290.0" text="Player 2" />
-      <Label layoutX="102.0" layoutY="144.0" text="Player 1" />
+      <Label layoutX="101.0" layoutY="290.0" text="Player 1" />
+      <Label layoutX="102.0" layoutY="144.0" text="Player 2" />
   </children>
 </AnchorPane>

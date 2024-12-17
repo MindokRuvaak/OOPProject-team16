@@ -1,4 +1,5 @@
 package oopp.team16.model.gameLogic.Cards;
+
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class BaseCard implements Card {

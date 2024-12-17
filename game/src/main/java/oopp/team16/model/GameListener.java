@@ -6,13 +6,13 @@ public interface GameListener {
 
     // void update();
 
-    void takePlayerTurn(Player currentPlayer);
+    void takePlayerTurn();
 
     void badMove();
 
     void announceWinner(String name);
 
-    void startPlayerTurn(Player currentPlayer);
+    void startPlayerTurn();
 
     void announceMustPlayCard();
 

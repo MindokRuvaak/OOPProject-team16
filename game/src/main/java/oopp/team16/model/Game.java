@@ -9,7 +9,7 @@ import oopp.team16.model.gameLogic.GameLogic;
 import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
-public class Game {
+class Game {
 
     private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
@@ -21,7 +21,7 @@ public class Game {
     private GameLogic gamelogic; // can be final? Unnecessary?
     // alot of overlap between GameLogic and GameRules
 
-    public Game(Deck deck, int startingHandSize) {
+    Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
         this.players = new LinkedList<>();
         this.startingHandSize = startingHandSize;
@@ -37,27 +37,32 @@ public class Game {
     }
 
     void startGame() {
-        new Thread(() -> {
-            // Start the game loop in a new thread
-            gameLoop();
-
-            // After the game loop ends, update UI on the JavaFX application thread
-            Platform.runLater(() -> {
-                announceWinner(this.currentPlayer.getName());
-            });
-        }).start();
+        gameLoop();
     }
 
-    public LinkedList<Player> getPlayers() {
+    void start() {
+        if (currentPlayer == null) {
+            nextTurn();
+            startTurn();
+            reUpDeck();
+            takeTurn();
+        }
+    }
+
+    LinkedList<Player> getPlayers() {
         return players;
     }
 
     Player getCurrentPlayer() {
-        return currentPlayer;
+        return this.currentPlayer;
     }
 
     Card getTopPlayedCard() {
         return playedCards.peek();
+    }
+
+    Card[] getPlayerHand() {
+        return this.currentPlayer.getHand();
     }
 
     // Main game loop,
@@ -70,39 +75,38 @@ public class Game {
                 reUpDeck();
                 takeTurn();
             }
-            endTurn();
-
-            noWinner = checkWinner();
+            noWinner = !checkWinner();
         }
     }
 
     private void reUpDeck() {
-        if(deck.isEmpty()){
-            Card  top = playedCards.pop();
+        if (deck.isEmpty()) {
+            Card top = playedCards.pop();
             deck.add(playedCards);
             playedCards.empty();
             playedCards.add(top);
         }
     }
 
-    private boolean checkWinner() {
-        boolean noWinner = true;
+    boolean checkWinner() {
+        boolean haveWinner = false;
         if (!currentPlayer.hasCards()) {
-            noWinner = false;
+            haveWinner = true;
             announceWinner(currentPlayer.getName());
         }
-        return noWinner;
+        return haveWinner;
     }
 
-    private void startTurn() {
+    void startTurn() {
         this.currentPlayer.startTurn();
         for (GameListener listener : listeners) {
-            listener.startPlayerTurn(currentPlayer);
+            listener.startPlayerTurn();
         }
     }
 
-    private void endTurn() {
+    void endTurn() {
         this.currentPlayer.resetTurnInfo();
+        this.currentPlayer.endTurn();
     }
 
     private void announceWinner(String name) {
@@ -111,11 +115,11 @@ public class Game {
         }
     }
 
-    private void nextTurn() {
+    void nextTurn() {
         if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
             this.turnOrder = this.players.iterator(); // reset iterator
         }
-        this.currentPlayer = this.turnOrder.next();
+        this.currentPlayer = this.turnOrder.next();//get next
     }
 
     private void setUpGame() {
@@ -138,12 +142,12 @@ public class Game {
 
     private void takeTurn() {
         for (GameListener listener : listeners) {
-            listener.takePlayerTurn(currentPlayer);
+            listener.takePlayerTurn();
         }
 
     }
 
-    public void AddListener(GameListener gameListener) {
+    void AddListener(GameListener gameListener) {
         listeners.add(gameListener);
     }
 
@@ -156,7 +160,9 @@ public class Game {
     }
 
     private void tryPlayCard(int index) {
-        if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
+        if ((0 <= index && index < currentPlayer.getHandSize())
+                && GameRules.allowedPlay(currentPlayer.getCard(index),
+                        getTopPlayedCard())) {
             playCard(index);
         } else {
             announceBadMove();
@@ -180,7 +186,7 @@ public class Game {
 
     void endCurrentPlayerTurn() {
         if (currentPlayer.hasPlayedCard()) {// TODO: can end turn if drawn 3 cards
-            currentPlayer.endTurn();
+            endTurn();
         } else {
             announceMustPlayCard();
         }

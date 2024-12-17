@@ -13,12 +13,12 @@ public class AppTerminal {
 
     public static void main(String[] args) {
         m = new Model();
-        
+
         c = new ControllerTerminal(m);
-        
+
         v = new ViewTerminal(m, c);
         m.addListener(v);
-        
+
         m.initGame();
         m.startGame();
     }

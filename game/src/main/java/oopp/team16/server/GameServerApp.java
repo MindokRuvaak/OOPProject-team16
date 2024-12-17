@@ -1,15 +1,11 @@
 package oopp.team16.server;
 
-import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameServerApp {
     private static final Logger logger = Logger.getLogger(GameServerApp.class.getName());
-    private static final Gson gson = new Gson();
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
@@ -28,34 +24,24 @@ public class GameServerApp {
             gameServer = new GameServer(port, maxPlayers);
             gameServer.startup();
 
-            while (true) {
-                logger.info("Awaiting command (JSON or 'shutdown'):");
-                String command = scanner.nextLine().trim();
+            // Keep the server running until it is explicitly shut down
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                logger.info("Shutdown signal received. Shutting down the server...");
+                gameServer.shutdown();
+            }));
 
-                if ("shutdown".equalsIgnoreCase(command)) {
-                    break;
-                }
+            logger.info("GameServer is running. Waiting for players...");
 
-                try {
-                    GameMessage message = gson.fromJson(command, GameMessage.class);
-                    if (message != null && message.getType() != null) {
-                        logger.info("Broadcasting message: " + message);
-                        gameServer.broadcastMessage(message);
-                    } else {
-                        logger.warning("Invalid GameMessage structure. Ensure the JSON has a 'type' field.");
-                    }
-                } catch (Exception e) {
-                    logger.warning("Failed to parse command as JSON. Ensure it is a valid GameMessage.");
-                }
+            // Block the main thread to keep the server alive
+            while (gameServer.isRunning()) {
+                Thread.sleep(1000); // Prevent busy-waiting
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "An error occurred while running the server: " + e.getMessage(), e);
+            logger.severe("An error occurred while running the GameServer: " + e.getMessage());
         } finally {
             if (gameServer != null) {
-                logger.info("Shutting down the GameServer...");
                 gameServer.shutdown();
             }
-            scanner.close();
             logger.info("GameServerApp has stopped.");
         }
     }
