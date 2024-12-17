@@ -24,8 +24,13 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
 
     public void initGame() {
         getPlayers();
+        if (players.isEmpty()) { // Add fallback players
+            addPlayer("Player 1");
+            addPlayer("Player 2");
+        }
         game.init(players);
     }
+
 
     public void startGame() {
         game.startGame();
@@ -47,11 +52,10 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         game.AddListener(gl);
     }
 
-    private void getPlayers() {
-        for (ModelListener listener : listeners) {
-            listener.requestPlayers();
-        }
+    public List<Player> getPlayers() {
+        return Collections.unmodifiableList(players); // Expose players safely
     }
+
 
     @Override
     public void takePlayerTurn() {

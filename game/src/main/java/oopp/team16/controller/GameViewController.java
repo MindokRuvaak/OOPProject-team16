@@ -13,6 +13,7 @@ import javafx.geometry.Point2D;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
 import oopp.team16.server.GameClientController;
+import oopp.team16.server.GameMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -192,13 +193,10 @@ public class GameViewController implements ModelListener {
     }
 
     public void endTurn() {
-        if (m.endTurn()) {
-            // model.endTurn returns true if player sucessfully has ended their turn
-            m.nextPlayerTurn();
-            updateHide();
-            buttonDisplayHand.setVisible(true);
-        }
+        GameMessage message = new GameMessage("endTurn", "Player1");
+        clientController.sendMessage(message);
     }
+
 
     public void cardView() {
         inputCard.setVisible(true);
@@ -223,9 +221,11 @@ public class GameViewController implements ModelListener {
     }
 
     public void playCard(int cardIndex) {
-        m.playCard(cardIndex);
-        updateDisplay();
+        GameMessage message = new GameMessage("playerMove", "Player1");
+        message.addData("cardPlayed", cardIndex);
+        clientController.sendMessage(message);
     }
+
 
     // move to view
     public void displayTopCard() {

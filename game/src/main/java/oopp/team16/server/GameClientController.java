@@ -55,33 +55,21 @@ public class GameClientController {
     }
 
     private void processServerMessage(GameMessage message) {
-        logger.info("Processing message of type: " + message.getType());
-
         switch (message.getType()) {
-            case "turn_update":
-                handleTurnUpdate(message);
+            case "gameState":
+                //viewController.updateGameState(message);
                 break;
-
-            case "card_played":
-                handleCardPlayed(message);
+            case "invalidMove":
+                //viewController.showError("Invalid move!");
                 break;
-
-            case "game_state":
-                handleGameState(message);
+            case "announceWinner":
+                //viewController.announceWinner((String) message.getData().get("winner"));
                 break;
-
-            case "game_over":
-                handleGameOver(message);
-                break;
-
-            case "invalid_action":
-                handleInvalidAction(message);
-                break;
-
             default:
-                logger.warning("Unknown message type received: " + message.getType());
+                logger.warning("Unknown message type: " + message.getType());
         }
     }
+
 
     // Specific server message handlers
     private void handleTurnUpdate(GameMessage message) {

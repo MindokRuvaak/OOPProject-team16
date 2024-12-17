@@ -37,8 +37,12 @@ class Game {
     }
 
     void startGame() {
+        if (turnOrder == null) {
+            throw new IllegalStateException("Game has not been initialized. Call init() before starting the game.");
+        }
         gameLoop();
     }
+
 
     void start() {
         if (currentPlayer == null) {

@@ -34,6 +34,7 @@ public class ConnectionManager {
                 logger.info("Current players connected: " + clients.size() + "/" + maxPlayers);
             }
             logger.info("Max players connected. No longer accepting connections.");
+            gameServer.startGame();
         } catch (IOException e) {
             logger.warning("Error accepting connection: " + e.getMessage());
         }
