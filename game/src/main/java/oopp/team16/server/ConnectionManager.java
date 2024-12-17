@@ -3,65 +3,73 @@ package oopp.team16.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class ConnectionManager {
     private static final Logger logger = Logger.getLogger(ConnectionManager.class.getName());
+
     private final ServerSocket serverSocket;
     private final List<ClientManager> clients;
     private final int maxPlayers;
-    private final GameServer gameServer; // Reference to GameServer
+    private final GameServer gameServer;
+    private final ExecutorService clientThreadPool;
 
     public ConnectionManager(ServerSocket serverSocket, int maxPlayers, GameServer gameServer) {
         this.serverSocket = serverSocket;
         this.maxPlayers = maxPlayers;
-        this.clients = new CopyOnWriteArrayList<>();
         this.gameServer = gameServer;
+        this.clients = new CopyOnWriteArrayList<>();
+        this.clientThreadPool = Executors.newFixedThreadPool(maxPlayers);
     }
 
     public void acceptConnections() {
         try {
             while (clients.size() < maxPlayers) {
                 Socket clientSocket = serverSocket.accept();
-                logger.info("Accepted connection from " + clientSocket.getInetAddress().getHostAddress());
+                logger.info("Accepted connection from: " + clientSocket.getInetAddress());
 
-                String playerName = "Player" + (clients.size() + 1); // Unique player name
-                gameServer.getModel().addPlayer(playerName); // Add player to the Model
+                String playerName = generatePlayerName();
+                gameServer.getModel().addPlayer(playerName);
 
                 ClientManager clientManager = new ClientManager(clientSocket, gameServer, playerName);
                 clients.add(clientManager);
-                new Thread(clientManager, "ClientManager-" + clients.size()).start();
+                clientThreadPool.submit(clientManager);
 
-                logger.info("Current players connected: " + clients.size() + "/" + maxPlayers);
+                logger.info("Player " + playerName + " connected. Total players: " + clients.size());
             }
 
-            logger.info("Max players connected. Starting the game...");
+            logger.info("Max players reached. Notifying GameServer to start the game.");
             gameServer.startGame();
+
         } catch (IOException e) {
-            logger.warning("Error accepting connection: " + e.getMessage());
+            logger.severe("Error accepting connections: " + e.getMessage());
         }
     }
 
-
-
     public void removeClient(ClientManager client) {
         if (clients.remove(client)) {
-            logger.info("Client removed. Current players connected: " + clients.size() + "/" + maxPlayers);
+            logger.info("Removed client: " + client.getClientName());
         }
     }
 
     public void closeConnections() {
         for (ClientManager client : clients) {
-            client.closeServerConnection();
+            client.closeConnection();
         }
         clients.clear();
+        clientThreadPool.shutdown();
         logger.info("All client connections closed.");
     }
 
+    private String generatePlayerName() {
+        return "Player" + (clients.size() + 1);
+    }
+
     public List<ClientManager> getClients() {
-        return Collections.unmodifiableList(clients); // Prevent external modification
+        return clients;
     }
 }

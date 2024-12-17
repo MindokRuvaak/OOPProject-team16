@@ -1,6 +1,9 @@
 package oopp.team16.server;
 
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class GameServerApp {
@@ -9,11 +12,9 @@ public class GameServerApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Get server port and max players with minimal interaction
         int port = promptForInt(scanner, "Enter server port (default: 8080):", 8080);
         int maxPlayers = promptForInt(scanner, "Enter max number of players (default: 4):", 4);
 
-        // Initialize and start the GameServer
         GameServer gameServer = new GameServer(port, maxPlayers);
         addShutdownHook(gameServer);
 
@@ -22,16 +23,28 @@ public class GameServerApp {
             gameServer.startup();
             logger.info("GameServer running on port " + port + ", waiting for players...");
 
-            // Keep the main thread alive
-            while (gameServer.isRunning()) {
-                Thread.sleep(1000);
-            }
+            keepServerAlive(gameServer);
+
         } catch (Exception e) {
             logger.severe("Error running GameServer: " + e.getMessage());
         } finally {
             gameServer.shutdown();
             logger.info("GameServerApp has stopped.");
+            scanner.close();
         }
+    }
+
+    /**
+     * Keeps the server alive using a ScheduledExecutorService.
+     */
+    private static void keepServerAlive(GameServer gameServer) {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(() -> {
+            if (!gameServer.isRunning()) {
+                logger.info("GameServer is no longer running. Stopping main loop.");
+                scheduler.shutdown();
+            }
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
     private static int promptForInt(Scanner scanner, String message, int defaultValue) {

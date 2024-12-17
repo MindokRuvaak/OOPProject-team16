@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import oopp.team16.controller.GameViewController;
 import oopp.team16.server.GameClient;
-import oopp.team16.server.GameClientController;
 
 import java.io.IOException;
 
@@ -25,14 +24,6 @@ public class GameView {
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainGUI.fxml"));
             Parent root = loader.load();
-
-            // Retrieve the controller
-            GameViewController controller = loader.getController();
-
-            // Initialize GameClient and GameClientController
-            GameClient client = new GameClient("192.168.50.7", 12345); // Connect to server
-            GameClientController clientController = new GameClientController(client, controller);
-            controller.setClientController(clientController);
 
             // Set up the scene
             scene = new Scene(root, 800, 650);

@@ -53,17 +53,7 @@ public class GameMessage {
         this.data = data;
     }
 
-    // Convenience method to add data
     public void addData(String key, Object value) {
         this.data.put(key, value);
-    }
-
-    @Override
-    public String toString() {
-        return "GameMessage{" +
-            "type='" + type + '\'' +
-            ", sender='" + sender + '\'' +
-            ", data=" + data +
-            '}';
     }
 }

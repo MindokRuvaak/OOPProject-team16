@@ -3,7 +3,6 @@ package oopp.team16.server;
 import com.google.gson.Gson;
 
 import java.io.*;
-import java.net.SocketException;
 import java.util.logging.Logger;
 
 public abstract class MessageHandler {
@@ -19,36 +18,31 @@ public abstract class MessageHandler {
     }
 
     public void sendMessage(GameMessage message) {
-        String jsonMessage = gson.toJson(message);
-        out.println(jsonMessage);
-        logger.fine("Sent message: " + jsonMessage);
+        out.println(gson.toJson(message));
     }
 
-    public GameMessage receiveMessage() {
-        try {
-            String jsonMessage = in.readLine();
-            if (jsonMessage != null) {
-                return gson.fromJson(jsonMessage, GameMessage.class);
+    public void listenForMessages() {
+        new Thread(() -> {
+            String jsonMessage;
+            try {
+                while ((jsonMessage = in.readLine()) != null) {
+                    GameMessage message = gson.fromJson(jsonMessage, GameMessage.class);
+                    onMessageReceived(message);
+                }
+            } catch (IOException e) {
+                logger.warning("Error while reading messages: " + e.getMessage());
             }
-        } catch (SocketException e) {
-            logger.fine("Socket closed while reading messages (expected during shutdown)." + e.getMessage());
-        } catch (IOException e) {
-            logger.warning("Error reading message" + e.getMessage());
-        }
-        return null;
+        }).start();
     }
+
+    protected abstract void onMessageReceived(GameMessage message);
 
     public void closeStreams() {
         try {
-            if (out != null) {
-                out.close();
-            }
-            if (in != null) {
-                in.close();
-            }
-        } catch (Exception e) {
-            logger.warning("Error while closing streams." + e.getMessage());
+            if (out != null) out.close();
+            if (in != null) in.close();
+        } catch (IOException e) {
+            logger.warning("Error closing streams: " + e.getMessage());
         }
-        logger.info("Streams closed.");
     }
 }
