@@ -5,29 +5,30 @@ import oopp.team16.model.gameLogic.Cards.Colors.Color;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
 public class CardFactory {
+
+    private final int actionValue =  20;
+    private final int wildValue = 50;
     public Card createNumCard(Color color, int value) {
         return new NumCard(color, value);
     }
-
-    //en för alla eller dela upp?
-    public Card createSkipCard(Color color, int value){
-        return new SpecialCard(color, CardType.SKIP, value, new SkipAction());
+    public Card createSkipCard(Color color){
+        return new SpecialCard(color, CardType.SKIP, actionValue, new SkipAction());
     }
 
-    public Card createReverseCard(Color color, int value){
-        return new SpecialCard(color, CardType.REVERSE, value, new ReverseAction());
+    public Card createReverseCard(Color color){
+        return new SpecialCard(color, CardType.REVERSE, actionValue, new ReverseAction());
     }
 
-    public Card createDrawTwoCard(Color color, int value){
-        return new SpecialCard(color, CardType.DRAW_TWO, value, new DrawTwoAction());
+    public Card createDrawTwoCard(Color color){
+        return new SpecialCard(color, CardType.DRAW_TWO, actionValue, new DrawTwoAction());
     }
 
-    public Card createDrawFourCard(int value){
-        return new SpecialCard(StdColors.black(), CardType.DRAW_FOUR, value, new DrawFourAction());
+    public Card createDrawFourCard(){
+        return new SpecialCard(StdColors.black(), CardType.DRAW_FOUR, wildValue, new DrawFourAction());
     }
 
-    public Card createWildCard(int value){
-        return new SpecialCard(StdColors.black(), CardType.WILDCARD, value, new WildCardAction());
+    public Card createWildCard(){
+        return new SpecialCard(StdColors.black(), CardType.WILDCARD, wildValue, new WildCardAction());
     }
 
 

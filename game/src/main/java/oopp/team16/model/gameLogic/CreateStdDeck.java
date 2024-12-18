@@ -39,9 +39,9 @@ public class CreateStdDeck implements DeckFactory {
     private void addSpecialCards(Stack<Card> stack, Color[] colors){
         for (Color color : colors) {
             for(int i = 0; i < 2; i++){
-                stack.push(cardFactory.createSkipCard(color,10)); //value idk??
-                stack.push(cardFactory.createReverseCard(color, 11));
-                stack.push(cardFactory.createDrawTwoCard(color,12));
+                stack.push(cardFactory.createSkipCard(color));
+                stack.push(cardFactory.createReverseCard(color));
+                stack.push(cardFactory.createDrawTwoCard(color));
             }
 
         }
@@ -49,8 +49,8 @@ public class CreateStdDeck implements DeckFactory {
 
     private void addWildSpecialCards(Stack<Card> stack){
         for(int i = 0; i < 4; i++){
-            stack.push(cardFactory.createWildCard(13));
-            stack.push(cardFactory.createDrawFourCard(14));
+            stack.push(cardFactory.createWildCard());
+            stack.push(cardFactory.createDrawFourCard());
         }
     }
 }
