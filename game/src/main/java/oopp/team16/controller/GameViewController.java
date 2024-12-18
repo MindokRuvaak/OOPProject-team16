@@ -1,19 +1,22 @@
 package oopp.team16.controller;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import oopp.team16.model.GameListener;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GameViewController implements GameListener, ModelListener{
 
@@ -52,24 +55,16 @@ public class GameViewController implements GameListener, ModelListener{
     private HBox player2Hand; // Add this to your FXML file
 
     @FXML
-    private HBox player3Hand; // Add this to your FXML file
+    private VBox player3Hand; // Add this to your FXML file
 
     @FXML
-    private HBox player4Hand; // Add this to your FXML file
+    private VBox player4Hand; // Add this to your FXML file
 
     @FXML
     private Button buttonDisplayHand;
     // TODO: remove this button? maybe
     @FXML
     private ImageView imageStartingCard;
-    @FXML
-    private Button playCardButton;
-    @FXML
-    private TextField intInput;
-    @FXML
-    private Button playDoneButton;
-    @FXML
-    private AnchorPane inputCard;
     @FXML
     private Label errorCard;
     @FXML
@@ -82,6 +77,14 @@ public class GameViewController implements GameListener, ModelListener{
     private Label labelWinner;
     @FXML
     private Label labelTurn;
+    @FXML
+    private Button rules;
+    @FXML
+    private AnchorPane rulesPane;
+    @FXML
+    private Button x;
+    @FXML
+    private TextArea rulesText;
     private final double CARD_HEIGHT = 60;
     private final double CARD_WIDTH = 32;
 
@@ -94,24 +97,34 @@ public class GameViewController implements GameListener, ModelListener{
     // private final Point2D AI_1_STARTING_POINT = new Point2D(100.0, 75.0);
     // private Point2D AI_2_STARTING_POINT;
     // private Point2D AI_3_STARTING_POINT;
-    private final Map<String, HBox> playersHand = new HashMap<>();
+    private final Map<String, Pane> playersHand = new HashMap<>();
+    private final List<Pane> paneList = new ArrayList<>();
 
     public void initialize() {
         m.addListener(this);
         m.initGame();
-        inputCard.setVisible(false);
         winningPane.setVisible(false);
         buttonDisplayHand.setVisible(false);
+        rulesPane.setVisible(false);
+        loadGameRules();
+        paneList.add(player1Hand);
+        paneList.add(player2Hand);
+        paneList.add(player3Hand);
+        paneList.add(player4Hand);
 
         buttonStart.setOnAction(event -> {
-            String[] players = namesOf(m.getListOfPlayers());
+          //  String[] players = namesOf(m.getListOfPlayers());
             buttonStart.setVisible(false);
+            setPlayers();
+           /* playersHand.put(players[3],this.player4Hand);
+            playersHand.put(players[2], this.player3Hand);
             playersHand.put(players[1], this.player2Hand);
             playersHand.put(players[0], this.player1Hand);
+
+            */
             buttonDisplayHand.setVisible(true);
             m.start();
         });
-
         buttonDisplayHand.setOnAction(event -> {
             updateDisplay();
             buttonDisplayHand.setVisible(false);
@@ -121,19 +134,26 @@ public class GameViewController implements GameListener, ModelListener{
             endTurn();
         });
 
-        playDoneButton.setOnAction(event -> {
-            closeCardCiew();
-        });
-
         buttonPlayDeck.setOnAction(event -> {
             drawCard();
         });
 
-        playCardButton.setOnAction(event -> {
-            cardView();
+        x.setOnAction(event -> {
+            closeRulesView();
         });
-    }
+        rules.setOnAction(event -> {
+            openRulesView();
+        });
 
+    }
+     public void setPlayers(){
+        int n = 0;
+         for (int i = 0; i < m.getListOfPlayers().length; i++) {
+             String[] players = namesOf(m.getListOfPlayers());
+             playersHand.put(players[i], paneList.get(n));
+                 n++;
+         }
+     }
     // player data contains name/id and number of cards in hand as name:num,
     // this returns array in same order, but only with player names
     private String[] namesOf(String[] players) {
@@ -154,6 +174,48 @@ public class GameViewController implements GameListener, ModelListener{
 
     public void uno() {
         System.out.println(m.getCurrentPlayerName() + " has decclared UNO!");
+    }
+
+    public void openRulesView(){
+        rulesPane.setVisible(true);
+        rulesPane.toFront();
+        rulesPane.setOpacity(1.0);
+        rulesPane.setStyle("-fx-background-color: #2ecc71;");
+    }
+
+    public void closeRulesView(){
+        rulesPane.setVisible(false);
+    }
+    public void loadGameRules() {
+        String rules = """
+        🎉 UNO Game Rules 🎉
+
+
+        1⃣ **Setup**:
+           Each player starts with 7 cards. The rest of the deck is placed face-down as the draw pile.
+
+        2 **Gameplay**:
+           - Match the top card on the discard pile by **color**, **number**, or **symbol**.
+           - You can play action cards (like Skip, Reverse, and Draw 2) to add strategy.
+           - You can stack **Draw 2** cards on top of each other, forcing the next player to draw multiple cards.
+           - You can also stack **Draw 4** Wild cards on top of each other, increasing the draw count.
+
+        3 **Special Rules**:
+           - If you don't have a playable card, draw **up to 3 cards**.
+           - If you still can't play, your turn is over.
+           - If you forget to say "UNO!" when you have one card left, other players can call you out, and you must draw **2 penalty cards**.
+
+        4 **Winning**:
+           - The first player to play all their cards wins the round.
+
+        5 **Card Meanings**:
+           - **Skip: Skip the next players turn.
+           - **Reverse: Reverses the turn order.
+           - **Draw 2: The next player draws 2 cards (can be stacked!).
+           - **Wild: Change the color to anything you want.
+           - **Wild Draw: Change the color and force the next player to draw 4 cards (can be stacked!).
+        """;
+        rulesText.setText(rules);
     }
 
     // TODO: move to view
@@ -194,7 +256,7 @@ public class GameViewController implements GameListener, ModelListener{
         inputCard.setVisible(true);
         inputCard.toFront();
         inputCard.setOpacity(1.0);
-        inputCard.setStyle("-fx-background-color: #5B0101;");
+        inputCard.setStyle("-fx-background-color: #2ecc71;");
     }
 
     public void closeCardCiew() {
@@ -253,10 +315,20 @@ public class GameViewController implements GameListener, ModelListener{
     }
 
     // move to view
-    public void displayHand(HBox hand) {
+    public void displayHand(Pane hand) {
         hand.getChildren().clear(); // Clear existing cards
         for (String card : m.getCurrentPlayerHand()) {
             ImageView cardView = createCard(card); // Create an ImageView for each card
+            if (hand instanceof VBox) {
+                cardView.setRotate(90); // Rotate the card to align vertically
+                VBox.setMargin(cardView, new Insets(-30, 0, 0, 0));
+            }
+            cardView.setOnMouseClicked(event -> {
+
+                int cardIndex = hand.getChildren().indexOf(cardView);
+                playCard(cardIndex+1);
+                System.out.println("Clicked card at index: " + cardIndex);
+            });
             hand.getChildren().add(cardView); // Add the card to the HBox
         }
     }
@@ -268,10 +340,18 @@ public class GameViewController implements GameListener, ModelListener{
         }
     }
 
-    private void displayBackOfHand(HBox hand, int handSize) {
+    private void displayBackOfHand(Pane hand, int handSize) {
         hand.getChildren().clear(); // Clear existing cards in case of updates
         for (int i = 0; i < handSize; i++) {
             ImageView cardBack = createCardBack();
+            if (hand instanceof VBox) {
+                // cardView.setFitWidth(CARD_HEIGHT); // Flip width and height
+                //cardView.setFitHeight(CARD_WIDTH);
+                cardBack.setRotate(90); // Rotate the card to align vertically
+                VBox.setMargin(cardBack, new Insets(-30, 0, 0, 0));
+
+
+            }
             hand.getChildren().add(cardBack);
         }
     }

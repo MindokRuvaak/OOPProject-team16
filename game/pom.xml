@@ -57,7 +57,7 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      
+
     </dependency>
   </dependencies>
   <build>
@@ -184,7 +184,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugin><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>8</source><target>8</target></configuration></plugin>
+      </plugin><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>15</source><target>15</target></configuration></plugin>
     </plugins>
   </build>
   <reporting>
@@ -199,10 +199,10 @@
 
 
   <dependencyManagement>
-  
+
 
     <dependencies>
-    
+
 
       <dependency>
         <groupId>org.openjfx</groupId>
