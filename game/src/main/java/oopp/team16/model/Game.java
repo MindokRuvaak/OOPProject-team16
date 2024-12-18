@@ -2,12 +2,10 @@ package oopp.team16.model;
 
 import java.util.*;
 
-import javafx.application.Platform;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Cards.SpecialCard;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 import oopp.team16.model.gameLogic.Deck;
-import oopp.team16.model.gameLogic.GameLogic;
 import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
@@ -258,7 +256,7 @@ public class Game implements SpecialCardLogic {
     public void nextPlayerDraws(int num) {
         int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
 
-        Player nextPlayer = players.get(nextPlayerIndex); // Safe access to the next player
+        Player nextPlayer = players.get(nextPlayerIndex);
         for (int i = 0; i < num; i++) {
             nextPlayer.drawCard(deck.drawCard());
         }
