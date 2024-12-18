@@ -27,7 +27,7 @@ public class SpecialCard implements Card{
     public int getValue() {
         return baseCard.getValue();
     }
-    
+
     public ActionStrategy getAction(){
         return this.action;
     }
@@ -37,5 +37,10 @@ public class SpecialCard implements Card{
         baseCard.setWildColor(c);
     }
 
-    
+    public String toString(){
+            return baseCard.getColor().toString() + " " + baseCard.getType();
+
+    }
+
+
 }
