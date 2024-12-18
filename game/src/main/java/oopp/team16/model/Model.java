@@ -18,11 +18,11 @@ public class Model /* implements GameListener */ { // maybe change name ?ModelGa
         df = new CreateStdDeck();
         players = new ArrayList<>();
         game = new Game(df.createDeck(), 7);
-        // game.AddListener(this);
     }
 
     public void initGame() {
-        getPlayers(3,5);
+        // this will change?, when possible to create loby with set amount of players
+        getPlayers(2,5);
         game.init(players);
     }
 
@@ -62,17 +62,8 @@ public class Model /* implements GameListener */ { // maybe change name ?ModelGa
         game.currentPlayerDrawCard();
     }
 
-
-    public boolean endTurn() {
+    public void endTurn() {
         game.endCurrentPlayerTurn();
-        boolean hasEnded = !game.getCurrentPlayer().stillTakingTurn();
-        if (hasEnded) {
-            // if player succesfully ended their turn
-            game.nextTurn();
-            //check if player won
-            game.checkWinner();
-        }
-        return hasEnded;
     }
 
     public String getCurrentPlayerName() {
@@ -104,6 +95,15 @@ public class Model /* implements GameListener */ { // maybe change name ?ModelGa
     }
 
     public void nextPlayerTurn() {
+        game.nextTurn();
         game.startTurn();
+    }
+
+    public boolean haveWinner() {
+        return game.checkWinner();
+    }
+
+    public boolean canEndTurn() {
+        return game.canEndTurn();
     }
 }

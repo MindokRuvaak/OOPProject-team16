@@ -37,28 +37,31 @@ public class ControllerTerminal implements ModelListener, GameListener {
 
     @Override
     public void requestPlayers(int lower, int upper) {
-        v.requestPlayersMessage(lower, lower);
+        v.requestPlayersMessage(lower, upper);
         int n = -1;
-        while (n <= lower || n >= lower) {
-            // temporary while testing will switch to min 3 players
-            // upper limit is arbitrary, restrict for multiplayer limit
-            n = getNumPlayers();
+        while (n < lower || n > upper) {
+            n = getNumPlayers(lower, upper);
         }
         providePlayers(n);
     }
 
-    public int getNumPlayers() {
+    public int getNumPlayers(int lower, int upper) {
         String nStr = input.nextLine();
         int n = -1;
         try {
             n = Integer.parseInt(nStr);
-            if ( n <= 2 || n >= 6 ) {
+            if ( n < lower || n > upper ) {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            v.badInput();
+            badInput();
         }
         return n;
+    }
+
+    private void badInput() {
+        v.badInput();
+        waitForUserConfirmation();
     }
 
     private void providePlayers(int n) {
@@ -68,7 +71,6 @@ public class ControllerTerminal implements ModelListener, GameListener {
             addPlayer(id);
         }
     }
-
 
     private void handleInput(String ans, int handSize) {
         boolean givenCorrectInput = false;
@@ -88,10 +90,9 @@ public class ControllerTerminal implements ModelListener, GameListener {
                 givenCorrectInput = true;
                 endTurn();
             }
-            waitForUserConfirmation();
         }
         if (!givenCorrectInput) {
-            v.badInput();
+            badInput();
         }
     }
 
@@ -102,12 +103,15 @@ public class ControllerTerminal implements ModelListener, GameListener {
     @Override
     public void takePlayerTurn() {
         v.takePlayerTurn();
-        handleInput(null, getNumPlayers());
+        String ans = input.nextLine(); 
+        int handsize = m.getCurrentPlayerHand().length;
+        handleInput(ans, handsize);
     }
 
     @Override
     public void badMove() {
         v.badMove();
+        waitForUserConfirmation();
     }
 
     @Override
@@ -125,5 +129,6 @@ public class ControllerTerminal implements ModelListener, GameListener {
     @Override
     public void announceMustPlayCard() {
         v.announceMustPlayCard();
+        waitForUserConfirmation();
     }
 }

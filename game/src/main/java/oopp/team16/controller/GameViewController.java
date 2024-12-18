@@ -181,8 +181,9 @@ public class GameViewController implements GameListener, ModelListener{
     }
 
     public void endTurn() {
-        if (m.endTurn()) {
-            // model.endTurn returns true if player sucessfully has ended their turn
+        if (m.canEndTurn()) {
+            m.endTurn();
+            if (m.haveWinner())
             m.nextPlayerTurn();
             updateHide();
             buttonDisplayHand.setVisible(true);

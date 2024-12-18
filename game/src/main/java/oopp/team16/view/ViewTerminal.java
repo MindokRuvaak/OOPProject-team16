@@ -18,15 +18,17 @@ public class ViewTerminal implements View {
         printMessage.append("'s turn.\n");
 
         printMessage.append("Current card in play: ");
-        printMessage.append(m.getTopPlayedCard());
-        printMessage.append("\n");
+        printMessage.append(m.getTopPlayedCard()+"\n");
+        if (m.canEndTurn()) {
+            printMessage.append("can end turn.\n");
+        }
 
         System.out.println(printMessage.toString());
     }
 
     @Override
     public void requestPlayersMessage(int lower, int upper) {
-        System.out.print("How many players (" + lower + "2-" + upper + "6)?\n> ");
+        System.out.print("How many players (" + lower + "-" + upper + ")?\n> ");
     }
 
     @Override
@@ -40,14 +42,14 @@ public class ViewTerminal implements View {
         clearTerminal();
         printGameState();
         showHand(hand);
-        turnActions(hand);
+        turnActions();
     }
 
     private void waitForUserConfirmation() {
         System.out.println("Press enter to start your turn.");
     }
 
-    private void turnActions(String[] hand) {
+    private void turnActions() {
         System.out.print("> ");
     }
 
@@ -62,6 +64,8 @@ public class ViewTerminal implements View {
         for (int i = 0; i < hand.length; i++) {
             message[i] = "<" + (i + 1) + "> : " + hand[i];
         }
+        System.out.println(String.join("\n", message));
+        System.out.println("\n<+> : Draw a card");
         System.out.println("<E> : End turn \n");
     }
 
@@ -86,6 +90,8 @@ public class ViewTerminal implements View {
 
     public void startPlayerTurn() {
         clearTerminal();
+        showHand(m.getCurrentPlayerHand());
+        printGameState();
     }
 
     // @Override

@@ -17,7 +17,8 @@ public class AppTerminal {
         
         c = new ControllerTerminal(m, v);
         
-        // m.addGameListener(c);
+        m.addGameListener(c);
+        m.addListener(c);
         
         m.initGame();
         m.startGame();

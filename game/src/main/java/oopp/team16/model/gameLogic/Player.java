@@ -114,12 +114,11 @@ public class Player {
         if (getClass() != obj.getClass())
             return false;
         Player other = (Player) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+        if (id == other.id) {
         return true;
+        } else {
+            return false;
+        }
     }
 
 }

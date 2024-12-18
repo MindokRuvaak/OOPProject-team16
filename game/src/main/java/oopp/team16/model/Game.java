@@ -35,7 +35,7 @@ class Game {
         setUpGame();
     }
 
-    void startGame() {
+    void startGame() {// TODO: rename to startGameLoop
         gameLoop();
     }
 
@@ -68,7 +68,8 @@ class Game {
     private void gameLoop() {
         boolean noWinner = true;
         while (noWinner) {
-            nextTurn(); // switch current player
+            nextTurn(); // setup first player, after turn order iterator is initiaized, call next to
+                        // setup first player in list as first current player
             startTurn();
             while (this.currentPlayer.stillTakingTurn()) {
                 reUpDeck();
@@ -118,7 +119,7 @@ class Game {
         if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
             this.turnOrder = this.players.iterator(); // reset iterator
         }
-        this.currentPlayer = this.turnOrder.next();//get next
+        this.currentPlayer = this.turnOrder.next();// get next
     }
 
     private void setUpGame() {
@@ -189,7 +190,7 @@ class Game {
         }
     }
 
-    private boolean canEndTurn() {
+    boolean canEndTurn() {
         return currentPlayer.hasPlayedCard() || currentPlayer.drawnThree();
     }
 
