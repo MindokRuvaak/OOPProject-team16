@@ -1,7 +1,6 @@
 package oopp.team16.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -9,15 +8,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.geometry.Point2D;
+import oopp.team16.model.GameListener;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
 
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO: controller will not need to be ModelListener only view. may have to update observer methods
-public class GameViewController implements ModelListener {
+public class GameViewController implements GameListener, ModelListener{
 
     Model m = new Model();
 
@@ -92,13 +90,11 @@ public class GameViewController implements ModelListener {
     private final double CARD_SPACING_SMALL = -25.0;
     private final double CARD_SPACING_ULTRA_SMALL = -35.0;
 
-    private Point2D PLAYER_STARTING_POINT;
-    private final Point2D AI_1_STARTING_POINT = new Point2D(100.0, 75.0);
-    private Point2D AI_2_STARTING_POINT;
-    private Point2D AI_3_STARTING_POINT;
+    // private Point2D PLAYER_STARTING_POINT;
+    // private final Point2D AI_1_STARTING_POINT = new Point2D(100.0, 75.0);
+    // private Point2D AI_2_STARTING_POINT;
+    // private Point2D AI_3_STARTING_POINT;
     private final Map<String, HBox> playersHand = new HashMap<>();
-
-    // private String[] players;
 
     public void initialize() {
         m.addListener(this);
@@ -157,7 +153,7 @@ public class GameViewController implements ModelListener {
     }
 
     public void uno() {
-        System.out.println(m.getCurrentPlayerID() + " has decclared UNO!");
+        System.out.println(m.getCurrentPlayerName() + " has decclared UNO!");
     }
 
     // TODO: move to view
@@ -176,17 +172,18 @@ public class GameViewController implements ModelListener {
     }
 
     @Override
-    public void startNextPlayerTurn() {
+    public void startPlayerTurn() {
         updateTurnLabel();
     }
 
     private void updateTurnLabel() {
-        labelTurn.setText(m.getCurrentPlayerID() + "'s turn");
+        labelTurn.setText(m.getCurrentPlayerName() + "'s turn");
     }
 
     public void endTurn() {
-        if (m.endTurn()) {
-            // model.endTurn returns true if player sucessfully has ended their turn
+        if (m.canEndTurn()) {
+            m.endTurn();
+            if (m.haveWinner())
             m.nextPlayerTurn();
             updateHide();
             buttonDisplayHand.setVisible(true);
@@ -247,7 +244,7 @@ public class GameViewController implements ModelListener {
     public void displayHands() {
         for (String p : m.getListOfPlayers()) {
             String name = nameOf(p);
-            if (nameOf(p).equals(m.getCurrentPlayerID())) {
+            if (nameOf(p).equals(m.getCurrentPlayerName())) {
                 displayHand(playersHand.get(name));
             } else {
                 displayBackOfHand(playersHand.get(name), handSizeOf(p));
@@ -304,20 +301,20 @@ public class GameViewController implements ModelListener {
     }
 
     @Override
-    public void requestPlayers() {
+    public void requestPlayers(int lower, int upper) {
         m.addPlayer("Player 1");
         m.addPlayer("Player 2");
+    }
+
+    @Override
+    public void takePlayerTurn() {
+        updateHide();
     }
 
     // TODO: implement observer pattern methods
 
     @Override
-    public void takeTurn() { // TODO: fix signature
-        updateHide();
-    }
-
-    @Override
-    public void announceBadMove() {
+    public void badMove() {
         // TODO: implement
         System.out.println("cant play that card");
     }

@@ -8,14 +8,16 @@ import java.util.List;
 public class Player {
     private List<Card> hand;
     private int score;  // hur räknar vi score
-    private String name;
+    private final String name;
+    private final int id;
     // turn taken info
     private boolean playedCard;
     private int cardsDrawn;
     private boolean takingTurn;
 
-    public Player (String name){
+    public Player (String name, int id){
         this.name = name;
+        this.id = id;
         this.hand = new ArrayList<>();
         this.playedCard = false;
         this.cardsDrawn = 0;
@@ -23,7 +25,7 @@ public class Player {
     }
 
     public void drawCard(Card card){
-        //TODO: ensure hand alsways sorted
+        //TODO: ensure hand alsways sorted !! later if have time
         this.hand.add(card);
         this.cardsDrawn++;
     }
@@ -84,6 +86,10 @@ public class Player {
         return this.takingTurn;
     }
 
+    public int getid() {
+        return this.id;
+    }
+
     // returns string containing the name of player and numer of cards in their hand
     // seperated by a '':''
     @Override
@@ -108,12 +114,11 @@ public class Player {
         if (getClass() != obj.getClass())
             return false;
         Player other = (Player) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+        if (id == other.id) {
         return true;
+        } else {
+            return false;
+        }
     }
 
 }

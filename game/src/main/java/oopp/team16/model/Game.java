@@ -18,7 +18,7 @@ class Game {
     private final Deck deck;
     private final Stack<Card> playedCards;
     private final int startingHandSize;
-    private GameLogic gamelogic; // can be final? Unnecessary?
+    // private GameLogic gamelogic; // can be final? Unnecessary?
     // alot of overlap between GameLogic and GameRules
 
     Game(Deck deck, int startingHandSize) {
@@ -36,7 +36,7 @@ class Game {
         setUpGame();
     }
 
-    void startGame() {
+    void startGame() {// TODO: rename to startGameLoop
         gameLoop();
     }
 
@@ -69,7 +69,8 @@ class Game {
     private void gameLoop() {
         boolean noWinner = true;
         while (noWinner) {
-            nextTurn(); // switch current player
+            nextTurn(); // setup first player, after turn order iterator is initiaized, call next to
+                        // setup first player in list as first current player
             startTurn();
             while (this.currentPlayer.stillTakingTurn()) {
                 reUpDeck();
@@ -119,7 +120,7 @@ class Game {
         if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
             this.turnOrder = this.players.iterator(); // reset iterator
         }
-        this.currentPlayer = this.turnOrder.next();//get next
+        this.currentPlayer = this.turnOrder.next();// get next
     }
 
     private void setUpGame() {
@@ -144,7 +145,6 @@ class Game {
         for (GameListener listener : listeners) {
             listener.takePlayerTurn();
         }
-
     }
 
     void AddListener(GameListener gameListener) {
@@ -181,15 +181,18 @@ class Game {
 
     void currentPlayerDrawCard() {
         currentPlayer.drawCard(deck.drawCard());
-
     }
 
     void endCurrentPlayerTurn() {
-        if (currentPlayer.hasPlayedCard()) {// TODO: can end turn if drawn 3 cards
+        if (canEndTurn()) {
             endTurn();
         } else {
             announceMustPlayCard();
         }
+    }
+
+    boolean canEndTurn() {
+        return currentPlayer.hasPlayedCard() || currentPlayer.drawnThree();
     }
 
     private void announceMustPlayCard() {

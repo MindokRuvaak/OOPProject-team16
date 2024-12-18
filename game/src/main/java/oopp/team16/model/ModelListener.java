@@ -6,17 +6,17 @@ public interface ModelListener {
 
     // void update();
 
-    void requestPlayers();
+    void requestPlayers(int lower, int upper);
 
-    void takeTurn();
+    // void takeTurn();
 
-    void announceBadMove();
+    // void announceBadMove();
 
-    void announceWinner(String name);
+    // void announceWinner(String name);
 
-    void startNextPlayerTurn();
+    // void startNextPlayerTurn();
 
-    void announceMustPlayCard();
+    // void announceMustPlayCard();
 
 
 }
