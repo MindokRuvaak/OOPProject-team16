@@ -14,7 +14,7 @@ public class GameRules {
     }
 
     private static boolean playingWild(Card playerCard) {
-        return playerCard.getColor() == StdColors.black();
+        return playerCard.getColor() == StdColors.wild();
     }
 
     private static boolean sameFace(Card playerCard, Card playedCard) {
@@ -30,7 +30,7 @@ public class GameRules {
     }
 
     private static boolean sameNumeric(Card playerCard, Card playedCard) {
-        return ((playerCard.getType() == CardType.NUMBER) && sameType(playerCard, playedCard)) 
+        return ((playerCard.getType() == CardType.NUMBER) && sameType(playerCard, playedCard))
                 && sameValue(playerCard, playedCard);
     }
 

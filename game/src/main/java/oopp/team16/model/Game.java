@@ -227,7 +227,6 @@ public class Game implements SpecialCardLogic {
     }
 
     public void reverseTurn() {
-
         int currentPlayerIndex = players.indexOf(currentPlayer);// Get the index of the current player before reversing
         Collections.reverse(players); // Reverse the list
         int newCurrentPlayerIndex = players.size() - 1 - currentPlayerIndex;    // Calculate the new position of the current player
