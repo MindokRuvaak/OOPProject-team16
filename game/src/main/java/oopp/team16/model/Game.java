@@ -20,6 +20,8 @@ public class Game implements SpecialCardLogic {
     private final Deck deck;
     private final Stack<Card> playedCards;
     private final int startingHandSize;
+    private int toSkip;
+
     // private GameLogic gamelogic; // can be final? Unnecessary?
     // alot of overlap between GameLogic and GameRules
 
@@ -29,6 +31,7 @@ public class Game implements SpecialCardLogic {
         this.startingHandSize = startingHandSize;
         this.deck = deck;
         this.deck.shuffle();
+        this.toSkip = 0;
         playedCards = new Stack<>();
     }
 
@@ -110,6 +113,10 @@ public class Game implements SpecialCardLogic {
     }
 
     void startTurn() {
+        for (int i = 0; i < toSkip; i++) {
+            nextTurn();
+        }
+        toSkip = 0;
         this.currentPlayer.startTurn();
         for (GameListener listener : listeners) {
             listener.startPlayerTurn();
@@ -229,9 +236,11 @@ public class Game implements SpecialCardLogic {
     public void reverseTurn() {
         int currentPlayerIndex = players.indexOf(currentPlayer);// Get the index of the current player before reversing
         Collections.reverse(players); // Reverse the list
-        int newCurrentPlayerIndex = players.size() - 1 - currentPlayerIndex;    // Calculate the new position of the current player
+        int newCurrentPlayerIndex = players.size() - 1 - currentPlayerIndex; // Calculate the new position of the
+                                                                             // current player
 
-        turnOrder = players.listIterator(newCurrentPlayerIndex);       // Set the iterator to start right after the current player
+        turnOrder = players.listIterator(newCurrentPlayerIndex); // Set the iterator to start right after the current
+                                                                 // player
 
         this.currentPlayer = turnOrder.next(); // Ensure the current player plays again
     }
@@ -253,8 +262,11 @@ public class Game implements SpecialCardLogic {
         for (int i = 0; i < num; i++) {
             nextPlayer.drawCard(deck.drawCard());
         }
+        skip();
+    }
 
-        nextTurn();
+    public void skip() {
+        toSkip += 1;
     }
 
     void setWildColor(Color c) {

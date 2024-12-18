@@ -2,7 +2,7 @@ package oopp.team16.model;
 
 public interface SpecialCardLogic {
 
-    void nextTurn();
+    void skip();
 
     void nextPlayerDraws(int num);
 
