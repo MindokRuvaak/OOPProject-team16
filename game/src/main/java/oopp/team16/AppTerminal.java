@@ -14,12 +14,12 @@ public class AppTerminal {
     public static void main(String[] args) {
         m = new Model();
         v = new ViewTerminal(m);
-        
+
         c = new ControllerTerminal(m, v);
-        
+
         m.addGameListener(c);
         m.addListener(c);
-        
+
         m.initGame();
         m.startGame();
     }
