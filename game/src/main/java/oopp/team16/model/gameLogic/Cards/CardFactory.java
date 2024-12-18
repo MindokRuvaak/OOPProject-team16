@@ -24,11 +24,11 @@ public class CardFactory {
     }
 
     public Card createDrawFourCard(){
-        return new SpecialCard(StdColors.black(), CardType.DRAW_FOUR, wildValue, new DrawFourAction());
+        return new SpecialCard(StdColors.wild(), CardType.DRAW_FOUR, wildValue, new DrawFourAction());
     }
 
     public Card createWildCard(){
-        return new SpecialCard(StdColors.black(), CardType.WILDCARD, wildValue, new WildCardAction());
+        return new SpecialCard(StdColors.wild(), CardType.WILDCARD, wildValue, new WildCardAction());
     }
 
 

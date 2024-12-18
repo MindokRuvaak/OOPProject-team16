@@ -36,7 +36,7 @@ public class BaseCard implements Card {
 
     @Override
     public void setWildColor(Color c){
-        if (color == StdColors.black()){
+        if (color == StdColors.wild()){
             this.color = c;
         }
     }
