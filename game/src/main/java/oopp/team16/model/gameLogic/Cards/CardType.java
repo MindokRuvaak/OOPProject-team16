@@ -8,9 +8,4 @@ public enum CardType{
     DRAW_TWO,
     DRAW_FOUR,
     SKIP;
-
-
-
-
-
 }

@@ -85,9 +85,9 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
     }
 
     @Override
-    public void announceWinner(String name) {
+    public void announceWinner(String name, int score) {
         for (ModelListener listener : listeners) {
-            listener.announceWinner(name);
+            listener.announceWinner(name, score);
         }
     }
 

@@ -1,6 +1,7 @@
 package oopp.team16.model.gameLogic;
 
 import oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.Cards.CardType;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
 public class GameRules {
@@ -17,7 +18,24 @@ public class GameRules {
     }
 
     private static boolean sameFace(Card playerCard, Card playedCard) {
+        return (sameNumeric(playerCard, playedCard)) || (sameSpecialType(playerCard, playedCard));
+    }
+
+    private static boolean sameSpecialType(Card playerCard, Card playedCard) {
+        return ((playerCard.getType() != CardType.NUMBER) && sameType(playerCard, playedCard));
+    }
+
+    private static boolean sameValue(Card playerCard, Card playedCard) {
         return playerCard.getValue() == playedCard.getValue();
+    }
+
+    private static boolean sameNumeric(Card playerCard, Card playedCard) {
+        return ((playerCard.getType() == CardType.NUMBER) && sameType(playerCard, playedCard)) 
+                && sameValue(playerCard, playedCard);
+    }
+
+    private static boolean sameType(Card playerCard, Card playedCard) {
+        return playerCard.getType() == playedCard.getType();
     }
 
     private static boolean sameColour(Card playerCard, Card playedCard) {

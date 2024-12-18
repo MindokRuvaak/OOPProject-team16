@@ -69,9 +69,18 @@ public class Game implements SpecialCardLogic {
         boolean noWinner = true;
         if (!currentPlayer.hasCards()) {
             noWinner = false;
-            announceWinner(currentPlayer.getName());
+            setWinnerScore();
+            announceWinner(currentPlayer.getName(), currentPlayer.getScore());
         }
         return noWinner;
+    }
+
+    private void setWinnerScore() {
+        int score = 0;
+        for (Player player : players) {
+            score += player.getHandValue();
+        }
+        currentPlayer.setScore(score);
     }
 
     private void startTurn() {
@@ -85,9 +94,9 @@ public class Game implements SpecialCardLogic {
         this.currentPlayer.resetTurnInfo();
     }
 
-    private void announceWinner(String name) {
+    private void announceWinner(String name, int score) {
         for (GameListener listener : listeners) {
-            listener.announceWinner(name);
+            listener.announceWinner(name, score);
         }
     }
 
@@ -210,8 +219,6 @@ public class Game implements SpecialCardLogic {
 
     void setWildColor(Color c) {
         Card card = getTopPlayedCard();
-        
     }
-
 
 }
