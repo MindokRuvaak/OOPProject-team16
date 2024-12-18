@@ -14,12 +14,15 @@ public class GameServer {
     private volatile boolean running = false;
     private ServerSocket serverSocket;
     private ConnectionManager connectionManager;
+    //göra server till modellistener?
     private Model model;
     private ServerMessageHandler messageHandler;
 
     public GameServer(int port, int maxPlayers) {
         this.port = port;
         this.maxPlayers = maxPlayers;
+        startup();
+        logger.info("Server started on port " + port + ". Waiting for players...");
     }
 
     public void startup() {
@@ -32,57 +35,25 @@ public class GameServer {
 
             new Thread(connectionManager::acceptConnections, "ConnectionManagerThread").start();
 
-            running = true;
-
         } catch (IOException e) {
-            logger.severe("Failed to start GameServer: " + e.getMessage());
-            running = false;
-            shutdown();
-        } catch (Exception e) {
             logger.severe("Unexpected error during GameServer startup: " + e.getMessage());
-            running = false;
             shutdown();
         }
+        running = true;
     }
 
     public void shutdown() {
-        if (!running) {
-            logger.info("GameServer is already stopped.");
-            return;
-        }
-
         running = false;
-        logger.info("GameServer running state set to false.");
 
         try {
             logger.info("Closing server socket...");
-            if (connectionManager != null) {
-                connectionManager.closeConnections();
-            }
-            if (serverSocket != null && !serverSocket.isClosed()) {
-                serverSocket.close();
-            }
+            connectionManager.closeConnections();
+            serverSocket.close();
+
             logger.info("GameServer shutdown completed.");
         } catch (IOException e) {
             logger.warning("Error during shutdown: " + e.getMessage());
         }
-    }
-
-    public void processClientMessage(GameMessage message, ClientManager sender) {
-        messageHandler.handleMessage(message, sender);
-    }
-
-    public void broadcastMessage(GameMessage message) {
-        logger.info("Broadcasting message: " + message);
-        connectionManager.getClients().forEach(client -> client.sendMessage(message));
-    }
-
-    public void broadcastGameState() {
-        GameMessage gameStateMessage = new GameMessage("gameState");
-        gameStateMessage.addData("topCard", model.getTopPlayedCard());
-        gameStateMessage.addData("currentPlayer", model.getCurrentPlayerID());
-
-        broadcastMessage(gameStateMessage);
     }
 
     public synchronized void startGame() {
@@ -97,16 +68,38 @@ public class GameServer {
         logger.info("Game has started successfully.");
     }
 
-    public synchronized void handlePlayerMove(ClientManager sender, int cardPlayed) {
-        logger.info("Player " + sender.getClientId() + " played card " + cardPlayed);
+    public void processClientMessage(GameMessage message) {
+        messageHandler.handleMessage(message);
+    }
+
+    public void broadcastMessage(GameMessage message) {
+        logger.info("Broadcasting message: " + message);
+        connectionManager.getClients().forEach(client -> client.sendMessage(message));
+    }
+
+    //TODO: denna bör göra mer? händer bör uppdateras. även drawPile lär väl ändras
+    public void broadcastGameState() {
+        GameMessage gameStateMessage = new GameMessage("gameState");
+        gameStateMessage.addData("topCard", model.getTopPlayedCard());
+        gameStateMessage.addData("currentPlayer", model.getCurrentPlayerID());
+
+        broadcastMessage(gameStateMessage);
+    }
+
+    public synchronized void handlePlayerMove(String sender, int cardPlayed) {
+        //playcard måste kolla att rätt sender kan dra kort
         model.playCard(cardPlayed);
         broadcastGameState();
     }
 
-    public synchronized void handleEndTurn(ClientManager sender) {
-        logger.info("Ending turn for player: " + sender.getClientId());
+    public synchronized void handleEndTurn(String sender) {
         model.endTurn();
         broadcastGameState();
+    }
+
+    public synchronized void handleDrawCard(String sender) {
+        //drawcard måste kolla att rätt sender kan dra kort
+        model.drawCard();
     }
 
     public boolean isRunning() {

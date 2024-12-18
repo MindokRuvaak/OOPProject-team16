@@ -13,6 +13,7 @@ public class GameClientController {
         this.messageHandler = new ClientMessageHandler(viewController);
     }
 
+    //kopplas till join-knappen
     public void connect(String serverAddress, int port) {
         try {
             gameClient = new GameClient(serverAddress, port);
@@ -24,6 +25,7 @@ public class GameClientController {
         }
     }
 
+    //kopplas till shutdownknappen för client. denna behöver ha en gameclient i sig?
     public void disconnect() {
         if (gameClient != null && gameClient.isConnected()) {
             gameClient.closeClientConnection();
@@ -33,7 +35,7 @@ public class GameClientController {
 
     public void playCard(int cardId) {
         GameMessage message = new GameMessage("playerMove");
-        message.setSender("Player"); // Replace with actual player name if available
+        message.setSender("Player"); // Replace with actual player name if available. getcurrentid av clientmanager?
         message.addData("cardPlayed", cardId);
         gameClient.sendMessage(message);
     }

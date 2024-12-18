@@ -10,25 +10,29 @@ public class ServerMessageHandler {
         this.gameServer = gameServer;
     }
 
-    public void handleMessage(GameMessage message, ClientManager sender) {
+    public void handleMessage(GameMessage message) {
         logger.info("Handling message: " + message.getType());
 
-        if (message.getData() == null) {
-            logger.warning("Received message with no data: " + message.getType());
-            return;
-        }
-
         switch (message.getType()) {
+
+            case "gameStart":
+                handleGameStart();
+                break;
+
+            case "drawCard":
+                handleDrawCard(message);
+                break;
+
             case "playerMove":
-                handlePlayerMove(message, sender);
+                handlePlayerMove(message);
                 break;
 
             case "endTurn":
-                handleEndTurn(sender);
+                handleEndTurn(message);
                 break;
 
-            case "gameStart":
-                handleGameStart(sender);
+            case "gameWin":
+                //handleGameWin(sender)?
                 break;
 
             default:
@@ -36,29 +40,38 @@ public class ServerMessageHandler {
         }
     }
 
+    //detta ska skickas från start-game knappen
+    private void handleGameStart() {
+        gameServer.startGame();
+    }
+
+    //detta ska skickas från playcard-knapp, antagligen då när man trycker på ett kort.
     //TODO: Special cards är inte numeric
-    private void handlePlayerMove(GameMessage message, ClientManager sender) {
+    private void handlePlayerMove(GameMessage message) {
+
         Object cardPlayedObj = message.getData().get("cardPlayed");
+        String sender = message.getSender();
 
         if (cardPlayedObj instanceof Number) { //Gson gör ibland saker till double?
             int cardPlayed = ((Number) cardPlayedObj).intValue();
-            logger.info("Player " + sender.getClientId() + " played card: " + cardPlayed);
+            gameServer.handlePlayerMove(sender, cardPlayed);
         } else if (cardPlayedObj instanceof String) {
             String specialCard = (String) cardPlayedObj;
-            logger.info("Player " + sender.getClientId() + " played special card: " + specialCard);
-            //gameServer.handleSpecialCard(sender, specialCard); // Add this method to GameServer
+            //gameServer.handleSpecialCard(specialCard); // Add this method to GameServer
         } else {
             logger.warning("Invalid 'cardPlayed' data type in message: " + cardPlayedObj);
         }
     }
 
-    private void handleEndTurn(ClientManager sender) {
-        logger.info("Ending turn for player: " + sender.getClientId());
-        gameServer.handleEndTurn(sender);
+    //detta ska skickas från drawcard knappen
+    private void handleDrawCard(GameMessage message) {
+        String sender = message.getSender();
+        gameServer.handleDrawCard(sender);
     }
 
-    private void handleGameStart(ClientManager sender) {
-        logger.info("Player " + sender.getClientId() + " initiated game start.");
-        gameServer.startGame();
+    //detta ska skickas från endturn knappen
+    private void handleEndTurn(GameMessage message) {
+        String sender = message.getSender();
+        gameServer.handleEndTurn(sender);
     }
 }

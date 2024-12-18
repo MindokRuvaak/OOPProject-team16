@@ -15,10 +15,6 @@ public class GameClient extends MessageHandler {
     }
 
     public synchronized void connectToServer(String serverAddress, int serverPort) {
-        if (isConnected()) {
-            logger.warning("Already connected to the server.");
-            return;
-        }
         try {
             clientSocket = new Socket(serverAddress, serverPort);
             initializeStreams(clientSocket.getInputStream(), clientSocket.getOutputStream());
@@ -26,26 +22,6 @@ public class GameClient extends MessageHandler {
         } catch (IOException e) {
             logger.severe("Failed to connect to server: " + e.getMessage());
             throw new RuntimeException("Connection failed", e);
-        }
-    }
-
-    public void startListening(ClientMessageHandler messageHandler) {
-        if (!isConnected()) {
-            logger.warning("Cannot start listening: Not connected to a server.");
-            return;
-        }
-        this.messageHandler = messageHandler;
-        new Thread(this::listenForMessages, "ClientListenerThread").start();
-        logger.info("Started listening for messages.");
-    }
-
-    @Override
-    protected void onMessageReceived(GameMessage message) {
-        if (messageHandler != null) {
-            logger.info("Received message: " + message.getType());
-            messageHandler.handleMessage(message);
-        } else {
-            logger.warning("MessageHandler is not initialized; message ignored.");
         }
     }
 
@@ -65,6 +41,22 @@ public class GameClient extends MessageHandler {
             logger.info("Connection closed successfully.");
         } catch (IOException e) {
             logger.severe("Error while closing client socket: " + e.getMessage());
+        }
+    }
+
+    public void startListening(ClientMessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
+        new Thread(this::listenForMessages, "ClientListenerThread").start();
+        logger.info("Started listening for messages.");
+    }
+
+    @Override
+    protected void onMessageReceived(GameMessage message) {
+        if (messageHandler != null) {
+            logger.info("Received message: " + message.getType());
+            messageHandler.handleMessage(message);
+        } else {
+            logger.warning("MessageHandler is not initialized; message ignored.");
         }
     }
 }

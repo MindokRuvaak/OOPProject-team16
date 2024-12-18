@@ -9,17 +9,13 @@ public class GameServerApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        int port = promptForInt(scanner, "Enter server port (default: 8080):", 8080);
+        int port = promptForInt(scanner, "Enter server port (default: 1234):", 1234);
         int maxPlayers = promptForInt(scanner, "Enter max number of players (default: 4):", 4);
 
         GameServer gameServer = new GameServer(port, maxPlayers);
         addShutdownHook(gameServer);
 
         try {
-            logger.info("Starting GameServer...");
-            gameServer.startup();
-            logger.info("GameServer running on port " + port + ", waiting for players...");
-
             synchronized (GameServerApp.class) {
                 GameServerApp.class.wait();
             }
@@ -29,12 +25,13 @@ public class GameServerApp {
         } catch (Exception e) {
             logger.severe("Error running GameServer: " + e.getMessage());
         } finally {
+            //behövs denna om jag har shutdownhook?
             gameServer.shutdown();
-            logger.info("GameServerApp has stopped.");
             scanner.close();
         }
     }
 
+    //helper function för port och ip input
     private static int promptForInt(Scanner scanner, String message, int defaultValue) {
         logger.info(message);
         String input = scanner.nextLine();

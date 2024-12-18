@@ -24,10 +24,6 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
 
     public void initGame() {
         getPlayers();
-        if (players.isEmpty()) { // Add fallback players
-            addPlayer("Player 1");
-            addPlayer("Player 2");
-        }
         game.init(players);
     }
 
@@ -39,7 +35,6 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         }
         return 0; // Return 0 if the player is not found
     }
-
 
     public void startGame() {
         game.startGame();
@@ -64,7 +59,6 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
     public List<Player> getPlayers() {
         return Collections.unmodifiableList(players); // Expose players safely
     }
-
 
     @Override
     public void takePlayerTurn() {

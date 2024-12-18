@@ -8,12 +8,13 @@ public class ClientManager extends MessageHandler implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
 
     private final GameServer gameServer;
-    private final int id;
     private final Socket socket;
+    private final int id;
 
     public ClientManager(Socket socket, GameServer gameServer, int id) throws IOException {
-        this.socket = socket;
+
         this.gameServer = gameServer;
+        this.socket = socket;
         this.id = id;
 
         initializeStreams(socket.getInputStream(), socket.getOutputStream());
@@ -24,7 +25,7 @@ public class ClientManager extends MessageHandler implements Runnable {
     protected void onMessageReceived(GameMessage message) {
         logger.info("Message received from player " + id + ": " + message.getType());
         try {
-            gameServer.processClientMessage(message, this);
+            gameServer.processClientMessage(message);
         } catch (Exception e) {
             logger.warning("Error processing message from player " + id + ": " + e.getMessage());
         }
@@ -52,7 +53,6 @@ public class ClientManager extends MessageHandler implements Runnable {
             logger.warning("Error closing connection for player " + id + ": " + e.getMessage());
         }
     }
-
 
     public int getClientId() {
         return id;

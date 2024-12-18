@@ -11,9 +11,9 @@ public class ConnectionManager {
     private static final Logger logger = Logger.getLogger(ConnectionManager.class.getName());
 
     private final ServerSocket serverSocket;
-    private final List<ClientManager> clients;
     private final int maxPlayers;
     private final GameServer gameServer;
+    private final List<ClientManager> clients;
 
     public ConnectionManager(ServerSocket serverSocket, int maxPlayers, GameServer gameServer) {
         this.serverSocket = serverSocket;
@@ -24,6 +24,7 @@ public class ConnectionManager {
 
     public void acceptConnections() {
         try {
+            //behöver en && !GameHasNotStarted clause, eller något liknande?
             while (gameServer.isRunning()) {
                 if (clients.size() >= maxPlayers) {
                     logger.info("Max players reached. Waiting for open slots...");
@@ -57,7 +58,7 @@ public class ConnectionManager {
         }
     }
 
-
+    //vart borde den här användas? hur hanterar klienter en annan klients disconnect? kan det enbart kanske uppdatera view och visa en "Disconnected"?
     public void removeClient(ClientManager client) {
         if (clients.remove(client)) {
             logger.info("Removed client: " + client.getClientId());
@@ -76,7 +77,7 @@ public class ConnectionManager {
     }
 
     private int generatePlayerId() {
-        return (clients.size() + 1);
+        return (clients.size());
     }
 
     public List<ClientManager> getClients() {
