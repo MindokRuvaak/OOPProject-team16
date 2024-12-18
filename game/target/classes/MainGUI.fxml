@@ -11,6 +11,13 @@
 
 <AnchorPane fx:id="mainPane" prefHeight="720" prefWidth="1080" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController2">
   <children>
+    <ImageView fitHeight="627.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <image>
+        <Image url="@ui/resources/GameViewBackground.png" />
+      </image>
+    </ImageView>
+
+      <Button fx:id="buttonPlayDeck" layoutX="454.0" layoutY="236.0" mnemonicParsing="false" onAction="#drawCard">
       <AnchorPane fx:id="rulesPane" layoutX="377.0" layoutY="25.0" opacity="0.02" prefHeight="566.0" prefWidth="334.0">
          <children>
             <TextArea fx:id="rulesText" layoutY="-4.0" prefHeight="563.0" prefWidth="334.0" wrapText="true" />
