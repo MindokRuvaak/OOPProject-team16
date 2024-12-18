@@ -115,7 +115,7 @@ public class ControllerTerminal implements ModelListener, GameListener {
     }
 
     @Override
-    public void announceWinner(String name) {
+    public void announceWinner(String name, int score) {
         v.announceWinner(name);
     }
 
@@ -130,5 +130,17 @@ public class ControllerTerminal implements ModelListener, GameListener {
     public void announceMustPlayCard() {
         v.announceMustPlayCard();
         waitForUserConfirmation();
+    }
+
+    @Override
+    public void getColor() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getColor'");
+    }
+
+    @Override
+    public void requestWildColor() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'requestWildColor'");
     }
 }

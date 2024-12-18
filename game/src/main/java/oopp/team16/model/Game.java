@@ -109,7 +109,7 @@ public class Game implements SpecialCardLogic {
         currentPlayer.setScore(score);
     }
 
-    private void startTurn() {
+    void startTurn() {
         this.currentPlayer.startTurn();
         for (GameListener listener : listeners) {
             listener.startPlayerTurn();

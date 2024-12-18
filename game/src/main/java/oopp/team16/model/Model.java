@@ -1,16 +1,13 @@
 package oopp.team16.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import oopp.team16.model.gameLogic.CreateStdDeck;
 import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
-import oopp.team16.model.gameLogic.Cards.Card;
-import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
-public class Model /* implements GameListener  */{ // maybe change name ?ModelGameSetup?
+public class Model /* implements GameListener */ { // maybe change name ?ModelGameSetup?
     private List<ModelListener> listeners;
     private final Game game;
     private final DeckFactory df;
@@ -21,11 +18,11 @@ public class Model /* implements GameListener  */{ // maybe change name ?ModelGa
         df = new CreateStdDeck();
         players = new ArrayList<>();
         game = new Game(df.createDeck(), 7);
-        // game.AddListener(this);
     }
 
     public void initGame() {
-        getPlayers();
+        // this will change?, when possible to create loby with set amount of players
+        getPlayers(2,5);
         game.init(players);
     }
 
@@ -33,8 +30,12 @@ public class Model /* implements GameListener  */{ // maybe change name ?ModelGa
         game.startGame();
     }
 
+    public void start() {
+        game.start();
+    }
+
     public void addPlayer(String name) {
-        players.add(new Player(name));
+        players.add(new Player(name, players.size()));
     }
 
     public void addListener(ModelListener l) {
@@ -45,27 +46,10 @@ public class Model /* implements GameListener  */{ // maybe change name ?ModelGa
         game.AddListener(gl);
     }
 
-    private void getPlayers() {
+    private void getPlayers(int lower, int upper) {
         for (ModelListener listener : listeners) {
-            listener.requestPlayers();
+            listener.requestPlayers(lower, upper);
         }
-    }
-
-    @Override
-    public void takePlayerTurn() {
-        // should maybe not allow multiple listeners?
-        // only one listener (view)?
-        for (ModelListener listener : listeners) {
-            listener.takeTurn();
-        }
-    }
-
-    private String[] ToStringArray(Card[] hand) {
-        String[] handStrings = new String[hand.length];
-        for (int i = 0; i < handStrings.length; i++) {
-            handStrings[i] = hand[i].toString();
-        }
-        return handStrings;
     }
 
     public void playCard(int cardNumber) {
@@ -74,64 +58,52 @@ public class Model /* implements GameListener  */{ // maybe change name ?ModelGa
         game.tryPlay(cardNumber - 1);
     }
 
-    @Override
-    public void badMove() {
-        for (ModelListener listener : listeners) {
-            listener.announceBadMove();
-        }
-    }
-
     public void drawCard() {
         game.currentPlayerDrawCard();
-    }
-
-    @Override
-    public void announceWinner(String name, int score) {
-        for (ModelListener listener : listeners) {
-            listener.announceWinner(name, score);
-        }
     }
 
     public void endTurn() {
         game.endCurrentPlayerTurn();
     }
 
-    @Override
-    public void startPlayerTurn(Player currentPlayer) {
-        for (ModelListener listener : listeners) {
-            listener.startNextPlayerTurn(currentPlayer.getName());
-        }
-    }
-
-    @Override
-    public void announceMustPlayCard() {
-        for (ModelListener listener : listeners) {
-            listener.announceMustPlayCard();
-        }
-    }
-
-    public String getCurrentPlayerID() {
+    public String getCurrentPlayerName() {
         return game.getCurrentPlayer().getName();
     }
 
-    public String getTopPlayedCardString() {
+    public int getCurrentPlayerID() {
+        return game.getCurrentPlayer().getid();
+    }
+
+    public String getTopPlayedCard() {
         return game.getTopPlayedCard().toString();
     }
 
-    @Override
-    public void getColor() {
-        for (ModelListener listener : listeners) {
-            listener.requestWildColor();
+    public String[] getCurrentPlayerHand() {
+        return toStrings( game.getPlayerHand());
+    }
+
+    public String[] getListOfPlayers() {
+        return toStrings(players.toArray(new Player[0]));
+    }
+
+    private <U> String[] toStrings(U[] objectArray) {
+        String[] stringArray = new String[objectArray.length];
+        for (int i = 0; i < objectArray.length; i++) {
+            stringArray[i] = objectArray[i].toString();
         }
+        return stringArray;
     }
 
-    public void setWildColor(String colorString) {
-        Color res = parseColor(colorString);
-        game.setWildColor(res);
+    public void nextPlayerTurn() {
+        game.nextTurn();
+        game.startTurn();
     }
 
-    private Color parseColor(String colorString) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'parseColor'");
+    public boolean haveWinner() {
+        return game.checkWinner();
+    }
+
+    public boolean canEndTurn() {
+        return game.canEndTurn();
     }
 }

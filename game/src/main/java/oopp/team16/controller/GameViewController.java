@@ -158,7 +158,7 @@ public class GameViewController implements GameListener, ModelListener{
 
     // TODO: move to view
     @Override
-    public void announceWinner(String name) {
+    public void announceWinner(String name, int score) {
         winningPane.setVisible(true);
         winningPane.toFront();
         winningPane.setOpacity(1.0);
@@ -323,5 +323,17 @@ public class GameViewController implements GameListener, ModelListener{
     public void announceMustPlayCard() {
         // TODO: implement
         System.out.println("must play card");
+    }
+
+    @Override
+    public void requestWildColor() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'requestWildColor'");
+    }
+
+    @Override
+    public void getColor() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getColor'");
     }
 }
