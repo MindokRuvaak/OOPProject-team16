@@ -115,6 +115,7 @@ public class Game implements SpecialCardLogic {
         }
     }
 
+
     private void takeTurn() {
         for (GameListener listener : listeners) {
             listener.takePlayerTurn(currentPlayer);
@@ -210,7 +211,7 @@ public class Game implements SpecialCardLogic {
 
     void setWildColor(Color c) {
         Card card = getTopPlayedCard();
-        
+
     }
 
 
