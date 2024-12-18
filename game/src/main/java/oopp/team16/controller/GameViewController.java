@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import oopp.team16.model.GameListener;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
+import oopp.team16.server.GameClientController;
+import oopp.team16.server.GameMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,6 +98,8 @@ public class GameViewController implements GameListener, ModelListener{
     // private Point2D AI_3_STARTING_POINT;
     private final Map<String, HBox> playersHand = new HashMap<>();
 
+    private GameClientController clientController;  //WE DO A LITTLE BIT OF TESTING
+
     public void initialize() {
         m.addListener(this);
         m.initGame();
@@ -153,7 +157,7 @@ public class GameViewController implements GameListener, ModelListener{
     }
 
     public void uno() {
-        System.out.println(m.getCurrentPlayerName() + " has decclared UNO!");
+        System.out.println(m.getCurrentPlayerName() + " has declared UNO!");
     }
 
     // TODO: move to view

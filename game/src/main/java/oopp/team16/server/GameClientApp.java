@@ -1,39 +1,36 @@
 package oopp.team16.server;
 
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class GameClientApp {
+    private static final Logger logger = Logger.getLogger(GameClientApp.class.getName());
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String serverAddress;
-        int port;
 
-        while (true) { //kollar så att address är valid, går att göra bättre med regex? det är ju antingen localhost, eller siffror och punkter.
-            System.out.println("Enter the server address (e.g., localhost or an IP):");  //allt detta behövs ändras, gameclientapp kan fortfarande existera som gameclient_init(?)
-                                                                                         // och ta in samma parametrar från user input. vi slipper då while-loops, men behöver andra checks istället.
-            serverAddress = scanner.nextLine();
-            if (!serverAddress.isEmpty()) break;
-            System.out.println("Server address cannot be empty.");
+        // Prompt for server address and port
+        System.out.print("Enter server address (default: 127.0.0.1): ");
+        String serverAddress = scanner.nextLine().trim();
+        if (serverAddress.isEmpty()) {
+            serverAddress = "127.0.0.1"; // Default to localhost
         }
 
-        while (true) { //kollar så att port är valid, tror den är fine.
-            try {
-                System.out.println("Enter the server port (e.g., 12345):");
-                port = Integer.parseInt(scanner.nextLine());
-                if (port > 0 && port <= 65535) break; // valid port range
-                System.out.println("Invalid port. Please enter a number between 1 and 65535.");
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a numeric port.");
-            }
-        }
+        System.out.print("Enter server port (default: 1234): ");
+        String portInput = scanner.nextLine().trim();
+        int serverPort = portInput.isEmpty() ? 1234 : Integer.parseInt(portInput);
 
+        // Create and connect the GameClient
+        GameClient gameClient = new GameClient(serverAddress, serverPort);
         try {
-            GameClient gameClient = new GameClient(serverAddress, port);
-            gameClient.getController().start();
+            System.out.println("Press Enter to disconnect...");
+            scanner.nextLine(); // Wait for user input to disconnect
 
         } catch (RuntimeException e) {
-            System.out.println("Could not connect to server. Please try again later.");
+            logger.severe("Failed to connect to server: " + e.getMessage());
         } finally {
+            gameClient.closeClientConnection();
+            logger.info("Disconnected from server.");
             scanner.close();
         }
     }

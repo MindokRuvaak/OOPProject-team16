@@ -1,40 +1,48 @@
 package oopp.team16.server;
 
-import java.util.Scanner;
+import oopp.team16.controller.GameViewController;
 import java.util.logging.Logger;
 
 public class GameClientController {
     private static final Logger logger = Logger.getLogger(GameClientController.class.getName());
-    private final GameClient gameClient;
 
-    public GameClientController(GameClient gameClient) {
-        this.gameClient = gameClient;
+    private GameClient gameClient;
+    private final ClientMessageHandler messageHandler;
+
+    public GameClientController(GameViewController viewController) {
+        this.messageHandler = new ClientMessageHandler(viewController);
     }
 
-    public void start() {
-
-        new Thread(this::listenForServerMessages).start();
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            System.out.println("Enter a command:");
-            String command = scanner.nextLine();
-            gameClient.sendMessage(command);
-        }
-    }
-
-    private void listenForServerMessages() {
+    //kopplas till join-knappen
+    public void connect(String serverAddress, int port) {
         try {
-            while (true) {
-                String serverMessage = gameClient.receiveMessage();
-                if (serverMessage != null) {
-                    logger.info("Server says: " + serverMessage);
-                    // You can process the server message here (e.g., update game state)
-                }
-            }
-        } catch (Exception e) {
-            logger.severe("Error while listening to server: " + e.getMessage());
+            gameClient = new GameClient(serverAddress, port);
+            gameClient.startListening(messageHandler);
+            logger.info("Connected to server and started listening for messages.");
+        } catch (RuntimeException e) {
+            logger.severe("Failed to connect: " + e.getMessage());
+            throw e;
         }
+    }
+
+    //kopplas till shutdownknappen för client. denna behöver ha en gameclient i sig?
+    public void disconnect() {
+        if (gameClient != null && gameClient.isConnected()) {
+            gameClient.closeClientConnection();
+            logger.info("Disconnected from the server.");
+        }
+    }
+
+    public void playCard(int cardId) {
+        GameMessage message = new GameMessage("playerMove");
+        message.setSender("Player"); // Replace with actual player name if available. getcurrentid av clientmanager?
+        message.addData("cardPlayed", cardId);
+        gameClient.sendMessage(message);
+    }
+
+    public void endTurn() {
+        GameMessage message = new GameMessage("endTurn");
+        message.setSender("Player");
+        gameClient.sendMessage(message);
     }
 }
-

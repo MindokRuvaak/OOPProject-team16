@@ -1,55 +1,60 @@
 package oopp.team16.server;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-public class ClientManager implements Runnable {
+public class ClientManager extends MessageHandler implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
-    private final Socket clientSocket;
-    private PrintWriter out;
-    private BufferedReader in;
-    public ClientManager(Socket socket) {
-        this.clientSocket = socket;
+
+    private final GameServer gameServer;
+    private final Socket socket;
+    private final int id;
+
+    public ClientManager(Socket socket, GameServer gameServer, int id) throws IOException {
+
+        this.gameServer = gameServer;
+        this.socket = socket;
+        this.id = id;
+
+        initializeStreams(socket.getInputStream(), socket.getOutputStream());
+        logger.info("ClientManager created for player " + id + " at " + socket.getRemoteSocketAddress());
+    }
+
+    @Override
+    protected void onMessageReceived(GameMessage message) {
+        logger.info("Message received from player " + id + ": " + message.getType());
+        try {
+            gameServer.processClientMessage(message);
+        } catch (Exception e) {
+            logger.warning("Error processing message from player " + id + ": " + e.getMessage());
+        }
     }
 
     @Override
     public void run() {
         try {
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // ska denna vara ett field tsm med printwriter? idk
-
-            String message;
-            while ((message = in.readLine()) != null) {
-                logger.info("Received message from client: " + message);
+            listenForMessages();
+        } catch (Exception e) {
+            logger.warning("Connection lost with player " + id + ": " + e.getMessage());
+        } finally {
+            closeConnection();
             }
-        } catch (IOException ex) {
-            if ("Socket closed".equals(ex.getMessage())) return; // Skip logging for "Socket closed"
-            logger.warning("Client disconnected or error occurred: " + ex.getMessage());
         }
-    }
 
-        public void closeConnection() {
+    public void closeConnection() {
         try {
-            if (clientSocket != null && !clientSocket.isClosed()) {
-                clientSocket.close();
-                logger.info("Closing connection for client: " + clientSocket.getInetAddress().getHostAddress());
+            closeStreams();
+            if (!socket.isClosed()) {
+                socket.close();
             }
-        } catch (IOException ex) {
-            logger.warning("Error closing client connection: " + ex.getMessage());
+            logger.info("Connection closed for player " + id);
+        } catch (IOException e) {
+            logger.warning("Error closing connection for player " + id + ": " + e.getMessage());
         }
     }
 
-    public void sendMessageToClient(String message) {
-        if (out != null) {
-            out.println(message);
-            out.flush();
-        } else {
-            logger.warning("Output stream is null for client.");
-        }
-    }
-
-    public Socket getClientSocket() { // behövs denna? just nu ja
-        return clientSocket;
+    public int getClientId() {
+        return id;
     }
 }

@@ -1,7 +1,7 @@
 package oopp.team16.server;
 
-import java.util.logging.Logger;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class GameServerApp {
     private static final Logger logger = Logger.getLogger(GameServerApp.class.getName());
@@ -9,41 +9,44 @@ public class GameServerApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter server port:");
-        int port = scanner.nextInt();
+        int port = promptForInt(scanner, "Enter server port (default: 1234):", 1234);
+        int maxPlayers = promptForInt(scanner, "Enter max number of players (default: 4):", 4);
 
-        System.out.println("Enter max number of players:");
-        int maxPlayers = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline left over
-
-        GameServer gameServer = null;
+        GameServer gameServer = new GameServer(port, maxPlayers);
+        addShutdownHook(gameServer);
 
         try {
-            gameServer = new GameServer(port, maxPlayers);
-            gameServer.startup();
-            System.out.println("Server started successfully.");
-            System.out.println("Type 'shutdown' to stop the server, or type other commands to simulate gameplay.");
-
-            while (true) {
-                System.out.println("Send a command to all connected clients:");
-                String command = scanner.nextLine();
-                if ("shutdown".equalsIgnoreCase(command.trim())) {
-                    System.out.println("Shutting down the server...");
-                    break;
-                }
-                gameServer.broadcastMessage(command);
+            synchronized (GameServerApp.class) {
+                GameServerApp.class.wait();
             }
-        } catch (Exception ex) {
-            logger.severe("An error occurred: " + ex.getMessage());
-            for (StackTraceElement element : ex.getStackTrace()) {
-                logger.severe(element.toString());
-            }
+        } catch (InterruptedException e) {
+            logger.severe("Main thread interrupted: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        } catch (Exception e) {
+            logger.severe("Error running GameServer: " + e.getMessage());
         } finally {
-            if (gameServer != null) {
-                gameServer.shutdown();
-            }
+            //behövs denna om jag har shutdownhook?
+            gameServer.shutdown();
             scanner.close();
-            System.out.println("Server has stopped.");
         }
+    }
+
+    //helper function för port och ip input
+    private static int promptForInt(Scanner scanner, String message, int defaultValue) {
+        logger.info(message);
+        String input = scanner.nextLine();
+        try {
+            return input.isEmpty() ? defaultValue : Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            logger.warning("Invalid input. Using default: " + defaultValue);
+            return defaultValue;
+        }
+    }
+
+    private static void addShutdownHook(GameServer gameServer) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.info("Shutdown signal received. Shutting down the server...");
+            gameServer.shutdown();
+        }));
     }
 }

@@ -1,70 +1,62 @@
 package oopp.team16.server;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-public class GameClient {
+public class GameClient extends MessageHandler {
     private static final Logger logger = Logger.getLogger(GameClient.class.getName());
-    private Socket clientSocket;
-    private BufferedReader in;
-    private PrintWriter out;
-    private final GameClientController controller;
 
-    public GameClient(String serverAddress, int port) {
-        this.controller = new GameClientController(this);
-        connectToServer(serverAddress, port);
+    private Socket clientSocket;
+    private ClientMessageHandler messageHandler;
+
+    public GameClient(String serverAddress, int serverPort) {
+        connectToServer(serverAddress, serverPort);
     }
 
-    private void connectToServer(String serverAddress, int port) {
+    public synchronized void connectToServer(String serverAddress, int serverPort) {
         try {
-            clientSocket = new Socket(serverAddress, port);
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            logger.info("Connected to " + serverAddress + ":" + port);
+            clientSocket = new Socket(serverAddress, serverPort);
+            initializeStreams(clientSocket.getInputStream(), clientSocket.getOutputStream());
+            logger.info("Successfully connected to server at: " + serverAddress + ":" + serverPort);
         } catch (IOException e) {
-            logger.severe("Error connecting to server: " + e.getMessage());
+            logger.severe("Failed to connect to server: " + e.getMessage());
             throw new RuntimeException("Connection failed", e);
         }
     }
 
-    public void closeConnection() { // detta är för om klienten vill closea connection. ska kallas på av en controller
+    public synchronized boolean isConnected() {
+        return clientSocket != null && !clientSocket.isClosed();
+    }
+
+    public synchronized void closeClientConnection() {
+        if (!isConnected()) {
+            logger.info("Client is already disconnected.");
+            return;
+        }
+        logger.info("Closing connection to the server...");
         try {
-            if (in != null) in.close();
-            if (out != null) out.close();
-            if (clientSocket != null) clientSocket.close();
+            closeStreams();
+            clientSocket.close();
+            logger.info("Connection closed successfully.");
         } catch (IOException e) {
-            logger.severe("Error closing connection: " + e.getMessage());
+            logger.severe("Error while closing client socket: " + e.getMessage());
         }
     }
 
-    public void sendMessage(String message) {
-        try {
-            if (out != null) {
-                out.println(message); // Sends a single line to the server
-                out.flush();
-            } else {
-                logger.warning("Output stream is null.");
-            }
-        } catch (Exception e) {
-            logger.severe("Error sending message to server: " + e.getMessage());
-        }
+    public void startListening(ClientMessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
+        new Thread(this::listenForMessages, "ClientListenerThread").start();
+        logger.info("Started listening for messages.");
     }
 
-    public String receiveMessage() {
-        try {
-            if (in != null) {
-                return in.readLine(); // Reads a single line from the server
-            } else {
-                logger.warning("Input stream is null.");
-            }
-        } catch (IOException e) {
-            logger.severe("Error reading from server: " + e.getMessage());
+    @Override
+    protected void onMessageReceived(GameMessage message) {
+        if (messageHandler != null) {
+            logger.info("Received message: " + message.getType());
+            messageHandler.handleMessage(message);
+        } else {
+            logger.warning("MessageHandler is not initialized; message ignored.");
         }
-        return null;
-    }
-
-    public GameClientController getController() {
-        return controller;
     }
 }
