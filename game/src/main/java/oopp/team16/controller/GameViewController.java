@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import oopp.team16.model.GameListener;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
+import oopp.team16.view.CreateCardView;
 
 import java.util.*;
 
@@ -23,50 +24,27 @@ public class GameViewController implements GameListener, ModelListener{
     Model m = new Model();
 
     @FXML
-    private Label labelLogo;
-
-    @FXML
-    private Label labelCurrentPlayer;
-
-    @FXML
     private Button buttonPlayDeck;
-
-    @FXML
-    private Button buttonLastCard;
-
-    @FXML
-    private Label labelPlayer2Name;
-
-    @FXML
-    private Label labelPlayer3Name;
-
-    @FXML
-    private Label labelPlayer1Name;
 
     @FXML
     private Button buttonStart;
 
     @FXML
-    private Button buttonNewGame;
+    private HBox player1Hand;
+    @FXML
+    private HBox player2Hand;
 
     @FXML
-    private HBox player1Hand; // Add this to your FXML file
-    @FXML
-    private HBox player2Hand; // Add this to your FXML file
+    private VBox player3Hand;
 
     @FXML
-    private VBox player3Hand; // Add this to your FXML file
-
-    @FXML
-    private VBox player4Hand; // Add this to your FXML file
+    private VBox player4Hand;
 
     @FXML
     private Button buttonDisplayHand;
     // TODO: remove this button? maybe
     @FXML
     private ImageView imageStartingCard;
-    @FXML
-    private Label errorCard;
     @FXML
     private Button endTurnButton;
     @FXML
@@ -85,20 +63,10 @@ public class GameViewController implements GameListener, ModelListener{
     private Button x;
     @FXML
     private TextArea rulesText;
-    private final double CARD_HEIGHT = 60;
-    private final double CARD_WIDTH = 32;
 
-    private final double CARD_SPACING_LARGE = 14.0;
-    private final double CARD_SPACING_MEDIUM = 0.0;
-    private final double CARD_SPACING_SMALL = -25.0;
-    private final double CARD_SPACING_ULTRA_SMALL = -35.0;
-
-    // private Point2D PLAYER_STARTING_POINT;
-    // private final Point2D AI_1_STARTING_POINT = new Point2D(100.0, 75.0);
-    // private Point2D AI_2_STARTING_POINT;
-    // private Point2D AI_3_STARTING_POINT;
     private final Map<String, Pane> playersHand = new HashMap<>();
     private final List<Pane> paneList = new ArrayList<>();
+    CreateCardView cc;
 
     public void initialize() {
         m.addListener(this);
@@ -107,21 +75,15 @@ public class GameViewController implements GameListener, ModelListener{
         buttonDisplayHand.setVisible(false);
         rulesPane.setVisible(false);
         loadGameRules();
+        cc = new CreateCardView();
         paneList.add(player1Hand);
         paneList.add(player2Hand);
         paneList.add(player3Hand);
         paneList.add(player4Hand);
 
         buttonStart.setOnAction(event -> {
-          //  String[] players = namesOf(m.getListOfPlayers());
             buttonStart.setVisible(false);
             setPlayers();
-           /* playersHand.put(players[3],this.player4Hand);
-            playersHand.put(players[2], this.player3Hand);
-            playersHand.put(players[1], this.player2Hand);
-            playersHand.put(players[0], this.player1Hand);
-
-            */
             buttonDisplayHand.setVisible(true);
             m.start();
         });
@@ -245,32 +207,10 @@ public class GameViewController implements GameListener, ModelListener{
     public void endTurn() {
         if (m.canEndTurn()) {
             m.endTurn();
-            if (m.haveWinner())
+            if (!m.haveWinner())
             m.nextPlayerTurn();
             updateHide();
             buttonDisplayHand.setVisible(true);
-        }
-    }
-
-    public void cardView() {
-        inputCard.setVisible(true);
-        inputCard.toFront();
-        inputCard.setOpacity(1.0);
-        inputCard.setStyle("-fx-background-color: #2ecc71;");
-    }
-
-    public void closeCardCiew() {
-        playingCard();
-        inputCard.setVisible(false);
-    }
-
-    public void playingCard() {
-        String input = intInput.getText(); // Get the index input as a string
-        try {
-            int index = Integer.parseInt(input); // Convert input to integer
-            playCard(index); // Call the method to play the card
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid number.");
         }
     }
 
@@ -283,7 +223,7 @@ public class GameViewController implements GameListener, ModelListener{
     public void displayTopCard() {
         String startingCard = m.getTopPlayedCard();
         if (startingCard != null) {
-            ImageView cardView = createCard(startingCard);
+            ImageView cardView = cc.createCard(startingCard);
             imageStartingCard.setImage(cardView.getImage());
         }
     }
@@ -318,7 +258,7 @@ public class GameViewController implements GameListener, ModelListener{
     public void displayHand(Pane hand) {
         hand.getChildren().clear(); // Clear existing cards
         for (String card : m.getCurrentPlayerHand()) {
-            ImageView cardView = createCard(card); // Create an ImageView for each card
+            ImageView cardView = cc.createCard(card); // Create an ImageView for each card
             if (hand instanceof VBox) {
                 cardView.setRotate(90); // Rotate the card to align vertically
                 VBox.setMargin(cardView, new Insets(-30, 0, 0, 0));
@@ -343,7 +283,7 @@ public class GameViewController implements GameListener, ModelListener{
     private void displayBackOfHand(Pane hand, int handSize) {
         hand.getChildren().clear(); // Clear existing cards in case of updates
         for (int i = 0; i < handSize; i++) {
-            ImageView cardBack = createCardBack();
+            ImageView cardBack = cc.createCardBack();
             if (hand instanceof VBox) {
                 // cardView.setFitWidth(CARD_HEIGHT); // Flip width and height
                 //cardView.setFitHeight(CARD_WIDTH);
@@ -355,7 +295,7 @@ public class GameViewController implements GameListener, ModelListener{
             hand.getChildren().add(cardBack);
         }
     }
-
+/*
     // move to view
     public ImageView createCard(String card) {
 
@@ -380,6 +320,8 @@ public class GameViewController implements GameListener, ModelListener{
         return getCardImage(imagePath);
     }
 
+
+ */
     @Override
     public void requestPlayers(int lower, int upper) {
         m.addPlayer("Player 1");

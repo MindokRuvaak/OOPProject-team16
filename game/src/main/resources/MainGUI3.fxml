@@ -30,7 +30,7 @@
         <Font name="System Bold" size="14.0" />
       </font>
     </Button>
-    <HBox fx:id="player2Hand" layoutX="40.0" prefHeight="60.0" prefWidth="1000.0" />
+    <HBox fx:id="player2Hand" layoutX="80.0" prefHeight="60.0" prefWidth="1000.0" />
     <ImageView fx:id="imageStartingCard" fitHeight="70.0" fitWidth="47.0" layoutX="465.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true" />
     <Button fx:id="endTurnButton" layoutX="492.0" layoutY="242.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn" />
     <Button fx:id="buttonUno" layoutX="732.0" layoutY="150.0" mnemonicParsing="false" onAction="#uno" text="UNO" />

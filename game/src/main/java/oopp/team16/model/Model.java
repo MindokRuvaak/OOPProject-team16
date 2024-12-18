@@ -17,7 +17,7 @@ public class Model /* implements GameListener */ { // maybe change name ?ModelGa
         listeners = new ArrayList<>();
         df = new CreateStdDeck();
         players = new ArrayList<>();
-        game = new Game(df.createDeck(), 7);
+        game = new Game(df.createDeck(), 1);
     }
 
     public void initGame() {

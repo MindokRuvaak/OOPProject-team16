@@ -19,11 +19,11 @@ public class LobbyView {
     private void initializeUI() {
         try {
             // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lobbyGUI.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PortLobbyView.fxml"));
             Parent root = loader.load();
 
             // Set up the scene
-            scene = new Scene(root, 800, 650);
+            scene = new Scene(root, 250, 400);
 
             // Configure the stage
             primaryStage.setTitle("UNO Lobby");

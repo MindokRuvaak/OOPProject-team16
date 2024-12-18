@@ -30,7 +30,7 @@
       </font>
     </Button>
     <Button fx:id="buttonDisplayHand" layoutX="477.0" layoutY="182.0" mnemonicParsing="false" onAction="#initialize" text="displayHand" />
-    <HBox fx:id="player2Hand" layoutX="100.0" prefHeight="60.0" prefWidth="900.0" />
+    <HBox fx:id="player2Hand" layoutX="80.0" prefHeight="60.0" prefWidth="900.0" />
     <ImageView fx:id="imageStartingCard" fitHeight="70.0" fitWidth="47.0" layoutX="465.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true" />
     <Button fx:id="endTurnButton" layoutX="492.0" layoutY="242.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn" />
     <Button fx:id="buttonUno" layoutX="732.0" layoutY="150.0" mnemonicParsing="false" onAction="#uno" text="UNO" />
@@ -73,7 +73,7 @@
       <Label layoutX="90.0" layoutY="215.0" text="Player 3" />
       <Label layoutX="927.0" layoutY="178.0" text="Player 4" />
       <Button fx:id="rules" layoutX="1022.0" mnemonicParsing="false" onAction="#openRulesView" prefHeight="26.0" prefWidth="58.0" text="Rules" />
-      <AnchorPane fx:id="rulesPane" layoutX="360.0" layoutY="20.0" opacity="0.0" prefHeight="592.0" prefWidth="380.0">
+      <AnchorPane fx:id="rulesPane" layoutX="360.0" layoutY="20.0" prefHeight="592.0" prefWidth="380.0">
          <children>
             <TextArea fx:id="rulesText" editable="false" layoutX="-8.0" prefHeight="588.0" prefWidth="388.0" wrapText="true" />
             <Button layoutX="177.0" layoutY="552.0" mnemonicParsing="false" onAction="#closeRulesView" text="X" fx:id="x" />

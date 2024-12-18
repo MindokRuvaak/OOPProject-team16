@@ -46,33 +46,4 @@ public class GameView {
     public void show() {
         primaryStage.show();
     }
-/*
-    public GameView(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        initializeUI();
-    }
-
-    private void initializeUI() {
-        try {
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainGUI4.fxml"));
-            Parent root = loader.load();
-
-            // Set up the scene
-            scene = new Scene(root, 1080, 720);
-
-            // Configure the stage
-            primaryStage.setTitle("UNO Game");
-            primaryStage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Failed to load GameView.fxml");
-        }
-    }
-
-    public void show() {
-        primaryStage.show();
-    }
-
- */
 }

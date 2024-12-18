@@ -4,14 +4,15 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import oopp.team16.view.GameView;
 import oopp.team16.view.LobbyView;
+import oopp.team16.view.StartView;
 
 public class AppWindow extends Application {
 
 
     @Override
     public void start(Stage primaryStage) {
-        LobbyView lobbyView = new LobbyView(primaryStage);
-        lobbyView.show();
+        StartView startView = new StartView(primaryStage);
+        startView.show();
 
     }
 

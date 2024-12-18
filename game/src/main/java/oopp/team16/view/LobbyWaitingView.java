@@ -7,31 +7,35 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class StartView {
+public class LobbyWaitingView {
     private Stage primaryStage;
     private Scene scene;
 
-    public StartView(Stage primaryStage) {
+    public LobbyWaitingView(Stage primaryStage) {
         this.primaryStage = primaryStage;
         initializeUI();
     }
 
     private void initializeUI() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainMenu.fxml"));
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LobbyView.fxml"));
             Parent root = loader.load();
 
-            scene = new Scene(root, 600, 315);
+            // Set up the scene
+            scene = new Scene(root, 600, 400);
 
-            primaryStage.setTitle("UNO GAME");
+            // Configure the stage
+            primaryStage.setTitle("UNO Lobby");
             primaryStage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Failed to load StartView.fxml");
+            System.err.println("Failed to load LobbyView.fxml");
         }
     }
+
     public void show() {
         primaryStage.show();
     }
-
 }
+

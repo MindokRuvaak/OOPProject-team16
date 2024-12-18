@@ -74,6 +74,6 @@
       <Label layoutX="170.0" layoutY="519.0" text="Player 1" />
       <Label layoutX="215.0" layoutY="155.0" text="Player 2" />
       <Button fx:id="rules" layoutX="1028.0" layoutY="4.0" mnemonicParsing="false" onAction="#openRulesView" text="Rules" />
-      <Button fx:id="buttonDisplayHand" layoutX="482.0" layoutY="189.0" mnemonicParsing="false" onAction="#initialize" text="displayHand" />
+      <Button fx:id="buttonDisplayHand" layoutX="492.0" layoutY="199.0" mnemonicParsing="false" onAction="#initialize" text="displayHand" />
   </children>
 </AnchorPane>

@@ -38,7 +38,7 @@
     </Label>
     <ImageView fx:id="imageViewWishColor" fitHeight="40.0" fitWidth="40.0" layoutX="372.0" layoutY="278.0" pickOnBounds="true" preserveRatio="true" />
     <HBox fx:id="hboxInfo" alignment="CENTER" layoutX="217.0" layoutY="421.0" prefHeight="25.0" prefWidth="338.0" />
-    <Button fx:id="buttonStart" layoutX="350.0" layoutY="100.0" mnemonicParsing="false" onAction="#initialize" stylesheets="@MainGUIstyle.css">
+    <Button fx:id="buttonStart" layoutX="370.0" layoutY="117.0" mnemonicParsing="false" onAction="#initialize" text="START">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
@@ -69,11 +69,11 @@
             <Image url="@ui/resources/avatars/avatar1.png" />
          </image>
       </ImageView>
-      <HBox fx:id="player1Hand" layoutX="-9.0" layoutY="551.0" prefHeight="60.0" prefWidth="1090.0" />
+      <HBox fx:id="player1Hand" layoutY="551.0" prefHeight="60.0" prefWidth="1080.0" />
       <Label fx:id="labelTurn" layoutX="511.0" layoutY="307.0" text="Label" />
       <Label layoutX="170.0" layoutY="519.0" text="Player 1" />
       <Label layoutX="215.0" layoutY="155.0" text="Player 2" />
       <Button fx:id="rules" layoutX="1028.0" layoutY="4.0" mnemonicParsing="false" onAction="#openRulesView" text="Rules" />
-      <Button fx:id="buttonDisplayHand" layoutX="482.0" layoutY="189.0" mnemonicParsing="false" onAction="#initialize" text="displayHand" />
+      <Button fx:id="buttonDisplayHand" layoutX="492.0" layoutY="199.0" mnemonicParsing="false" onAction="#initialize" text="displayHand" />
   </children>
 </AnchorPane>
