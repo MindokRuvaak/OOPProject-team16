@@ -5,7 +5,7 @@ public class StdColors implements Color {
     private static StdColors BLUE = new StdColors("blue");
     private static StdColors RED = new StdColors("red");
     private static StdColors YELLOW = new StdColors("yellow");
-    private static StdColors BLACK = new StdColors("black"); //for wildCards
+    private static StdColors WILD = new StdColors("wild"); //for wildCards
 
 
     private StdColors(String colorName){
@@ -28,8 +28,8 @@ public class StdColors implements Color {
         return YELLOW;
     }
 
-    public static StdColors black(){
-        return BLACK;
+    public static StdColors wild(){
+        return WILD;
     }
 
     @Override
