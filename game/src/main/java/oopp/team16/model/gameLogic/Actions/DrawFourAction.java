@@ -7,7 +7,7 @@ public class DrawFourAction implements ActionStrategy {
 
     @Override
     public void executeAction(SpecialCardLogic game) {
+            game.chooseColor();
             game.nextPlayerDraws(4);
         }
-    //color thing
 }

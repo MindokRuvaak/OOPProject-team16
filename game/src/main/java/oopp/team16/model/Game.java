@@ -249,7 +249,7 @@ public class Game implements SpecialCardLogic {
     public void nextPlayerDraws(int num) {
         int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
 
-        Player nextPlayer = players.get(nextPlayerIndex); // Safe access to the next player
+        Player nextPlayer = players.get(nextPlayerIndex);
         for (int i = 0; i < num; i++) {
             nextPlayer.drawCard(deck.drawCard());
         }
