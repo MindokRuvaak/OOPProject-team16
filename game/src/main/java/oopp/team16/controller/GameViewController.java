@@ -194,7 +194,7 @@ public class GameViewController implements GameListener, ModelListener{
         inputCard.setVisible(true);
         inputCard.toFront();
         inputCard.setOpacity(1.0);
-        inputCard.setStyle("-fx-background-color: #2ecc71;");
+        inputCard.setStyle("-fx-background-color: #5B0101;");
     }
 
     public void closeCardCiew() {

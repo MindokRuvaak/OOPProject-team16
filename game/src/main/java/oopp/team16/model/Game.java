@@ -2,6 +2,7 @@ package oopp.team16.model;
 
 import java.util.*;
 
+import javafx.application.Platform;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.GameLogic;

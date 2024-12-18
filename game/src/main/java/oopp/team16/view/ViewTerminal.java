@@ -2,7 +2,7 @@ package oopp.team16.view;
 
 import oopp.team16.model.Model;
 
-public class ViewTerminal implements View {
+public class ViewTerminal implements oopp.team16.view.View {
 
     Model m;
 
@@ -72,6 +72,7 @@ public class ViewTerminal implements View {
     // @Override
     public void badMove() {
         System.out.println("That selected card cannot be played!");
+        waitForUserConfirmation();
         waitForUserConfirmation();
     }
 

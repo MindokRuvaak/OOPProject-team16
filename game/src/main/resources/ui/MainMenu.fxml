@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -8,10 +9,10 @@
   <children>
     <ImageView id="mainmenubackground" fitHeight="366.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <image>
-        <Image url="@../../../../../../../../../../Downloads/mainmenubackground.jpg" />
+        <Image url="@resources/mainmenubackground.jpg" />
       </image>
     </ImageView>
-    <Button fx:id="exitButton" layoutX="-2.0" layoutY="1.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="32.0" onAction="#handleExitButtonClick">
+    <Button fx:id="exitButton" layoutX="-2.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleExitButtonClick" prefHeight="26.0" prefWidth="32.0">
       <graphic>
         <ImageView fitHeight="14.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
           <image>
@@ -33,7 +34,7 @@
       <graphic>
         <ImageView fitHeight="51.0" fitWidth="95.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@../../../../../../../../../../Downloads/PlayButton.png" />
+            <Image url="@resources/PlayButton.png" />
           </image>
         </ImageView>
       </graphic>
