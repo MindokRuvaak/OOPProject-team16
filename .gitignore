@@ -14,10 +14,11 @@ out/
 **/*.zip
 
 
-**.pdf
+Weekly**.pdf
 
 
 **/old**
 *.xlsx
 *.class
 *.iml
+*.txt

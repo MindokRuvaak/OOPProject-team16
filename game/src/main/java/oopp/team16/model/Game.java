@@ -2,6 +2,7 @@ package oopp.team16.model;
 
 import java.util.*;
 
+import javafx.application.Platform;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Cards.SpecialCard;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
@@ -19,10 +20,10 @@ public class Game implements SpecialCardLogic {
     private final Deck deck;
     private final Stack<Card> playedCards;
     private final int startingHandSize;
-    private GameLogic gamelogic; // can be final? Unnecessary?
+    // private GameLogic gamelogic; // can be final? Unnecessary?
     // alot of overlap between GameLogic and GameRules
 
-    public Game(Deck deck, int startingHandSize) {
+    Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
         this.players = new LinkedList<>();
         this.startingHandSize = startingHandSize;
@@ -37,42 +38,67 @@ public class Game implements SpecialCardLogic {
         setUpGame();
     }
 
-    void startGame() {
+    void startGame() {// TODO: rename to startGameLoop
         gameLoop();
     }
 
+    void start() {
+        if (currentPlayer == null) {
+            nextTurn();
+            startTurn();
+            reUpDeck();
+            takeTurn();
+        }
+    }
+
+    LinkedList<Player> getPlayers() {
+        return players;
+    }
+
     Player getCurrentPlayer() {
-        return currentPlayer;
+        return this.currentPlayer;
     }
 
     Card getTopPlayedCard() {
         return playedCards.peek();
     }
 
+    Card[] getPlayerHand() {
+        return this.currentPlayer.getHand();
+    }
+
     // Main game loop,
     private void gameLoop() {
-        // TODO: add checking for empty deck and reset deck
         boolean noWinner = true;
         while (noWinner) {
-            nextTurn(); // switch current player
+            nextTurn(); // setup first player, after turn order iterator is initiaized, call next to
+                        // setup first player in list as first current player
             startTurn();
             while (this.currentPlayer.stillTakingTurn()) {
+                reUpDeck();
                 takeTurn();
             }
-            endTurn();
-
-            noWinner = checkWinner();
+            noWinner = !checkWinner();
         }
     }
 
-    private boolean checkWinner() {
-        boolean noWinner = true;
+    private void reUpDeck() {
+        if (deck.isEmpty()) {
+            Card top = playedCards.pop();
+            deck.add(playedCards);
+            playedCards.empty();
+            playedCards.add(top);
+        }
+    }
+
+    boolean checkWinner() {
+        boolean haveWinner = false;
         if (!currentPlayer.hasCards()) {
-            noWinner = false;
             setWinnerScore();
             announceWinner(currentPlayer.getName(), currentPlayer.getScore());
+            haveWinner = true;
         }
-        return noWinner;
+        return haveWinner;
     }
 
     private void setWinnerScore() {
@@ -86,12 +112,13 @@ public class Game implements SpecialCardLogic {
     private void startTurn() {
         this.currentPlayer.startTurn();
         for (GameListener listener : listeners) {
-            listener.startPlayerTurn(currentPlayer);
+            listener.startPlayerTurn();
         }
     }
 
-    private void endTurn() {
+    void endTurn() {
         this.currentPlayer.resetTurnInfo();
+        this.currentPlayer.endTurn();
     }
 
     private void announceWinner(String name, int score) {
@@ -104,12 +131,13 @@ public class Game implements SpecialCardLogic {
         if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
             this.turnOrder = this.players.iterator(); // reset iterator
         }
-        this.currentPlayer = this.turnOrder.next();
+        this.currentPlayer = this.turnOrder.next();// get next
     }
 
     private void setUpGame() {
         givePLayersCards(startingHandSize);// give all players a starting hand
         playedCards.add(deck.drawCard());// add one card to start
+
     }
 
     private void givePLayersCards(int n) {
@@ -124,15 +152,13 @@ public class Game implements SpecialCardLogic {
         }
     }
 
-
     private void takeTurn() {
         for (GameListener listener : listeners) {
-            listener.takePlayerTurn(currentPlayer);
+            listener.takePlayerTurn();
         }
-
     }
 
-    public void AddListener(GameListener gameListener) {
+    void AddListener(GameListener gameListener) {
         listeners.add(gameListener);
     }
 
@@ -145,7 +171,9 @@ public class Game implements SpecialCardLogic {
     }
 
     private void tryPlayCard(int index) {
-        if (GameRules.allowedPlay(currentPlayer.getCard(index), getTopPlayedCard())) {
+        if ((0 <= index && index < currentPlayer.getHandSize())
+                && GameRules.allowedPlay(currentPlayer.getCard(index),
+                        getTopPlayedCard())) {
             playCard(index);
         } else {
             announceBadMove();
@@ -174,11 +202,15 @@ public class Game implements SpecialCardLogic {
     }
 
     void endCurrentPlayerTurn() {
-        if (currentPlayer.hasPlayedCard()) {// TODO: can end turn if drawn 3 cards
-            currentPlayer.endTurn();
+        if (canEndTurn()) {
+            endTurn();
         } else {
             announceMustPlayCard();
         }
+    }
+
+    boolean canEndTurn() {
+        return currentPlayer.hasPlayedCard() || currentPlayer.drawnThree();
     }
 
     private void announceMustPlayCard() {

@@ -12,19 +12,19 @@ public class StdColors implements Color {
         this.colorName = colorName;
     }
 
-    public static StdColors green() {
+    public static Color green() {
         return GREEN;
     }
 
-    public static StdColors blue() {
+    public static Color blue() {
         return BLUE;
     }
 
-    public static StdColors red() {
+    public static Color red() {
         return RED;
     }
 
-    public static StdColors yellow() {
+    public static Color yellow() {
         return YELLOW;
     }
 
@@ -32,6 +32,7 @@ public class StdColors implements Color {
         return BLACK;
     }
 
+    @Override
     public String getColorName() {
         return colorName;
     }

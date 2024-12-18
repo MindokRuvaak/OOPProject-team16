@@ -8,14 +8,16 @@ import java.util.List;
 public class Player {
     private List<Card> hand;
     private int score;  // hur räknar vi score
-    private String name;
+    private final String name;
+    private final int id;
     // turn taken info
     private boolean playedCard;
     private int cardsDrawn;
     private boolean takingTurn;
 
-    public Player (String name){
+    public Player (String name, int id){
         this.name = name;
+        this.id = id;
         this.hand = new ArrayList<>();
         this.playedCard = false;
         this.cardsDrawn = 0;
@@ -23,7 +25,7 @@ public class Player {
     }
 
     public void drawCard(Card card){
-        //TODO: ensure hand alsways sorted
+        //TODO: ensure hand alsways sorted !! later if have time
         this.hand.add(card);
         this.cardsDrawn++;
     }
@@ -59,6 +61,7 @@ public class Player {
 
     public boolean hasPlayedCard(){
         return this.playedCard;
+
     }
 
     public boolean drawnThree(){
@@ -71,6 +74,7 @@ public class Player {
     }
 
     public void startTurn() {
+        resetTurnInfo();
         this.takingTurn = true;
     }
 
@@ -97,4 +101,39 @@ public class Player {
     public int getScore() {
         return this.score;
     }
+    public int getid() {
+        return this.id;
+    }
+
+    // returns string containing the name of player and numer of cards in their hand
+    // seperated by a '':''
+    @Override
+    public String toString() {
+        return getName() + ":" + getHandSize();
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Player other = (Player) obj;
+        if (id == other.id) {
+        return true;
+        } else {
+            return false;
+        }
+    }
+
 }

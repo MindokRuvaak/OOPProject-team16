@@ -1,6 +1,7 @@
 package oopp.team16.server;
 
 import java.net.ServerSocket;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class GameServer {
@@ -31,6 +32,12 @@ public class GameServer {
         }
     }
 
+    public void broadcastMessage(String message) {
+        List<ClientManager> clients = connectionManager.getClients();
+        for (ClientManager client : clients) {
+            client.sendMessageToClient(message);
+        }
+    }
 
     public void shutdown() {
         if (connectionManager != null) {
@@ -44,4 +51,5 @@ public class GameServer {
 
         logger.info("GameServer shutdown completed.");
     }
+
 }
