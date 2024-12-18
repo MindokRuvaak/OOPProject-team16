@@ -5,8 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class ConnectionManager {
@@ -16,57 +14,69 @@ public class ConnectionManager {
     private final List<ClientManager> clients;
     private final int maxPlayers;
     private final GameServer gameServer;
-    private final ExecutorService clientThreadPool;
 
     public ConnectionManager(ServerSocket serverSocket, int maxPlayers, GameServer gameServer) {
         this.serverSocket = serverSocket;
         this.maxPlayers = maxPlayers;
         this.gameServer = gameServer;
         this.clients = new CopyOnWriteArrayList<>();
-        this.clientThreadPool = Executors.newFixedThreadPool(maxPlayers);
     }
 
     public void acceptConnections() {
         try {
-            while (clients.size() < maxPlayers) {
-                Socket clientSocket = serverSocket.accept();
-                logger.info("Accepted connection from: " + clientSocket.getInetAddress());
+            while (gameServer.isRunning()) {
+                if (clients.size() >= maxPlayers) {
+                    logger.info("Max players reached. Waiting for open slots...");
+                    Thread.sleep(1000); // Prevent tight looping
+                    continue;
+                }
+                try {
+                    Socket clientSocket = serverSocket.accept();
+                    logger.info("Accepted connection from: " + clientSocket.getInetAddress());
 
-                String playerName = generatePlayerName();
-                gameServer.getModel().addPlayer(playerName);
+                    int id = generatePlayerId();
+                    ClientManager clientManager = new ClientManager(clientSocket, gameServer, id);
+                    clients.add(clientManager);
 
-                ClientManager clientManager = new ClientManager(clientSocket, gameServer, playerName);
-                clients.add(clientManager);
-                clientThreadPool.submit(clientManager);
+                    logger.info("Player " + id + " connected. Total players: " + clients.size());
+                    clientManager.run();
 
-                logger.info("Player " + playerName + " connected. Total players: " + clients.size());
+                } catch (IOException e) {
+                    if (gameServer.isRunning()) {
+                        logger.severe("Error accepting connection: " + e.getMessage());
+                    } else {
+                        logger.info("Server socket closed. Stopping acceptConnections.");
+                        break;
+                    }
+                }
             }
-
-            logger.info("Max players reached. Notifying GameServer to start the game.");
-            gameServer.startGame();
-
-        } catch (IOException e) {
-            logger.severe("Error accepting connections: " + e.getMessage());
+        } catch (Exception e) {
+            logger.severe("Unhandled exception in acceptConnections: " + e.getMessage());
+        } finally {
+            logger.info("acceptConnections has stopped.");
         }
     }
 
+
     public void removeClient(ClientManager client) {
         if (clients.remove(client)) {
-            logger.info("Removed client: " + client.getClientName());
+            logger.info("Removed client: " + client.getClientId());
+            /*gameServer.broadcastMessage(new GameMessage("playerDisconnected")
+                .addData("playerId", client.getClientId()));*/
         }
     }
 
     public void closeConnections() {
+        logger.info("Closing all client connections...");
         for (ClientManager client : clients) {
             client.closeConnection();
         }
         clients.clear();
-        clientThreadPool.shutdown();
         logger.info("All client connections closed.");
     }
 
-    private String generatePlayerName() {
-        return "Player" + (clients.size() + 1);
+    private int generatePlayerId() {
+        return (clients.size() + 1);
     }
 
     public List<ClientManager> getClients() {

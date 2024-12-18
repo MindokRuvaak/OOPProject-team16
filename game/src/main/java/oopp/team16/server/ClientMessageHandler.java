@@ -30,18 +30,11 @@ public class ClientMessageHandler {
                 handleInvalidAction(message);
                 break;
 
-            case "chatMessage":
-                handleChatMessage(message);
-                break;
-
             default:
                 logger.warning("Unknown message type received: " + message.getType());
         }
     }
 
-    /**
-     * Updates the game state on the client view.
-     */
     private void handleGameState(GameMessage message) {
         String topCard = (String) message.getData().get("topCard");
         String currentPlayer = (String) message.getData().get("currentPlayer");

@@ -11,11 +11,7 @@ public abstract class MessageHandler {
     protected PrintWriter out;
     protected BufferedReader in;
 
-    protected void initializeStreams(InputStream inputStream, OutputStream outputStream) throws IOException {
-        this.out = new PrintWriter(outputStream, true);
-        this.in = new BufferedReader(new InputStreamReader(inputStream));
-        logger.fine("Streams initialized.");
-    }
+    protected abstract void onMessageReceived(GameMessage message);
 
     public void sendMessage(GameMessage message) {
         out.println(gson.toJson(message));
@@ -30,12 +26,16 @@ public abstract class MessageHandler {
                     onMessageReceived(message);
                 }
             } catch (IOException e) {
-                logger.warning("Error while reading messages: " + e.getMessage());
+                logger.info("Client disconnected: " + e.getMessage());
             }
         }).start();
     }
 
-    protected abstract void onMessageReceived(GameMessage message);
+    protected void initializeStreams(InputStream inputStream, OutputStream outputStream) throws IOException {
+        this.out = new PrintWriter(outputStream, true);
+        this.in = new BufferedReader(new InputStreamReader(inputStream));
+        logger.fine("Streams initialized.");
+    }
 
     public void closeStreams() {
         try {

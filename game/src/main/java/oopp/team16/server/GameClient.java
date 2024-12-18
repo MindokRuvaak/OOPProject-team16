@@ -6,13 +6,15 @@ import java.util.logging.Logger;
 
 public class GameClient extends MessageHandler {
     private static final Logger logger = Logger.getLogger(GameClient.class.getName());
+
     private Socket clientSocket;
     private ClientMessageHandler messageHandler;
 
-    public GameClient() {
+    public GameClient(String serverAddress, int serverPort) {
+        connectToServer(serverAddress, serverPort);
     }
 
-    public void connectToServer(String serverAddress, int serverPort) {
+    public synchronized void connectToServer(String serverAddress, int serverPort) {
         if (isConnected()) {
             logger.warning("Already connected to the server.");
             return;
@@ -33,7 +35,6 @@ public class GameClient extends MessageHandler {
             return;
         }
         this.messageHandler = messageHandler;
-
         new Thread(this::listenForMessages, "ClientListenerThread").start();
         logger.info("Started listening for messages.");
     }
@@ -48,11 +49,11 @@ public class GameClient extends MessageHandler {
         }
     }
 
-    public boolean isConnected() {
+    public synchronized boolean isConnected() {
         return clientSocket != null && !clientSocket.isClosed();
     }
 
-    public void closeClientConnection() {
+    public synchronized void closeClientConnection() {
         if (!isConnected()) {
             logger.info("Client is already disconnected.");
             return;
