@@ -18,5 +18,7 @@ public interface ModelListener {
 
     void announceMustPlayCard();
 
+    void requestWildColor();
+
 
 }

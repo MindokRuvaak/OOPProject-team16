@@ -7,6 +7,7 @@ import oopp.team16.model.gameLogic.CreateStdDeck;
 import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
 public class Model implements GameListener { // maybe change name ?ModelGameSetup?
@@ -119,7 +120,18 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
 
     @Override
     public void getColor() {
+        for (ModelListener listener : listeners) {
+            listener.requestWildColor();
+        }
+    }
+
+    public void setWildColor(String colorString) {
+        Color res = parseColor(colorString);
+        game.setWildColor(res);
+    }
+
+    private Color parseColor(String colorString) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getColor'");
+        throw new UnsupportedOperationException("Unimplemented method 'parseColor'");
     }
 }

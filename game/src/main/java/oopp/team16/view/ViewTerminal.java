@@ -79,10 +79,6 @@ public class ViewTerminal implements View {
         input.nextLine();
     }
 
-    // enklaste: modell håller all info, view titttar på modellen och ritar upp den.
-    // hur ska view uppdatera? modell skickar signal, view tittar och på
-    // ok view beroende av modell, men fxml inte!
-
     private void turnActions(String[] hand, boolean hasPlayedCard) {
         System.out.print("> ");
         String ans = input.nextLine();
@@ -158,6 +154,12 @@ public class ViewTerminal implements View {
         // clearTerminal();
         System.out.println("You must play a card before ending your turn!");
         waitForUserConfirmation();
+    }
+
+    @Override
+    public void requestWildColor() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'requestWildColor'");
     }
 
 }
