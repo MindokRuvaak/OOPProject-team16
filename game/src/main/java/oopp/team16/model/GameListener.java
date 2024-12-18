@@ -2,8 +2,6 @@ package oopp.team16.model;
 
 public interface GameListener {
 
-    // void update();
-
     void takePlayerTurn();
 
     void badMove();
@@ -14,9 +12,6 @@ public interface GameListener {
 
     void announceMustPlayCard();
 
-    void getColor();
-
-    // void requestTurnAction();
-
+    void requestWildColor();
 
 }

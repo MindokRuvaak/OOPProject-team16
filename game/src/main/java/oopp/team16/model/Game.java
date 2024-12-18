@@ -15,7 +15,7 @@ public class Game implements SpecialCardLogic {
 
     private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
-    private Iterator<Player> turnOrder;
+    private ListIterator<Player> turnOrder;
     private Player currentPlayer;
     private final Deck deck;
     private final Stack<Card> playedCards;
@@ -34,7 +34,7 @@ public class Game implements SpecialCardLogic {
 
     void init(Collection<Player> players) {
         this.players.addAll(players);
-        this.turnOrder = players.iterator();
+        this.turnOrder = this.players.listIterator();
         setUpGame();
     }
 
@@ -129,7 +129,7 @@ public class Game implements SpecialCardLogic {
 
     public void nextTurn() {
         if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
-            this.turnOrder = this.players.iterator(); // reset iterator
+            this.turnOrder = this.players.listIterator(); // reset iterator
         }
         this.currentPlayer = this.turnOrder.next();// get next
     }
@@ -137,7 +137,6 @@ public class Game implements SpecialCardLogic {
     private void setUpGame() {
         givePLayersCards(startingHandSize);// give all players a starting hand
         playedCards.add(deck.drawCard());// add one card to start
-
     }
 
     private void givePLayersCards(int n) {
@@ -229,7 +228,7 @@ public class Game implements SpecialCardLogic {
 
     public void reverseTurn() {
         Collections.reverse(players);
-        turnOrder = players.iterator();
+        turnOrder = players.listIterator();
     }
 
     public void chooseColor() {
@@ -238,7 +237,7 @@ public class Game implements SpecialCardLogic {
 
     private void requestColor() {
         for (GameListener listener : listeners) {
-            listener.getColor();
+            listener.requestWildColor();
         }
     }
 
@@ -251,7 +250,7 @@ public class Game implements SpecialCardLogic {
     }
 
     void setWildColor(Color c) {
-        Card card = getTopPlayedCard();
+        getTopPlayedCard().setWildColor(c);
     }
 
 }

@@ -133,14 +133,10 @@ public class ControllerTerminal implements ModelListener, GameListener {
     }
 
     @Override
-    public void getColor() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getColor'");
+    public void requestWildColor() {
+        v.requestWildColor();
+        String ans = input.nextLine(); 
+        m.setWildColor(ans);
     }
 
-    @Override
-    public void requestWildColor() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'requestWildColor'");
-    }
 }

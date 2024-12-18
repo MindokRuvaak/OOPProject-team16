@@ -331,9 +331,4 @@ public class GameViewController implements GameListener, ModelListener{
         throw new UnsupportedOperationException("Unimplemented method 'requestWildColor'");
     }
 
-    @Override
-    public void getColor() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getColor'");
-    }
 }

@@ -5,6 +5,8 @@ import java.util.*;
 import oopp.team16.model.gameLogic.CreateStdDeck;
 import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
+import oopp.team16.model.gameLogic.Cards.Colors.Color;
+import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
 public class Model /* implements GameListener */ { // maybe change name ?ModelGameSetup?
@@ -22,7 +24,7 @@ public class Model /* implements GameListener */ { // maybe change name ?ModelGa
 
     public void initGame() {
         // this will change?, when possible to create loby with set amount of players
-        getPlayers(2,5);
+        getPlayers(2, 5);
         game.init(players);
     }
 
@@ -79,7 +81,7 @@ public class Model /* implements GameListener */ { // maybe change name ?ModelGa
     }
 
     public String[] getCurrentPlayerHand() {
-        return toStrings( game.getPlayerHand());
+        return toStrings(game.getPlayerHand());
     }
 
     public String[] getListOfPlayers() {
@@ -105,5 +107,30 @@ public class Model /* implements GameListener */ { // maybe change name ?ModelGa
 
     public boolean canEndTurn() {
         return game.canEndTurn();
+    }
+
+    public void setWildColor(String colorString) {
+        parseColor(colorString);
+    }
+
+    private void parseColor(String colorString) {
+        // switch case for now, may change later if needed
+        switch (colorString) {
+            case "red":
+                game.setWildColor(StdColors.red());
+                break;
+            case "yellow":
+                game.setWildColor(StdColors.yellow());
+                break;
+            case "green":
+                game.setWildColor(StdColors.green());
+                break;
+            case "blue":
+                game.setWildColor(StdColors.blue());
+                break;
+            default:
+                game.chooseColor();// if input color does not match, try again
+                break;
+        }
     }
 }
