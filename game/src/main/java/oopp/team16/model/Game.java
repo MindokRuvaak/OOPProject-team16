@@ -228,8 +228,23 @@ public class Game implements SpecialCardLogic {
     }
 
     public void reverseTurn() {
+       // Collections.reverse(players);
+        //turnOrder = players.iterator();
+
+        // Get the index of the current player before reversing
+        int currentPlayerIndex = players.indexOf(currentPlayer);
+
+        // Reverse the list
         Collections.reverse(players);
-        turnOrder = players.iterator();
+
+        // Calculate the new position of the current player
+        int newCurrentPlayerIndex = players.size() - 1 - currentPlayerIndex;
+
+        // Set the iterator to start right after the current player
+        turnOrder = players.listIterator(newCurrentPlayerIndex);
+
+        // Ensure the current player plays again
+        this.currentPlayer = turnOrder.next();
     }
 
     public void chooseColor() {
