@@ -27,5 +27,9 @@ public class NumCard implements Card {
         return bCard.getColor().toString() + " " + getValue();
     }
 
+    @Override
+    public void setWildColor(Color c) {
+        bCard.setWildColor(c); // won't do anything
+    }
 
 }

@@ -1,8 +1,9 @@
 package oopp.team16.model.gameLogic.Cards;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
+import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
 public class BaseCard implements Card {
-    private final Color color;
+    private Color color;
     private final CardType type;
     private final int value;
 
@@ -30,6 +31,13 @@ public class BaseCard implements Card {
     @Override
     public String toString(){
         return color.toString() + " " + type.toString();
+    }
+
+    @Override
+    public void setWildColor(Color c){
+        if (color == StdColors.black()){
+            this.color = c;
+        }
     }
 
 }

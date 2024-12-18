@@ -16,6 +16,8 @@ public interface GameListener {
 
     void announceMustPlayCard();
 
+    void getColor();
+
     // void requestTurnAction();
 
 

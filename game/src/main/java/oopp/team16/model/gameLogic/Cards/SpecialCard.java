@@ -27,7 +27,15 @@ public class SpecialCard implements Card{
     public int getValue() {
         return baseCard.getValue();
     }
+    
     public ActionStrategy getAction(){
         return this.action;
     }
+
+    @Override
+    public void setWildColor(Color c) {
+        baseCard.setWildColor(c);
+    }
+
+    
 }

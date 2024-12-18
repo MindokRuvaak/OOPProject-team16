@@ -4,12 +4,13 @@ import java.util.*;
 
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Cards.SpecialCard;
+import oopp.team16.model.gameLogic.Cards.Colors.Color;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.GameLogic;
 import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
-public class Game implements SpecialCardLogic{
+public class Game implements SpecialCardLogic {
 
     private final ArrayList<GameListener> listeners;
     private final LinkedList<Player> players;
@@ -114,7 +115,6 @@ public class Game implements SpecialCardLogic{
         }
     }
 
-
     private void takeTurn() {
         for (GameListener listener : listeners) {
             listener.takePlayerTurn(currentPlayer);
@@ -146,9 +146,9 @@ public class Game implements SpecialCardLogic{
         Card card = currentPlayer.playCard(index);
         playedCards.add(card);
 
-        if(card instanceof SpecialCard){
-           SpecialCard SC = (SpecialCard) card;
-           SC.getAction().executeAction(this);
+        if (card instanceof SpecialCard) {
+            SpecialCard SC = (SpecialCard) card;
+            SC.getAction().executeAction(this);
 
         }
     }
@@ -190,8 +190,14 @@ public class Game implements SpecialCardLogic{
         turnOrder = players.iterator();
     }
 
-    public void chooseColor(){
+    public void chooseColor() {
+        requestColor();
+    }
 
+    private void requestColor() {
+        for (GameListener listener : listeners) {
+            listener.getColor();
+        }
     }
 
     public void nextPlayerDraws(int num) {
@@ -201,5 +207,11 @@ public class Game implements SpecialCardLogic{
             nextPlayer.drawCard(deck.drawCard());
         }
     }
+
+    void setWildColor(Color c) {
+        Card card = getTopPlayedCard();
+        
+    }
+
 
 }
