@@ -10,7 +10,7 @@ import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
-public class Model implements GameListener { // maybe change name ?ModelGameSetup?
+public class Model /* implements GameListener  */{ // maybe change name ?ModelGameSetup?
     private List<ModelListener> listeners;
     private final Game game;
     private final DeckFactory df;
@@ -21,7 +21,7 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
         df = new CreateStdDeck();
         players = new ArrayList<>();
         game = new Game(df.createDeck(), 7);
-        game.AddListener(this);
+        // game.AddListener(this);
     }
 
     public void initGame() {
@@ -52,11 +52,11 @@ public class Model implements GameListener { // maybe change name ?ModelGameSetu
     }
 
     @Override
-    public void takePlayerTurn(Player currentPlayer) {
+    public void takePlayerTurn() {
         // should maybe not allow multiple listeners?
         // only one listener (view)?
         for (ModelListener listener : listeners) {
-            listener.takeTurn(ToStringArray((currentPlayer.getHand())), currentPlayer.hasPlayedCard());
+            listener.takeTurn();
         }
     }
 
