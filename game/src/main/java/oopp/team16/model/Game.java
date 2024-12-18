@@ -152,7 +152,7 @@ class Game {
     }
 
     void tryPlay(int index) {
-        if (!canEndTurn()) {
+        if (!currentPlayer.hasPlayedCard()) {
             tryPlayCard(index);
         } else {
             tryPlayMoreCards(index);
