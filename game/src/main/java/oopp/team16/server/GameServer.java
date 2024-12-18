@@ -77,7 +77,7 @@ public class GameServer {
         connectionManager.getClients().forEach(client -> client.sendMessage(message));
     }
 
-    //TODO: denna bör göra mer? händer bör uppdateras. även drawPile lär väl ändras
+    //TODO: denna bör göra mer? händer bör uppdateras.
     public void broadcastGameState() {
         GameMessage gameStateMessage = new GameMessage("gameState");
         gameStateMessage.addData("topCard", model.getTopPlayedCard());
@@ -100,6 +100,7 @@ public class GameServer {
     public synchronized void handleDrawCard(String sender) {
         //drawcard måste kolla att rätt sender kan dra kort
         model.drawCard();
+        broadcastGameState();
     }
 
     public boolean isRunning() {

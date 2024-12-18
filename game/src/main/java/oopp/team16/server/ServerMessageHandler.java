@@ -66,6 +66,7 @@ public class ServerMessageHandler {
     //detta ska skickas från drawcard knappen
     private void handleDrawCard(GameMessage message) {
         String sender = message.getSender();
+        //map på card details
         gameServer.handleDrawCard(sender);
     }
 
