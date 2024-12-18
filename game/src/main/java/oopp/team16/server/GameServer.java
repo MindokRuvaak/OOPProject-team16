@@ -22,26 +22,40 @@ public class GameServer {
         this.maxPlayers = maxPlayers;
     }
 
-    public void startup() throws IOException {
+    public void startup() {
         try {
+
             serverSocket = new ServerSocket(port);
             model = new Model();
-            connectionManager = new ConnectionManager(serverSocket, maxPlayers, this);
             messageHandler = new ServerMessageHandler(this);
-            running = true;
+            connectionManager = new ConnectionManager(serverSocket, maxPlayers, this);
 
             new Thread(connectionManager::acceptConnections, "ConnectionManagerThread").start();
-            logger.info("GameServer started on port " + port);
+
+            running = true;
+
         } catch (IOException e) {
             logger.severe("Failed to start GameServer: " + e.getMessage());
+            running = false;
             shutdown();
-            throw e;
+        } catch (Exception e) {
+            logger.severe("Unexpected error during GameServer startup: " + e.getMessage());
+            running = false;
+            shutdown();
         }
     }
 
     public void shutdown() {
+        if (!running) {
+            logger.info("GameServer is already stopped.");
+            return;
+        }
+
         running = false;
+        logger.info("GameServer running state set to false.");
+
         try {
+            logger.info("Closing server socket...");
             if (connectionManager != null) {
                 connectionManager.closeConnections();
             }
@@ -50,22 +64,17 @@ public class GameServer {
             }
             logger.info("GameServer shutdown completed.");
         } catch (IOException e) {
-            logger.warning("Error shutting down GameServer: " + e.getMessage());
+            logger.warning("Error during shutdown: " + e.getMessage());
         }
-    }
-
-    public void startGame() {
-        if (model.getPlayers().isEmpty()) {
-            logger.severe("Cannot start the game: No players connected.");
-            throw new IllegalStateException("No players in the game.");
-        }
-        model.initGame();
-        model.startGame();
-        broadcastGameState();
     }
 
     public void processClientMessage(GameMessage message, ClientManager sender) {
         messageHandler.handleMessage(message, sender);
+    }
+
+    public void broadcastMessage(GameMessage message) {
+        logger.info("Broadcasting message: " + message);
+        connectionManager.getClients().forEach(client -> client.sendMessage(message));
     }
 
     public void broadcastGameState() {
@@ -76,16 +85,31 @@ public class GameServer {
         broadcastMessage(gameStateMessage);
     }
 
-    public void broadcastMessage(GameMessage message) {
-        logger.info("Broadcasting message: " + message);
-        connectionManager.getClients().forEach(client -> client.sendMessage(message));
+    public synchronized void startGame() {
+        logger.info("Starting the game...");
+        if (model.getPlayers().isEmpty()) {
+            logger.warning("Cannot start the game: No players connected.");
+            return;
+        }
+        model.initGame();
+        model.startGame();
+        broadcastGameState();
+        logger.info("Game has started successfully.");
+    }
+
+    public synchronized void handlePlayerMove(ClientManager sender, int cardPlayed) {
+        logger.info("Player " + sender.getClientId() + " played card " + cardPlayed);
+        model.playCard(cardPlayed);
+        broadcastGameState();
+    }
+
+    public synchronized void handleEndTurn(ClientManager sender) {
+        logger.info("Ending turn for player: " + sender.getClientId());
+        model.endTurn();
+        broadcastGameState();
     }
 
     public boolean isRunning() {
         return running;
-    }
-
-    public Model getModel() {
-        return model;
     }
 }

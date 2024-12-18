@@ -21,7 +21,6 @@ import java.util.Map;
 public class GameViewController implements ModelListener {
 
     Model m = new Model();
-
     @FXML
     private Label labelLogo;
 
@@ -102,10 +101,6 @@ public class GameViewController implements ModelListener {
     // private String[] players;
 
     private GameClientController clientController;  //WE DO A LITTLE BIT OF TESTING
-
-    public void setClientController(GameClientController controller) {
-        this.clientController = controller;
-    }
 
     public void initialize() {
         m.addListener(this);
@@ -191,8 +186,7 @@ public class GameViewController implements ModelListener {
     }
 
     public void endTurn() {
-        GameMessage message = new GameMessage("endTurn", "Player1");
-        clientController.sendMessage(message);
+        clientController.endTurn();
     }
 
 
@@ -219,9 +213,7 @@ public class GameViewController implements ModelListener {
     }
 
     public void playCard(int cardIndex) {
-        GameMessage message = new GameMessage("playerMove", "Player1");
-        message.addData("cardPlayed", cardIndex);
-        clientController.sendMessage(message);
+        clientController.playCard(cardIndex);
     }
 
 

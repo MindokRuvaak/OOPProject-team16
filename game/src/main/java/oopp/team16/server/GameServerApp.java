@@ -1,9 +1,6 @@
 package oopp.team16.server;
 
 import java.util.Scanner;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class GameServerApp {
@@ -23,8 +20,12 @@ public class GameServerApp {
             gameServer.startup();
             logger.info("GameServer running on port " + port + ", waiting for players...");
 
-            keepServerAlive(gameServer);
-
+            synchronized (GameServerApp.class) {
+                GameServerApp.class.wait();
+            }
+        } catch (InterruptedException e) {
+            logger.severe("Main thread interrupted: " + e.getMessage());
+            Thread.currentThread().interrupt();
         } catch (Exception e) {
             logger.severe("Error running GameServer: " + e.getMessage());
         } finally {
@@ -32,19 +33,6 @@ public class GameServerApp {
             logger.info("GameServerApp has stopped.");
             scanner.close();
         }
-    }
-
-    /**
-     * Keeps the server alive using a ScheduledExecutorService.
-     */
-    private static void keepServerAlive(GameServer gameServer) {
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(() -> {
-            if (!gameServer.isRunning()) {
-                logger.info("GameServer is no longer running. Stopping main loop.");
-                scheduler.shutdown();
-            }
-        }, 0, 1, TimeUnit.SECONDS);
     }
 
     private static int promptForInt(Scanner scanner, String message, int defaultValue) {

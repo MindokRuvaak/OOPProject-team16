@@ -6,31 +6,55 @@ import java.util.logging.Logger;
 
 public class ClientManager extends MessageHandler implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
-    private final GameServer gameServer;
-    private final String playerName;
 
-    public ClientManager(Socket socket, GameServer gameServer, String playerName) throws IOException {
-        initializeStreams(socket.getInputStream(), socket.getOutputStream());
+    private final GameServer gameServer;
+    private final int id;
+    private final Socket socket;
+
+    public ClientManager(Socket socket, GameServer gameServer, int id) throws IOException {
+        this.socket = socket;
         this.gameServer = gameServer;
-        this.playerName = playerName;
+        this.id = id;
+
+        initializeStreams(socket.getInputStream(), socket.getOutputStream());
+        logger.info("ClientManager created for player " + id + " at " + socket.getRemoteSocketAddress());
     }
 
     @Override
     protected void onMessageReceived(GameMessage message) {
-        logger.info("Message received from " + playerName + ": " + message.getType());
-        gameServer.processClientMessage(message, this);
+        logger.info("Message received from player " + id + ": " + message.getType());
+        try {
+            gameServer.processClientMessage(message, this);
+        } catch (Exception e) {
+            logger.warning("Error processing message from player " + id + ": " + e.getMessage());
+        }
     }
 
     @Override
     public void run() {
-        listenForMessages();
-    }
+        try {
+            listenForMessages();
+        } catch (Exception e) {
+            logger.warning("Connection lost with player " + id + ": " + e.getMessage());
+        } finally {
+            closeConnection();
+            }
+        }
 
     public void closeConnection() {
-        closeStreams();
+        try {
+            closeStreams();
+            if (!socket.isClosed()) {
+                socket.close();
+            }
+            logger.info("Connection closed for player " + id);
+        } catch (IOException e) {
+            logger.warning("Error closing connection for player " + id + ": " + e.getMessage());
+        }
     }
 
-    public String getClientName() {
-        return playerName;
+
+    public int getClientId() {
+        return id;
     }
 }
