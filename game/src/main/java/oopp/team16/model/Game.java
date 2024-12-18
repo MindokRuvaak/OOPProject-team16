@@ -254,7 +254,7 @@ public class Game implements SpecialCardLogic {
             nextPlayer.drawCard(deck.drawCard());
         }
 
-        nextTurn();
+        nextTurn(); //cant stack
     }
 
     void setWildColor(Color c) {
