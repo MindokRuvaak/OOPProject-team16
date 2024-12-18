@@ -2,7 +2,6 @@ package oopp.team16;
 
 import oopp.team16.controller.ControllerTerminal;
 import oopp.team16.model.Model;
-import oopp.team16.view.View;
 import oopp.team16.view.ViewTerminal;
 
 public class AppTerminal {

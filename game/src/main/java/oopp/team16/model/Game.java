@@ -228,23 +228,14 @@ public class Game implements SpecialCardLogic {
     }
 
     public void reverseTurn() {
-       // Collections.reverse(players);
-        //turnOrder = players.iterator();
 
-        // Get the index of the current player before reversing
-        int currentPlayerIndex = players.indexOf(currentPlayer);
+        int currentPlayerIndex = players.indexOf(currentPlayer);// Get the index of the current player before reversing
+        Collections.reverse(players); // Reverse the list
+        int newCurrentPlayerIndex = players.size() - 1 - currentPlayerIndex;    // Calculate the new position of the current player
 
-        // Reverse the list
-        Collections.reverse(players);
+        turnOrder = players.listIterator(newCurrentPlayerIndex);       // Set the iterator to start right after the current player
 
-        // Calculate the new position of the current player
-        int newCurrentPlayerIndex = players.size() - 1 - currentPlayerIndex;
-
-        // Set the iterator to start right after the current player
-        turnOrder = players.listIterator(newCurrentPlayerIndex);
-
-        // Ensure the current player plays again
-        this.currentPlayer = turnOrder.next();
+        this.currentPlayer = turnOrder.next(); // Ensure the current player plays again
     }
 
     public void chooseColor() {
@@ -258,11 +249,14 @@ public class Game implements SpecialCardLogic {
     }
 
     public void nextPlayerDraws(int num) {
-        Player nextPlayer = turnOrder.next();
+        int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
 
+        Player nextPlayer = players.get(nextPlayerIndex); // Safe access to the next player
         for (int i = 0; i < num; i++) {
             nextPlayer.drawCard(deck.drawCard());
         }
+
+        nextTurn();
     }
 
     void setWildColor(Color c) {
