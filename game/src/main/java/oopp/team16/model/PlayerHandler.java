@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Card;
 
