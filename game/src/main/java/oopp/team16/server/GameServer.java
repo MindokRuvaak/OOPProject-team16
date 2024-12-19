@@ -20,7 +20,7 @@ public class GameServer implements ModelListener{
     private ConnectionManager connectionManager;
     private Model model;
     private ServerMessageHandler messageHandler;
-    private final Map<Integer, Player> clientToPlayerMap = new HashMap<>();
+    private final Map<GameClient, Player> clientToPlayerMap = new HashMap<>();
 
 
     public GameServer(int port, int maxPlayers) {
@@ -65,7 +65,6 @@ public class GameServer implements ModelListener{
             logger.warning("Error during shutdown: " + e.getMessage());
         }
     }
-
 
     public synchronized void startGame() {
         logger.info("Starting the game...");

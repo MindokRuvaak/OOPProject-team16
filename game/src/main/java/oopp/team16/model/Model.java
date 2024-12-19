@@ -34,8 +34,8 @@ public class Model { // maybe change name ?ModelGameSetup?
         game.start();
     }
 
-    public void addPlayer(String name) {
-        players.add(new Player(name, players.size()));
+    public void addPlayer(int playerId) {
+        players.add(new Player(playerId));
     }
 
     public void addListener(ModelListener l) {
@@ -62,10 +62,6 @@ public class Model { // maybe change name ?ModelGameSetup?
 
     public void endTurn() {
         game.endCurrentPlayerTurn();
-    }
-
-    public String getCurrentPlayerName() {
-        return game.getCurrentPlayer().getName();
     }
 
     public int getCurrentPlayerID() {
