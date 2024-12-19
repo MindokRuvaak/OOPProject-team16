@@ -12,8 +12,6 @@ import oopp.team16.model.gameLogic.Player;
 public class Game implements SpecialCardLogic {
 
     private final ArrayList<GameListener> listeners;
-    // private/* final */ Deck deck;
-    // private /* final */Stack<Card> playedCards;
     private final int startingHandSize;
     private int toSkip;
     private final DeckHandler dh;
