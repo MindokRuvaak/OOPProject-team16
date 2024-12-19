@@ -28,7 +28,7 @@ public class StdColors implements Color {
         return YELLOW;
     }
 
-    public static StdColors wild(){
+    public static Color wild(){
         return WILD;
     }
 
