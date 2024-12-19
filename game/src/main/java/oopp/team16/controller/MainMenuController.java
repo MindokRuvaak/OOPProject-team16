@@ -43,7 +43,6 @@ public class MainMenuController {
 
     private int playerCount;
 
-    // Handle the "Play" button click
     @FXML
     public void joinLobby(ActionEvent event) {
         playerCount++;
@@ -51,7 +50,7 @@ public class MainMenuController {
 
     @FXML
     public void start(ActionEvent event) throws IOException {
-        playerCount = 2;
+        playerCount = 3;
         if(2 <= playerCount && playerCount <=4) {
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
