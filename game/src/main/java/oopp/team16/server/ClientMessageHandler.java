@@ -62,7 +62,7 @@ public class ClientMessageHandler {
         System.out.println("pong");
         viewController.ping();
     }
-    
+
     private void setPlayerId(int id) {
         viewController.setPlayerId(id);
     }

@@ -131,18 +131,20 @@ public class GameViewController /* implements GameListener, ModelListener */ {
          }
      }
 
+
     // player data contains name/id and number of cards in hand as name:num,
     // this returns array in same order, but only with player names
-    private String[] namesOf(String[] players) {
-        String[] ns = new String[players.length];
-        for (int i = 0; i < ns.length; i++) {
-            ns[i] = nameOf(players[i]);
+    private int[] idsOf(String[] players) {
+        int[] ids = new int[players.length];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = idOf(players[i]);
         }
-        return ns;
+        return ids;
     }
 
-    private String nameOf(String player) {
-        return player.split(":")[0];
+
+    private int idOf(String player) {
+        return Integer.parseInt(player.split(":")[0]);
     }
 
     private int handSizeOf(String player) {
@@ -216,7 +218,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     private void updateTurnLabel() {
-        // labelTurn.setText(m.getCurrentPlayerName() + "'s turn");
+        labelTurn.setText(currentPlayer + "'s turn");
     }
 
     public void endTurn() {
@@ -290,9 +292,9 @@ public class GameViewController /* implements GameListener, ModelListener */ {
 
     // move to view
     private void hideHands() {
-        // for (String p : m.getListOfPlayers()) {
-        //     displayBackOfHand(playersHand.get(nameOf(p)), handSizeOf(p));
-        // }
+        for (String p : players) {
+            displayBackOfHand(playersHand.get(nameOf(p)), handSizeOf(p));
+        }
     }
 
     private void displayBackOfHand(Pane hand, int handSize) {
