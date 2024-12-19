@@ -8,15 +8,16 @@ import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
 public class SpecialCard implements Card{
 
+
     private ActionStrategy action; //final ?
     private final BaseCard baseCard;
 
     /**
-     *
+     * Constructor for a special card
      * @param color
-     * @param cardType
-     * @param value
-     * @param action
+     * @param cardType Type of the card
+     * @param value Numeric value, used for score counting
+     * @param action, the action associated with the card
      */
     public SpecialCard(Color color, CardType cardType, int value, ActionStrategy action){
         this.baseCard = new BaseCard(color, cardType, value);

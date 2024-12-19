@@ -3,6 +3,9 @@ package oopp.team16.model.gameLogic.Cards;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
+/**
+ * Represents a base card in the game with a specific color, type, and value.
+ */
 
 public class BaseCard implements Card {
     private Color color;

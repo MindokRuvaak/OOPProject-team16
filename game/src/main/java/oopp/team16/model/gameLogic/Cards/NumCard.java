@@ -9,8 +9,9 @@ public class NumCard implements Card {
     private final BaseCard baseCard;
 
     /**
-     *  The constructor for number cards has card type NUMBER
-     *  nåt mer
+     * Constructor for creating a number card.
+     * The card type is set to NUMBER
+     *
      * @param color Color of the card
      * @param value Numeric value of the card
      */
