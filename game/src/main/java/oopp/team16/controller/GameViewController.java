@@ -106,10 +106,10 @@ public class GameViewController implements GameListener, ModelListener {
         buttonDisplayHand.setVisible(false);
 
         buttonStart.setOnAction(event -> {
-            String[] players = namesOf(m.getListOfPlayers());
+            int[] playerIds = idsOf(m.getListOfPlayers());
             buttonStart.setVisible(false);
-            playersHand.put(players[1], this.player2Hand);
-            playersHand.put(players[0], this.player1Hand);
+            playersHand.put(String.valueOf(playerIds[1]), this.player2Hand);
+            playersHand.put(String.valueOf(playerIds[0]), this.player1Hand);
             buttonDisplayHand.setVisible(true);
             m.start();
             updateHide();
@@ -139,16 +139,17 @@ public class GameViewController implements GameListener, ModelListener {
 
     // player data contains name/id and number of cards in hand as name:num,
     // this returns array in same order, but only with player names
-    private String[] namesOf(String[] players) {
-        String[] ns = new String[players.length];
-        for (int i = 0; i < ns.length; i++) {
-            ns[i] = nameOf(players[i]);
+    private int[] idsOf(String[] players) {
+        int[] ids = new int[players.length];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = idOf(players[i]);
         }
-        return ns;
+        return ids;
     }
 
-    private String nameOf(String player) {
-        return player.split(":")[0];
+
+    private int idOf(String player) {
+        return Integer.parseInt(player.split(":")[0]);
     }
 
     private int handSizeOf(String player) {
@@ -156,7 +157,7 @@ public class GameViewController implements GameListener, ModelListener {
     }
 
     public void uno() {
-        System.out.println(m.getCurrentPlayerName() + " has declared UNO!");
+        System.out.println(m.getCurrentPlayerID() + " has declared UNO!");
     }
 
     // TODO: move to view
@@ -180,7 +181,7 @@ public class GameViewController implements GameListener, ModelListener {
     }
 
     private void updateTurnLabel() {
-        labelTurn.setText(m.getCurrentPlayerName() + "'s turn");
+        labelTurn.setText(m.getCurrentPlayerID() + "'s turn");
     }
 
     public void endTurn() {
@@ -247,14 +248,15 @@ public class GameViewController implements GameListener, ModelListener {
     // should go to view
     public void displayHands() {
         for (String p : m.getListOfPlayers()) {
-            String name = nameOf(p);
-            if (nameOf(p).equals(m.getCurrentPlayerName())) {
-                displayHand(playersHand.get(name));
+            int id = idOf(p);
+            if (id == m.getCurrentPlayerID()) {
+                displayHand(playersHand.get(String.valueOf(id)));
             } else {
-                displayBackOfHand(playersHand.get(name), handSizeOf(p));
+                displayBackOfHand(playersHand.get(String.valueOf(id)), handSizeOf(p));
             }
         }
     }
+
 
     // move to view
     public void displayHand(HBox hand) {
@@ -268,9 +270,11 @@ public class GameViewController implements GameListener, ModelListener {
     // move to view
     private void hideHands() {
         for (String p : m.getListOfPlayers()) {
-            displayBackOfHand(playersHand.get(nameOf(p)), handSizeOf(p));
+            int playerId = idOf(p);
+            displayBackOfHand(playersHand.get(String.valueOf(playerId)), handSizeOf(p));
         }
     }
+
 
     private void displayBackOfHand(HBox hand, int handSize) {
         hand.getChildren().clear(); // Clear existing cards in case of updates
@@ -305,8 +309,9 @@ public class GameViewController implements GameListener, ModelListener {
 
     @Override
     public void requestPlayers(int lower, int upper) {
-        m.addPlayer("Player 1");
-        m.addPlayer("Player 2");
+        for (int i = 0; i < lower; i++) {
+            m.addPlayer(i);
+        }
     }
 
     @Override
@@ -318,14 +323,14 @@ public class GameViewController implements GameListener, ModelListener {
 
     @Override
     public void badMove() {
-        // TODO: implement gui
-        System.out.println("cant play that card");
+        errorCard.setVisible(true);
+        errorCard.setText("You can't play that card!");
     }
 
     @Override
     public void announceMustPlayCard() {
-        // TODO: implement gui
-        System.out.println("must play card");
+        errorCard.setVisible(true);
+        errorCard.setText("You must play a card to end your turn!");
     }
 
     @Override
