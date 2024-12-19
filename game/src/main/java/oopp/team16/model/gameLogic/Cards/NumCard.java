@@ -9,12 +9,10 @@ public class NumCard implements Card {
         this.bCard = new BaseCard(color, CardType.NUMBER, value);
         this.value = value;
     }
-
     @Override
     public Color getColor() {
         return bCard.getColor();
     }
-
     @Override
     public CardType getType() {
         return bCard.getType();
@@ -29,5 +27,9 @@ public class NumCard implements Card {
         return bCard.getColor().toString() + " " + getValue();
     }
 
+    @Override
+    public void setWildColor(Color c) {
+        bCard.setWildColor(c); // won't do anything
+    }
 
 }

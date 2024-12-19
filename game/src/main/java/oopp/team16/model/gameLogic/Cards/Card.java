@@ -10,4 +10,7 @@ public interface Card {
 
     int getValue();  //not ideal, could be used to count score
 
+
+    void setWildColor(Color c);
+
 }

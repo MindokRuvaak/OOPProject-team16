@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.geometry.Point2D;
+import oopp.team16.model.GameListener;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
 import oopp.team16.server.GameClientController;
@@ -17,10 +17,10 @@ import oopp.team16.server.GameMessage;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO: controller will not need to be ModelListener only view. may have to update observer methods
-public class GameViewController implements ModelListener {
+public class GameViewController implements GameListener, ModelListener{
 
     Model m = new Model();
+
     @FXML
     private Label labelLogo;
 
@@ -92,18 +92,17 @@ public class GameViewController implements ModelListener {
     private final double CARD_SPACING_SMALL = -25.0;
     private final double CARD_SPACING_ULTRA_SMALL = -35.0;
 
-    private Point2D PLAYER_STARTING_POINT;
-    private final Point2D AI_1_STARTING_POINT = new Point2D(100.0, 75.0);
-    private Point2D AI_2_STARTING_POINT;
-    private Point2D AI_3_STARTING_POINT;
+    // private Point2D PLAYER_STARTING_POINT;
+    // private final Point2D AI_1_STARTING_POINT = new Point2D(100.0, 75.0);
+    // private Point2D AI_2_STARTING_POINT;
+    // private Point2D AI_3_STARTING_POINT;
     private final Map<String, HBox> playersHand = new HashMap<>();
-
-    // private String[] players;
 
     private GameClientController clientController;  //WE DO A LITTLE BIT OF TESTING
 
     public void initialize() {
         m.addListener(this);
+        m.initGame();
         inputCard.setVisible(false);
         winningPane.setVisible(false);
         buttonDisplayHand.setVisible(false);
@@ -158,12 +157,12 @@ public class GameViewController implements ModelListener {
     }
 
     public void uno() {
-        System.out.println(m.getCurrentPlayerID() + " has declared UNO!");
+        System.out.println(m.getCurrentPlayerName() + " has declared UNO!");
     }
 
     // TODO: move to view
     @Override
-    public void announceWinner(String name) {
+    public void announceWinner(String name, int score) {
         winningPane.setVisible(true);
         winningPane.toFront();
         winningPane.setOpacity(1.0);
@@ -177,24 +176,29 @@ public class GameViewController implements ModelListener {
     }
 
     @Override
-    public void startNextPlayerTurn() {
+    public void startPlayerTurn() {
         updateTurnLabel();
     }
 
     private void updateTurnLabel() {
-        labelTurn.setText(m.getCurrentPlayerID() + "'s turn");
+        labelTurn.setText(m.getCurrentPlayerName() + "'s turn");
     }
 
     public void endTurn() {
-        clientController.endTurn();
+        if (m.canEndTurn()) {
+            m.endTurn();
+            if (m.haveWinner())
+            m.nextPlayerTurn();
+            updateHide();
+            buttonDisplayHand.setVisible(true);
+        }
     }
-
 
     public void cardView() {
         inputCard.setVisible(true);
         inputCard.toFront();
         inputCard.setOpacity(1.0);
-        inputCard.setStyle("-fx-background-color: #2ecc71;");
+        inputCard.setStyle("-fx-background-color: #5B0101;");
     }
 
     public void closeCardCiew() {
@@ -213,9 +217,9 @@ public class GameViewController implements ModelListener {
     }
 
     public void playCard(int cardIndex) {
-        clientController.playCard(cardIndex);
+        m.playCard(cardIndex);
+        updateDisplay();
     }
-
 
     // move to view
     public void displayTopCard() {
@@ -244,7 +248,7 @@ public class GameViewController implements ModelListener {
     public void displayHands() {
         for (String p : m.getListOfPlayers()) {
             String name = nameOf(p);
-            if (nameOf(p).equals(m.getCurrentPlayerID())) {
+            if (nameOf(p).equals(m.getCurrentPlayerName())) {
                 displayHand(playersHand.get(name));
             } else {
                 displayBackOfHand(playersHand.get(name), handSizeOf(p));
@@ -301,20 +305,20 @@ public class GameViewController implements ModelListener {
     }
 
     @Override
-    public void requestPlayers() {
+    public void requestPlayers(int lower, int upper) {
         m.addPlayer("Player 1");
         m.addPlayer("Player 2");
+    }
+
+    @Override
+    public void takePlayerTurn() {
+        updateHide();
     }
 
     // TODO: implement observer pattern methods
 
     @Override
-    public void takeTurn() { // TODO: fix signature
-        updateHide();
-    }
-
-    @Override
-    public void announceBadMove() {
+    public void badMove() {
         // TODO: implement
         System.out.println("cant play that card");
     }
@@ -324,4 +328,11 @@ public class GameViewController implements ModelListener {
         // TODO: implement
         System.out.println("must play card");
     }
+
+    @Override
+    public void requestWildColor() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'requestWildColor'");
+    }
+
 }
