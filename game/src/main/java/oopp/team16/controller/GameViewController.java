@@ -56,7 +56,7 @@ public class GameViewController implements GameListener, ModelListener {
     @FXML
     private Label labelTurn;
     @FXML
-    private Button rules;
+    private Button rulesButton;
     @FXML
     private AnchorPane rulesPane;
     @FXML
@@ -108,7 +108,7 @@ public class GameViewController implements GameListener, ModelListener {
         x.setOnAction(event -> {
             closeRulesView();
         });
-        rules.setOnAction(event -> {
+        rulesButton.setOnAction(event -> {
             openRulesView();
         });
         buttonUno.setOnAction(event -> {
