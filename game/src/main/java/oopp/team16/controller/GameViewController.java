@@ -16,7 +16,7 @@ import oopp.team16.server.GameClientController;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameViewController implements GameListener, ModelListener{
+public class GameViewController implements GameListener, ModelListener {
 
     Model m = new Model();
 
@@ -97,7 +97,7 @@ public class GameViewController implements GameListener, ModelListener{
     // private Point2D AI_3_STARTING_POINT;
     private final Map<String, HBox> playersHand = new HashMap<>();
 
-    private GameClientController clientController;  //WE DO A LITTLE BIT OF TESTING
+    private GameClientController clientController; // WE DO A LITTLE BIT OF TESTING
 
     public void initialize() {
         m.addListener(this);
@@ -186,10 +186,11 @@ public class GameViewController implements GameListener, ModelListener{
     public void endTurn() {
         if (m.canEndTurn()) {
             m.endTurn();
-            if (m.haveWinner())
-            m.nextPlayerTurn();
-            updateHide();
-            buttonDisplayHand.setVisible(true);
+            if (!m.haveWinner()) {
+                m.nextPlayerTurn();
+                updateHide();
+                buttonDisplayHand.setVisible(true);
+            }
         }
     }
 
@@ -329,12 +330,12 @@ public class GameViewController implements GameListener, ModelListener{
 
     @Override
     public void requestWildColor() {
-        // temporary termianl input 
+        // temporary termianl input
         // TODO: implement gui
-        
+
         java.util.Scanner input = new java.util.Scanner(System.in);
         System.out.print("What color do you declare the wild?\n> ");
-        String ans = input.nextLine(); 
+        String ans = input.nextLine();
         m.setWildColor(ans);
         input.close();
     }
