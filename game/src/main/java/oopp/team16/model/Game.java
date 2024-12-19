@@ -76,7 +76,7 @@ public class Game implements SpecialCardLogic {
 
     boolean checkWinner() {
         boolean haveWinner = false;
-        if (!ph.playerHandEmpty()) {
+        if (ph.playerHandEmpty()) {
             ph.calculateWinningScore();
             announceWinner(ph.playerName(), ph.playerScore());
             haveWinner = true;
