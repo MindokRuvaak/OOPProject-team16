@@ -6,7 +6,7 @@ import java.util.Stack;
 import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Card;
-import oopp.team16.model.gameLogic.Cards.NumCard;
+import oopp.team16.model.gameLogic.Cards.SpecialCard;
 
 public class DeckHandler {
     private final Deck deck;
@@ -32,10 +32,14 @@ public class DeckHandler {
     }
 
     private void putNumberCardInPlay() {
-        while (!(topCard() instanceof NumCard)) {
-            playedCards.add(drawCard());// add one card to start
+        playedCards.push(drawCard());// add one card to start
+        while (topCard() instanceof SpecialCard) {
+            playedCards.push(drawCard()); // if starting card is special add more
         }
-        shufflePlayedCardsExceptTop();
+        if (playedCards.size() > 1) { // if there are more than on card to start, keep top card and shuffle the rest
+                                      // back into deck
+            shufflePlayedCardsExceptTop();
+        }
     }
 
     private void reUpDeck() {
@@ -47,7 +51,7 @@ public class DeckHandler {
     private void shufflePlayedCardsExceptTop() {
         Card top = playedCards.pop();
         deck.add(playedCards);
-        playedCards.empty();
+        playedCards.clear();
         playedCards.add(top);
     }
 

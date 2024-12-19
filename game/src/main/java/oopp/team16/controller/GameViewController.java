@@ -113,6 +113,7 @@ public class GameViewController implements GameListener, ModelListener {
             playersHand.put(players[0], this.player1Hand);
             buttonDisplayHand.setVisible(true);
             m.start();
+            updateHide();
         });
 
         buttonDisplayHand.setOnAction(event -> {
