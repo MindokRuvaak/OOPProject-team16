@@ -58,47 +58,6 @@ public class GameServer implements ModelListener{
         }
     }
 
-    @Override
-    public void requestPlayers() {
-        // Broadcast a request for players to join
-        GameMessage requestPlayersMessage = new GameMessage("requestPlayers");
-        broadcastMessage(requestPlayersMessage);
-    }
-
-    @Override
-    public void takeTurn() {
-        // Notify all clients to update their game state
-        broadcastGameState();
-    }
-
-    @Override
-    public void announceBadMove() {
-        // Notify the current player of a bad move
-        GameMessage badMoveMessage = new GameMessage("badMove");
-        broadcastMessage(badMoveMessage);
-    }
-
-    @Override
-    public void announceWinner(String name) {
-        // Notify all clients of the game winner
-        GameMessage winnerMessage = new GameMessage("gameOver");
-        winnerMessage.addData("winner", name);
-        broadcastMessage(winnerMessage);
-    }
-
-    @Override
-    public void startNextPlayerTurn() {
-        // Notify all clients of the next player's turn
-        broadcastGameState();
-    }
-
-    @Override
-    public void announceMustPlayCard() {
-        // Notify the current player that they must play a card
-        GameMessage mustPlayCardMessage = new GameMessage("mustPlayCard");
-        broadcastMessage(mustPlayCardMessage);
-    }
-
     public synchronized void startGame() {
         logger.info("Starting the game...");
         model.initGame();
@@ -148,5 +107,20 @@ public class GameServer implements ModelListener{
 
     public boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public void requestPlayers(int lower, int upper) {
+
+    }
+
+    @Override
+    public void announceWinner(String name, int score) {
+
+    }
+
+    @Override
+    public void requestWildColor() {
+
     }
 }
