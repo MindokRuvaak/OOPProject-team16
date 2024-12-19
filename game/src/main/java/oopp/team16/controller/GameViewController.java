@@ -128,19 +128,20 @@ public class GameViewController implements GameListener, ModelListener {
                  n++;
          }
      }
-     
+
     // player data contains name/id and number of cards in hand as name:num,
     // this returns array in same order, but only with player names
-    private String[] namesOf(String[] players) {
-        String[] ns = new String[players.length];
-        for (int i = 0; i < ns.length; i++) {
-            ns[i] = nameOf(players[i]);
+    private int[] idsOf(String[] players) {
+        int[] ids = new int[players.length];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = idOf(players[i]);
         }
-        return ns;
+        return ids;
     }
 
-    private String nameOf(String player) {
-        return player.split(":")[0];
+
+    private int idOf(String player) {
+        return Integer.parseInt(player.split(":")[0]);
     }
 
     private int handSizeOf(String player) {
@@ -215,7 +216,7 @@ public class GameViewController implements GameListener, ModelListener {
     }
 
     private void updateTurnLabel() {
-        labelTurn.setText(m.getCurrentPlayerName() + "'s turn");
+        labelTurn.setText(m.getCurrentPlayerID() + "'s turn");
     }
 
     public void endTurn() {
@@ -260,11 +261,11 @@ public class GameViewController implements GameListener, ModelListener {
     // should go to view
     public void displayHands() {
         for (String p : m.getListOfPlayers()) {
-            String name = nameOf(p);
-            if (nameOf(p).equals(m.getCurrentPlayerName())) {
-                displayHand(playersHand.get(name));
+            int id = idOf(p);
+            if (id == m.getCurrentPlayerID()) {
+                displayHand(playersHand.get(String.valueOf(id)));
             } else {
-                displayBackOfHand(playersHand.get(name), handSizeOf(p));
+                displayBackOfHand(playersHand.get(String.valueOf(id)), handSizeOf(p));
             }
         }
     }
@@ -290,7 +291,8 @@ public class GameViewController implements GameListener, ModelListener {
     // move to view
     private void hideHands() {
         for (String p : m.getListOfPlayers()) {
-            displayBackOfHand(playersHand.get(nameOf(p)), handSizeOf(p));
+            int playerId = idOf(p);
+            displayBackOfHand(playersHand.get(String.valueOf(playerId)), handSizeOf(p));
         }
     }
 
@@ -337,8 +339,9 @@ public class GameViewController implements GameListener, ModelListener {
  */
     @Override
     public void requestPlayers(int lower, int upper) {
-        m.addPlayer("Player 1");
-        m.addPlayer("Player 2");
+        for (int i = 0; i < lower; i++) {
+            m.addPlayer(i);
+        }
     }
 
     @Override
