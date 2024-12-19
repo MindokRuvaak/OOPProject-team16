@@ -12,8 +12,8 @@ import oopp.team16.model.gameLogic.Player;
 public class Game implements SpecialCardLogic {
 
     private final ArrayList<GameListener> listeners;
-    private final Deck deck;
-    private final Stack<Card> playedCards;
+    // private/* final */ Deck deck;
+    // private /* final */Stack<Card> playedCards;
     private final int startingHandSize;
     private int toSkip;
     private final DeckHandler dh;
@@ -22,18 +22,14 @@ public class Game implements SpecialCardLogic {
     Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
         this.startingHandSize = startingHandSize;
-        this.deck = deck;
-        this.deck.shuffle();
         this.toSkip = 0;
-        playedCards = new Stack<>();
-
-        this.dh = new DeckHandler(deck, playedCards);
+        this.dh = new DeckHandler(deck);
         this.ph = new PlayerHandler();
     }
 
     void init(Collection<Player> players) {
         ph.init(players);
-        setUpGame();
+        dh.init(ph.getPlayers(), startingHandSize);
     }
 
     void startGameLoop() {
@@ -44,7 +40,7 @@ public class Game implements SpecialCardLogic {
         if (ph.getCurrentPlayer() == null) {
             nextTurn();
             startTurn();
-            reUpDeck();
+            // reUpDeck();
             takeTurn();
         }
     }
@@ -58,7 +54,7 @@ public class Game implements SpecialCardLogic {
     }
 
     Card getTopPlayedCard() {
-        return playedCards.peek();
+        return dh.topCard();
     }
 
     Card[] getPlayerHand() {
@@ -73,19 +69,10 @@ public class Game implements SpecialCardLogic {
                         // setup first player in list as first current player
             startTurn();
             while (ph.playerStillTakingTurn()) {
-                reUpDeck();
+                // reUpDeck(); // move to draw card method in DeckHandler
                 takeTurn();
             }
             noWinner = !checkWinner();
-        }
-    }
-
-    private void reUpDeck() {
-        if (deck.isEmpty()) {
-            Card top = playedCards.pop();
-            deck.add(playedCards);
-            playedCards.empty();
-            playedCards.add(top);
         }
     }
 
@@ -99,9 +86,9 @@ public class Game implements SpecialCardLogic {
         return haveWinner;
     }
 
-
     void startTurn() {
         for (int i = 0; i < toSkip; i++) {
+            // announce skipping player?
             nextTurn();
         }
         toSkip = 0;
@@ -125,21 +112,6 @@ public class Game implements SpecialCardLogic {
         ph.nextTurn();
     }
 
-    private void setUpGame() {
-        givePLayersCards(startingHandSize);// give all players a starting hand
-        playedCards.add(deck.drawCard());// add one card to start
-    }
-
-    private void givePLayersCards(int n) {
-        for (int i = 0; i < n; i++) {
-            givePlayersCard();
-        }
-    }
-
-    private void givePlayersCard() {
-        ph.givePlayersCard(this.deck);
-    }
-
     private void takeTurn() {
         for (GameListener listener : listeners) {
             listener.takePlayerTurn();
@@ -151,17 +123,18 @@ public class Game implements SpecialCardLogic {
     }
 
     void tryPlay(int index) {
-        if (ph.firstPlayedCard()) {
-            tryPlayCard(index);
-        } else {
-            tryPlayMoreCards(index);
+        if ((0 <= index && index < ph.playerHandSize())) {
+            if (ph.firstPlayedCard()) {
+                tryPlayCard(index);
+            } else {
+                tryPlayMoreCards(index);
+            }
         }
     }
 
     private void tryPlayCard(int index) {
-        if ((0 <= index && index < ph.playerHandSize())
-                && GameRules.allowedPlay(ph.getPlayerCard(index),
-                        getTopPlayedCard())) {
+        if (GameRules.allowedPlay(ph.getPlayerCard(index),
+                dh.topCard())) {
             playCard(index);
         } else {
             announceBadMove();
@@ -170,7 +143,7 @@ public class Game implements SpecialCardLogic {
 
     private void playCard(int index) {
         Card card = ph.playCard(index);
-        playedCards.add(card);
+        dh.play(card);
 
         if (card instanceof SpecialCard) {
             ((SpecialCard) card).getAction().executeAction(this);
@@ -184,7 +157,7 @@ public class Game implements SpecialCardLogic {
     }
 
     void currentPlayerDrawCard() {
-        ph.playerDrawCard(deck.drawCard());
+        ph.playerDrawCard(dh.drawCard());
     }
 
     void endCurrentPlayerTurn() {
@@ -206,7 +179,7 @@ public class Game implements SpecialCardLogic {
     }
 
     void tryPlayMoreCards(int index) {
-        if (GameRules.stackable(ph.getPlayerCard(index), getTopPlayedCard())) {
+        if (GameRules.stackable(ph.getPlayerCard(index), dh.topCard())) {
             playCard(index);
         } else {
             announceBadMove();
@@ -228,7 +201,7 @@ public class Game implements SpecialCardLogic {
     }
 
     public void nextPlayerDraws(int num) {
-        ph.nextPlayerDraws(num, deck);
+        ph.nextPlayerDraws(dh.drawCards(num));
         skip();
     }
 

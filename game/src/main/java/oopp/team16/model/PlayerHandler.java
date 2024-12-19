@@ -24,8 +24,7 @@ class PlayerHandler {
     }
 
     LinkedList<Player> getPlayers() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPlayers'");
+        return this.players;
     }
 
     Player getCurrentPlayer() {
@@ -76,12 +75,6 @@ class PlayerHandler {
         this.currentPlayer = this.turnOrder.next();// get next
     }
 
-    void givePlayersCard(Deck d) {
-        for (Player p : players) {
-            p.drawCard(d.drawCard());
-        }
-    }
-
     public boolean firstPlayedCard() {
         return !currentPlayer.hasPlayedCard();
     }
@@ -116,12 +109,12 @@ class PlayerHandler {
         this.currentPlayer = turnOrder.next(); // Ensure the current player plays again
     }
 
-    public void nextPlayerDraws(int num, Deck deck) {
+    public void nextPlayerDraws(Card[] cards) {
         int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
 
         Player nextPlayer = players.get(nextPlayerIndex);
-        for (int i = 0; i < num; i++) {
-            nextPlayer.drawCard(deck.drawCard());
+        for (Card c : cards) {
+            nextPlayer.drawCard(c);
         }
     }
 
