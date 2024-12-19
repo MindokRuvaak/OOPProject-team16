@@ -20,9 +20,9 @@ import oopp.team16.view.CreateCardView;
 
 import java.util.*;
 
-public class GameViewController implements GameListener, ModelListener {
+public class GameViewController /* implements GameListener, ModelListener */ {
 
-    Model m = new Model();
+    // Model m = new Model();
 
     @FXML
     private Button buttonPlayDeck;
@@ -122,13 +122,13 @@ public class GameViewController implements GameListener, ModelListener {
 
      public void setPlayers(){
         int n = 0;
-         for (int i = 0; i < m.getListOfPlayers().length; i++) {
-             String[] players = namesOf(m.getListOfPlayers());
-             playersHand.put(players[i], paneList.get(n));
-                 n++;
-         }
+        //  for (int i = 0; i < m.getListOfPlayers().length; i++) {
+        //      String[] players = namesOf(m.getListOfPlayers());
+        //      playersHand.put(players[i], paneList.get(n));
+        //          n++;
+        //  }
      }
-     
+
     // player data contains name/id and number of cards in hand as name:num,
     // this returns array in same order, but only with player names
     private String[] namesOf(String[] players) {
@@ -148,8 +148,7 @@ public class GameViewController implements GameListener, ModelListener {
     }
 
     public void uno() {
-        labelUno.setText(m.getCurrentPlayerName() + "has UNO!");
-        System.out.println(m.getCurrentPlayerName() + " has decclared UNO!");
+        labelUno.setText(currentPlayer + "has UNO!");
     }
 
     public void openRulesView(){
@@ -195,7 +194,7 @@ public class GameViewController implements GameListener, ModelListener {
     }
 
     // TODO: move to view
-    @Override
+    // @Override
     public void announceWinner(int id, int score) {
         winningPane.setVisible(true);
         winningPane.toFront();
@@ -205,42 +204,42 @@ public class GameViewController implements GameListener, ModelListener {
     }
 
     public void drawCard() {
-        m.drawCard();
+        // m.drawCard();
         updateDisplay();
     }
 
-    @Override
+    // @Override
     public void startPlayerTurn() {
         updateTurnLabel();
     }
 
     private void updateTurnLabel() {
-        labelTurn.setText(m.getCurrentPlayerName() + "'s turn");
+        // labelTurn.setText(m.getCurrentPlayerName() + "'s turn");
     }
 
     public void endTurn() {
-        if (m.canEndTurn()) {
-            m.endTurn();
-            if (!m.haveWinner()) {
-                m.nextPlayerTurn();
+        // if (m.canEndTurn()) {
+        //     m.endTurn();
+        //     if (!m.haveWinner()) {
+        //         m.nextPlayerTurn();
                 updateHide();
                 buttonDisplayHand.setVisible(true);
-            }
-        }
+        //     }
+        // }
     }
 
     public void playCard(int cardIndex) {
-        m.playCard(cardIndex);
+        // m.playCard(cardIndex);
         updateDisplay();
     }
 
     // move to view
     public void displayTopCard() {
-        String startingCard = m.getTopPlayedCard();
-        if (startingCard != null) {
-            ImageView cardView = cc.createCard(startingCard);
-            imageStartingCard.setImage(cardView.getImage());
-        }
+        // String startingCard = m.getTopPlayedCard();
+        // if (startingCard != null) {
+        //     ImageView cardView = cc.createCard(startingCard);
+        //     imageStartingCard.setImage(cardView.getImage());
+        // }
     }
 
     // move to view
@@ -259,39 +258,39 @@ public class GameViewController implements GameListener, ModelListener {
 
     // should go to view
     public void displayHands() {
-        for (String p : m.getListOfPlayers()) {
-            String name = nameOf(p);
-            if (nameOf(p).equals(m.getCurrentPlayerName())) {
-                displayHand(playersHand.get(name));
-            } else {
-                displayBackOfHand(playersHand.get(name), handSizeOf(p));
-            }
-        }
+        // for (String p : m.getListOfPlayers()) {
+        //     String name = nameOf(p);
+        //     if (nameOf(p).equals(m.getCurrentPlayerName())) {
+        //         displayHand(playersHand.get(name));
+        //     } else {
+        //         displayBackOfHand(playersHand.get(name), handSizeOf(p));
+        //     }
+        // }
     }
 
     // move to view
     public void displayHand(Pane hand) {
         hand.getChildren().clear(); // Clear existing cards
-        for (String card : m.getCurrentPlayerHand()) {
-            ImageView cardView = cc.createCard(card); // Create an ImageView for each card
-            if (hand instanceof VBox) {
-                cardView.setRotate(90); // Rotate the card to align vertically
-                VBox.setMargin(cardView, new Insets(-30, 0, 0, 0));
-            }
-            cardView.setOnMouseClicked(event -> {
-                int cardIndex = hand.getChildren().indexOf(cardView);
-                playCard(cardIndex+1);
-                System.out.println("Clicked card at index: " + cardIndex);
-            });
-            hand.getChildren().add(cardView); // Add the card to the HBox
-        }
+        // for (String card : m.getCurrentPlayerHand()) {
+        //     ImageView cardView = cc.createCard(card); // Create an ImageView for each card
+        //     if (hand instanceof VBox) {
+        //         cardView.setRotate(90); // Rotate the card to align vertically
+        //         VBox.setMargin(cardView, new Insets(-30, 0, 0, 0));
+        //     }
+        //     cardView.setOnMouseClicked(event -> {
+        //         int cardIndex = hand.getChildren().indexOf(cardView);
+        //         playCard(cardIndex+1);
+        //         System.out.println("Clicked card at index: " + cardIndex);
+        //     });
+        //     hand.getChildren().add(cardView); // Add the card to the HBox
+        // }
     }
 
     // move to view
     private void hideHands() {
-        for (String p : m.getListOfPlayers()) {
-            displayBackOfHand(playersHand.get(nameOf(p)), handSizeOf(p));
-        }
+        // for (String p : m.getListOfPlayers()) {
+        //     displayBackOfHand(playersHand.get(nameOf(p)), handSizeOf(p));
+        // }
     }
 
     private void displayBackOfHand(Pane hand, int handSize) {
@@ -335,32 +334,32 @@ public class GameViewController implements GameListener, ModelListener {
 
 
  */
-    @Override
-    public void requestPlayers(int lower, int upper) {
-        m.addPlayer("Player 1");
-        m.addPlayer("Player 2");
-    }
+    // @Override
+    // public void requestPlayers(int lower, int upper) {
+    //     m.addPlayer("Player 1");
+    //     m.addPlayer("Player 2");
+    // }
 
-    @Override
+    // @Override
     public void takePlayerTurn() {
         updateHide();
     }
 
     // TODO: implement gui for these
 
-    @Override
+    // @Override
     public void badMove() {
         // TODO: implement gui
         System.out.println("cant play that card");
     }
 
-    @Override
+    // @Override
     public void announceMustPlayCard() {
         // TODO: implement gui
         System.out.println("must play card");
     }
 
-    @Override
+    // @Override
     public void requestWildColor() {
         // temporary termianl input
         // TODO: implement gui

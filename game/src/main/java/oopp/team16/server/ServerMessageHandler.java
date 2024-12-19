@@ -39,10 +39,6 @@ public class ServerMessageHandler {
                 // handlePlayerDisconnect(sender);
                 break;
 
-            case "playerConnected":
-                handePlayerConnection();
-                break;
-
             case "ping":
                 ping();
                 break;
@@ -92,9 +88,5 @@ public class ServerMessageHandler {
         gameServer.pong();
     }
     
-
-    private void handePlayerConnection() {
-        gameServer.provideClientId();
-    }
 
 }
