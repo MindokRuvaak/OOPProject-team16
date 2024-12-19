@@ -5,6 +5,10 @@ import java.util.Stack;
 
 import oopp.team16.model.gameLogic.Cards.Card;
 
+/**
+ * Represents a deck of cards in the game.
+ * The deck holds a stack.
+ */
 public class Deck {
     Stack<Card> cardStack;
     private Deck() {
