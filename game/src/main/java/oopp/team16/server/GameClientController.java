@@ -11,21 +11,24 @@ public class GameClientController {
 
     public GameClientController(GameViewController viewController) {
         this.messageHandler = new ClientMessageHandler(viewController);
+        viewController.addClientController(this);
     }
 
-    //kopplas till join-knappen
+    // kopplas till join-knappen
     public void connect(String serverAddress, int port) {
         try {
             gameClient = new GameClient(serverAddress, port);
             gameClient.startListening(messageHandler);
             logger.info("Connected to server and started listening for messages.");
+            // System.out.println(gameClient == null);
         } catch (RuntimeException e) {
             logger.severe("Failed to connect: " + e.getMessage());
             throw e;
         }
     }
 
-    //kopplas till shutdownknappen för client. denna behöver ha en gameclient i sig? eller kanske inte. idk.
+    // kopplas till shutdownknappen för client. denna behöver ha en gameclient i
+    // sig? eller kanske inte. idk.
     public void disconnect() {
         if (gameClient != null && gameClient.isConnected()) {
             gameClient.closeClientConnection();
@@ -33,7 +36,7 @@ public class GameClientController {
         }
     }
 
-    //TODO: FIXA SENDER!!!
+    // TODO: FIXA SENDER!!!
     public void playCard(int cardId, String color) {
         GameMessage playCardMessage = new GameMessage("playCard");
         playCardMessage.addData("cardNumber", cardId); // Example data
@@ -46,4 +49,14 @@ public class GameClientController {
         message.setSender(0);
         gameClient.sendMessage(message);
     }
+
+    public void pressedStart() {
+        gameClient.sendMessage(new GameMessage("start"));
+    }
+
+    public void ping() {
+        System.out.println(gameClient == null);
+        gameClient.sendMessage(new GameMessage("ping"));
+    }
+
 }

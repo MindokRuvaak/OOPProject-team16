@@ -24,6 +24,10 @@ public class GameServerApp {
                     manualShutdown = true;
                     break;
                 }
+                if ("ping".equalsIgnoreCase(scanner.nextLine().trim())) {
+                    System.out.println("pinging clients.");
+                    gameServer.ping();
+                }
             }
         } catch (Exception e) {
             logger.severe("Error running GameServer: " + e.getMessage());

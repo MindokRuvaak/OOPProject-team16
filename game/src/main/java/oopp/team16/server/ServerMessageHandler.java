@@ -32,51 +32,69 @@ public class ServerMessageHandler {
                 break;
 
             case "gameWin":
-                //handleGameWin(sender)?
+                // handleGameWin(sender)?
                 break;
 
             case "playerDisconnect":
-                //handlePlayerDisconnect(sender);
+                // handlePlayerDisconnect(sender);
                 break;
 
+            case "playerConnected":
+                handePlayerConnection();
+                break;
+
+            case "ping":
+                ping();
+                break;
             default:
                 logger.warning("Unknown message type: " + message.getType());
         }
     }
 
-    //får meddelande från start-game knappen
+    // får meddelande från start-game knappen
     private void handleGameStart() {
         gameServer.startGame();
     }
 
-    //får meddelande från drawcard knappen
+    // får meddelande från drawcard knappen
     private void handleDrawCard(GameMessage message) {
         int sender = message.getSender();
         gameServer.handleDrawCard(sender);
     }
 
-    //får meddelande från playcard-knapp, antagligen då när man trycker på ett kort.
+    // får meddelande från playcard-knapp, antagligen då när man trycker på ett
+    // kort.
     private void handlePlayCard(GameMessage message) {
         Object cardData = message.getData().get("cardPlayed");
         int sender = message.getSender();
 
-        if (cardData instanceof Number) { //Gson gör ibland int till double.
+        if (cardData instanceof Number) { // Gson gör ibland int till double.
             int cardNumber = ((Number) cardData).intValue();
             gameServer.handlePlayCard(sender, cardNumber);
         }
     }
 
-    //får meddelande från endturn knappen
+    // får meddelande från endturn knappen
     private void handleEndTurn(GameMessage message) {
         int sender = message.getSender();
         gameServer.handleEndTurn(sender);
     }
 
     private void handleGameWin(GameMessage message) {
-        //gameServer.handleGameWin();
+        // gameServer.handleGameWin();
     }
 
     private void handlePlayerDisconnect(GameMessage message) {
-        //gameServer.handlePlayerDisconnect();
+        // gameServer.handlePlayerDisconnect();
     }
+
+    private void ping() {
+        gameServer.pong();
+    }
+    
+
+    private void handePlayerConnection() {
+        gameServer.provideClientId();
+    }
+
 }

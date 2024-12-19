@@ -33,6 +33,8 @@ public class ConnectionManager {
                 Socket clientSocket = serverSocket.accept();
                 int id = generatePlayerId();
                 ClientManager clientManager = new ClientManager(clientSocket, this, gameServer, id);
+                clientManager.sendMessage(new GameMessage("id",id));
+                System.out.println("player connected with id: " + id);
                 clients.add(clientManager);
 
                 logger.info(String.format("Accepted connection from %s. Player %d connected. Total players: %d.",

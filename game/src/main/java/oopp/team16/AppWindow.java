@@ -13,7 +13,8 @@ public class AppWindow extends Application {
     public void start(Stage primaryStage) {
         StartView startView = new StartView(primaryStage);
         startView.show();
-
+        // GameView gameView = new GameView(primaryStage, 3);
+        // gameView.show();
     }
 
     public static void main(String[] args) {
