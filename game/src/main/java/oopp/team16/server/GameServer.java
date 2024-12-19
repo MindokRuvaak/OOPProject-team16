@@ -1,12 +1,13 @@
 package oopp.team16.server;
 
 import oopp.team16.model.Model;
+import oopp.team16.model.ModelListener;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.logging.Logger;
 
-public class GameServer {
+public class GameServer implements ModelListener{
     private static final Logger logger = Logger.getLogger(GameServer.class.getName());
 
     private final int port;
@@ -30,6 +31,7 @@ public class GameServer {
 
             serverSocket = new ServerSocket(port);
             model = new Model();
+            this.model.addListener(this);
             messageHandler = new ServerMessageHandler(this);
             connectionManager = new ConnectionManager(serverSocket, maxPlayers, this);
 
@@ -56,12 +58,49 @@ public class GameServer {
         }
     }
 
+    @Override
+    public void requestPlayers() {
+        // Broadcast a request for players to join
+        GameMessage requestPlayersMessage = new GameMessage("requestPlayers");
+        broadcastMessage(requestPlayersMessage);
+    }
+
+    @Override
+    public void takeTurn() {
+        // Notify all clients to update their game state
+        broadcastGameState();
+    }
+
+    @Override
+    public void announceBadMove() {
+        // Notify the current player of a bad move
+        GameMessage badMoveMessage = new GameMessage("badMove");
+        broadcastMessage(badMoveMessage);
+    }
+
+    @Override
+    public void announceWinner(String name) {
+        // Notify all clients of the game winner
+        GameMessage winnerMessage = new GameMessage("gameOver");
+        winnerMessage.addData("winner", name);
+        broadcastMessage(winnerMessage);
+    }
+
+    @Override
+    public void startNextPlayerTurn() {
+        // Notify all clients of the next player's turn
+        broadcastGameState();
+    }
+
+    @Override
+    public void announceMustPlayCard() {
+        // Notify the current player that they must play a card
+        GameMessage mustPlayCardMessage = new GameMessage("mustPlayCard");
+        broadcastMessage(mustPlayCardMessage);
+    }
+
     public synchronized void startGame() {
         logger.info("Starting the game...");
-        if (model.getPlayers().isEmpty()) {
-            logger.warning("Cannot start the game: No players connected.");
-            return;
-        }
         model.initGame();
         model.startGame();
         broadcastGameState();
@@ -86,11 +125,15 @@ public class GameServer {
         broadcastMessage(gameStateMessage);
     }
 
-    public synchronized void handlePlayerMove(String sender, int cardPlayed) {
-        //playcard måste kolla att rätt sender kan dra kort
-        model.playCard(cardPlayed);
+    public synchronized void handlePlayerMove(String playerName, int cardNumber) {
+        if (!model.getCurrentPlayerID().equals(playerName)) {
+            logger.warning("Invalid move attempt by non-current player: " + playerName);
+            return;
+        }
+        model.playCard(cardNumber);
         broadcastGameState();
     }
+
 
     public synchronized void handleEndTurn(String sender) {
         model.endTurn();

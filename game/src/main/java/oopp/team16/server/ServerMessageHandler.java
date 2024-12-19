@@ -46,27 +46,29 @@ public class ServerMessageHandler {
     }
 
     //detta ska skickas från playcard-knapp, antagligen då när man trycker på ett kort.
-    //TODO: Special cards är inte numeric
     private void handlePlayerMove(GameMessage message) {
+        Object cardData = message.getData().get("cardPlayed");
+        Object cardColor = message.getData().get("color");
+        String playerName = message.getSender();
 
-        Object cardPlayedObj = message.getData().get("cardPlayed");
-        String sender = message.getSender();
+        if (cardData instanceof Number) { //Gson gör ibland saker till double?
+            int cardNumber = ((Number) cardData).intValue();
+            String cardColorString = (String) cardColor;
+            //gameServer.handlePlayerMove(playerName, cardNumber, cardColorString); uppdatera så att playermove tar number och string?
 
-        if (cardPlayedObj instanceof Number) { //Gson gör ibland saker till double?
-            int cardPlayed = ((Number) cardPlayedObj).intValue();
-            gameServer.handlePlayerMove(sender, cardPlayed);
-        } else if (cardPlayedObj instanceof String) {
-            String specialCard = (String) cardPlayedObj;
-            //gameServer.handleSpecialCard(specialCard); // Add this method to GameServer
+        } else if (cardData instanceof String) {
+            String wildCardType = (String) cardData;
+            String wildCardColor = cardColor instanceof String ? (String) cardColor : "black"; //svart default
+            //gameServer.handleSpecialCard(playerName, wildCardType, wildCardColor);
+
         } else {
-            logger.warning("Invalid 'cardPlayed' data type in message: " + cardPlayedObj);
+            logger.warning("Invalid 'cardPlayed' data type in message: " + cardData);
         }
     }
 
     //detta ska skickas från drawcard knappen
     private void handleDrawCard(GameMessage message) {
         String sender = message.getSender();
-        //map på card details
         gameServer.handleDrawCard(sender);
     }
 
