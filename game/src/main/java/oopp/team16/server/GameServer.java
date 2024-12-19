@@ -58,7 +58,7 @@ public class GameServer {
 
     public synchronized void startGame() {
         logger.info("Starting the game...");
-        if (model.getPlayers().isEmpty()) {
+        if (model.getListOfPlayers().length == 0) {
             logger.warning("Cannot start the game: No players connected.");
             return;
         }
