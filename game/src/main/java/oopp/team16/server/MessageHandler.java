@@ -18,18 +18,17 @@ public abstract class MessageHandler {
     }
 
     public void listenForMessages() {
-        new Thread(() -> {
-            String jsonMessage;
-            try {
-                while ((jsonMessage = in.readLine()) != null) {
-                    GameMessage message = gson.fromJson(jsonMessage, GameMessage.class);
-                    onMessageReceived(message);
-                }
-            } catch (IOException e) {
-                logger.info("Client disconnected: " + e.getMessage());
+        String jsonMessage;
+        try {
+            while ((jsonMessage = in.readLine()) != null) { // Continuously read messages
+                GameMessage message = gson.fromJson(jsonMessage, GameMessage.class);
+                onMessageReceived(message); // Process each received message
             }
-        }).start();
+        } catch (IOException e) {
+            logger.info("Client disconnected: " + e.getMessage());
+        }
     }
+
 
     protected void initializeStreams(InputStream inputStream, OutputStream outputStream) throws IOException {
         this.out = new PrintWriter(outputStream, true);

@@ -77,9 +77,9 @@ public class ViewTerminal implements oopp.team16.view.View {
     }
 
     // @Override
-    public void announceWinner(String name) {
+    public void announceWinner(int name) {
         clearTerminal();
-        System.out.println("The winner is " + name + "!!");
+        System.out.println("The winner is player" + name + "!!");
     }
 
     // @Override

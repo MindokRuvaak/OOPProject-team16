@@ -1,37 +1,37 @@
 package oopp.team16.server;
 
-import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class GameClientApp {
     private static final Logger logger = Logger.getLogger(GameClientApp.class.getName());
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        final String serverAddress = "127.0.0.1"; // Default to localhost
+        final int serverPort = 1234; // Default port
+        int numberOfClients = 4;
 
-        // Prompt for server address and port
-        System.out.print("Enter server address (default: 127.0.0.1): ");
-        String serverAddress = scanner.nextLine().trim();
-        if (serverAddress.isEmpty()) {
-            serverAddress = "127.0.0.1"; // Default to localhost
-        }
+        ExecutorService executor = Executors.newFixedThreadPool(numberOfClients);
 
-        System.out.print("Enter server port (default: 1234): ");
-        String portInput = scanner.nextLine().trim();
-        int serverPort = portInput.isEmpty() ? 1234 : Integer.parseInt(portInput);
-
-        // Create and connect the GameClient
-        GameClient gameClient = new GameClient(serverAddress, serverPort);
         try {
-            System.out.println("Press Enter to disconnect...");
-            scanner.nextLine(); // Wait for user input to disconnect
-
-        } catch (RuntimeException e) {
-            logger.severe("Failed to connect to server: " + e.getMessage());
+            for (int i = 0; i < numberOfClients; i++) {
+                final int clientId = i + 1;
+                executor.submit(() -> {
+                    GameClient gameClient = new GameClient(serverAddress, serverPort);
+                    try {
+                        logger.info(String.format("Client %d connected to server.", clientId));
+                        Thread.sleep(5000); // Simulate some activity
+                    } catch (Exception e) {
+                        logger.severe(String.format("Client %d encountered an error: %s", clientId, e.getMessage()));
+                    } finally {
+                        gameClient.closeClientConnection();
+                        logger.info(String.format("Client %d disconnected.", clientId));
+                    }
+                });
+            }
         } finally {
-            gameClient.closeClientConnection();
-            logger.info("Disconnected from server.");
-            scanner.close();
+            executor.shutdown();
         }
     }
 }

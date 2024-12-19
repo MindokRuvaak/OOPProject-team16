@@ -6,7 +6,7 @@ public interface GameListener {
 
     void badMove();
 
-    void announceWinner(String name, int score);
+    void announceWinner(int id, int score);
 
     void startPlayerTurn();
 

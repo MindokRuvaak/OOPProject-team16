@@ -103,7 +103,7 @@ public class ControllerTerminal implements ModelListener, GameListener {
     @Override
     public void takePlayerTurn() {
         v.takePlayerTurn();
-        String ans = input.nextLine(); 
+        String ans = input.nextLine();
         int handsize = m.getCurrentPlayerHand().length;
         handleInput(ans, handsize);
     }
@@ -115,8 +115,8 @@ public class ControllerTerminal implements ModelListener, GameListener {
     }
 
     @Override
-    public void announceWinner(String name, int score) {
-        v.announceWinner(name);
+    public void announceWinner(int id, int score) {
+        v.announceWinner(id);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class ControllerTerminal implements ModelListener, GameListener {
     @Override
     public void requestWildColor() {
         v.requestWildColor();
-        String ans = input.nextLine(); 
+        String ans = input.nextLine();
         m.setWildColor(ans);
     }
 

@@ -101,7 +101,8 @@ public class Player {
     public int getScore() {
         return this.score;
     }
-    public int getid() {
+
+    public int getId() {
         return this.id;
     }
 

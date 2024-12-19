@@ -96,7 +96,7 @@ public class Game implements SpecialCardLogic {
         boolean haveWinner = false;
         if (!currentPlayer.hasCards()) {
             setWinnerScore();
-            announceWinner(currentPlayer.getName(), currentPlayer.getScore());
+            announceWinner(currentPlayer.getId(), currentPlayer.getScore());
             haveWinner = true;
         }
         return haveWinner;
@@ -126,9 +126,9 @@ public class Game implements SpecialCardLogic {
         this.currentPlayer.endTurn();
     }
 
-    private void announceWinner(String name, int score) {
+    private void announceWinner(int id, int score) {
         for (GameListener listener : listeners) {
-            listener.announceWinner(name, score);
+            listener.announceWinner(id, score);
         }
     }
 
@@ -191,7 +191,6 @@ public class Game implements SpecialCardLogic {
         if (card instanceof SpecialCard) {
             SpecialCard SC = (SpecialCard) card;
             SC.getAction().executeAction(this);
-
         }
     }
 

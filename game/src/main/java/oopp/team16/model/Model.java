@@ -5,7 +5,6 @@ import java.util.*;
 import oopp.team16.model.gameLogic.CreateStdDeck;
 import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
-import oopp.team16.model.gameLogic.Cards.Colors.Color;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
 // TODO: model does not need to be GameListener, make relevant view and controllers GL instead
@@ -55,8 +54,6 @@ public class Model /* implements GameListener */ { // maybe change name ?ModelGa
     }
 
     public void playCard(int cardNumber) {
-        // change from card number displayed to player to corresponding card index in
-        // hand array
         game.tryPlay(cardNumber - 1);
     }
 
@@ -73,7 +70,7 @@ public class Model /* implements GameListener */ { // maybe change name ?ModelGa
     }
 
     public int getCurrentPlayerID() {
-        return game.getCurrentPlayer().getid();
+        return game.getCurrentPlayer().getId();
     }
 
     public String getTopPlayedCard() {

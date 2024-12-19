@@ -37,12 +37,13 @@ public class ClientMessageHandler {
 
     //TODO: vad ska uppdateras?
     private void handleGameState(GameMessage message) {
-        //viewController.updateGameState();
+        viewController.updateDisplay();
     }
 
     private void handleGameOver(GameMessage message) {
-        String winner = (String) message.getData().get("winner");
-        //viewController.showWinner(winner);
+        int winner = message.getSender();
+        //score används inte i announcewinner även fast den tar in en score-parameter.
+        viewController.announceWinner(winner, 0);
     }
 
     private void handlePlayerDisconnected(GameMessage message) {
