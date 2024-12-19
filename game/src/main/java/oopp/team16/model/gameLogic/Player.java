@@ -5,6 +5,10 @@ import oopp.team16.model.gameLogic.Cards.Card;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a player in the game.
+ * Keeps track of the player's hand, score and turn status.
+ */
 public class Player {
     private List<Card> hand;
     private int score;  // hur räknar vi score
@@ -105,7 +109,7 @@ public class Player {
         return this.id;
     }
 
-    // returns string containing the name of player and numer of cards in their hand
+    // returns string containing the name of player and number of cards in their hand
     // seperated by a '':''
     @Override
     public String toString() {
