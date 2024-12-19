@@ -22,7 +22,7 @@ public class Model { // maybe change name ?ModelGameSetup?
 
     public void initGame() {
         // this will change?, when possible to create loby with set amount of players
-        getPlayers(2, 5);
+        getPlayers(2, 6);
         game.init(players);
     }
 

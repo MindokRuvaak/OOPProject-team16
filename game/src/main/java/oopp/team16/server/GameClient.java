@@ -58,4 +58,5 @@ public class GameClient extends MessageHandler {
             logger.warning("MessageHandler is not initialized; message ignored.");
         }
     }
+
 }

@@ -25,8 +25,7 @@ public class GameServer implements ModelListener{
 
     public synchronized void startup() {
         try {
-
-            model = new Model();
+            this.model = new Model();
             this.model.addListener(this);
 
             serverSocket = new ServerSocket(port);
@@ -118,6 +117,9 @@ public class GameServer implements ModelListener{
     //TODO: DESSA?
     @Override
     public void requestPlayers(int lower, int upper) {
+        for (ClientManager client : connectionManager.getClients()) {
+            model.addPlayer(""+client.getClientId());
+        }
     }
 
     @Override
@@ -127,4 +129,14 @@ public class GameServer implements ModelListener{
     @Override
     public void requestWildColor() {
     }
+
+
+    public void ping(){
+        broadcastMessage(new GameMessage("ping"));
+    }
+
+    public void pong() {
+        System.out.println("pong");
+    }
+
 }

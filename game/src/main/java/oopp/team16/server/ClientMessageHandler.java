@@ -30,23 +30,38 @@ public class ClientMessageHandler {
                 handlePlayerDisconnected(message);
                 break;
 
+            case "id":
+                setPlayerId(message.getSender());
+            case "ping":
+                pong();
+                break;
+
             default:
                 logger.warning("Unknown message type received: " + message.getType());
         }
     }
 
-    //TODO: vad ska uppdateras?
+    // TODO: vad ska uppdateras?
     private void handleGameState(GameMessage message) {
         viewController.updateDisplay();
     }
 
     private void handleGameOver(GameMessage message) {
         int winner = message.getSender();
-        //score används inte i announcewinner även fast den tar in en score-parameter.
+        // score används inte i announcewinner även fast den tar in en score-parameter.
         viewController.announceWinner(winner, 0);
     }
 
     private void handlePlayerDisconnected(GameMessage message) {
-        //viewController.disconnectPlayer?
+        // viewController.disconnectPlayer?
+    }
+
+    private void pong() {
+        System.out.println("pong");
+        viewController.ping();
+    }
+    
+    private void setPlayerId(int id) {
+        viewController.setPlayerId(id);
     }
 }

@@ -68,13 +68,15 @@ public class GameViewController implements GameListener, ModelListener {
 
     private final Map<String, Pane> playersHand = new HashMap<>();
     private final List<Pane> paneList = new ArrayList<>();
+    private int playerId;
+    private String currentPlayer;
     CreateCardView cc;
 
     private GameClientController clientController; // WE DO A LITTLE BIT OF TESTING
 
     public void initialize() {
-        m.addListener(this);
-        m.initGame();
+        // m.addListener(this);
+        // m.initGame();
         winningPane.setVisible(false);
         buttonDisplayHand.setVisible(false);
         rulesPane.setVisible(false);
@@ -85,11 +87,11 @@ public class GameViewController implements GameListener, ModelListener {
         paneList.add(player3Hand);
         paneList.add(player4Hand);
 
-        buttonStart.setOnAction(event -> {
+        buttonStart.setOnAction(event -> {//this button will be redundant?
             buttonStart.setVisible(false);
             setPlayers();
             buttonDisplayHand.setVisible(true);
-            m.start();
+            // m.start();
             updateHide();
         });
         buttonDisplayHand.setOnAction(event -> {
@@ -116,6 +118,8 @@ public class GameViewController implements GameListener, ModelListener {
         });
 
     }
+
+
      public void setPlayers(){
         int n = 0;
          for (int i = 0; i < m.getListOfPlayers().length; i++) {
@@ -124,6 +128,7 @@ public class GameViewController implements GameListener, ModelListener {
                  n++;
          }
      }
+     
     // player data contains name/id and number of cards in hand as name:num,
     // this returns array in same order, but only with player names
     private String[] namesOf(String[] players) {
@@ -359,12 +364,19 @@ public class GameViewController implements GameListener, ModelListener {
     public void requestWildColor() {
         // temporary termianl input
         // TODO: implement gui
+    }
 
-        java.util.Scanner input = new java.util.Scanner(System.in);
-        System.out.print("What color do you declare the wild?\n> ");
-        String ans = input.nextLine();
-        m.setWildColor(ans);
-        input.close();
+    public void addClientController(GameClientController gcc) {
+        this.clientController = gcc;
+    }
+
+    public void ping() {
+        clientController.ping();
+    }
+
+    public void setPlayerId(int id) {
+        playerId = id;
+        System.out.println("Setting id to: " + playerId);
     }
 
 }

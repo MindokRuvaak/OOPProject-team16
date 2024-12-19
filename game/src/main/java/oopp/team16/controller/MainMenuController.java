@@ -59,11 +59,15 @@ public class MainMenuController {
     // Going to GameView
     @FXML
     public void start(ActionEvent event) throws IOException {
-        playerCount = 3;
+        // playerCount = 3;//TODO: recieve from server
+        
+        // signal server that player pressed start
+        // recieve signal from server: bool true if all connected players pressed start
         if(2 <= playerCount && playerCount <=4) {
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             GameView gameView = new GameView(primaryStage, playerCount);
+
             gameView.show();
         }
       //  else
@@ -93,6 +97,7 @@ public class MainMenuController {
             gameClientController.connect(serverAddress, port);
             System.out.println("Connected to " + serverAddress + ":" + port);
             connected = true;
+            // gameViewController.ping();
             connectionStatusLabel.setText("Connected to " + serverAddress + ":" + port);
         } catch (NumberFormatException e) {
             connectionStatusLabel.setText("Port must be a valid number.");
@@ -113,6 +118,7 @@ public class MainMenuController {
             pause.play();
         }
         // playerCount++;
+        // gameViewController.ping();
     }
 
     @FXML
