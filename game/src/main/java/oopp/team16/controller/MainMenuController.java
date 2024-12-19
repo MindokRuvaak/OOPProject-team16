@@ -59,7 +59,7 @@ public class MainMenuController {
     // Going to GameView
     @FXML
     public void start(ActionEvent event) throws IOException {
-        playerCount = 4;
+        playerCount = 3;
         if(2 <= playerCount && playerCount <=4) {
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -112,11 +112,12 @@ public class MainMenuController {
             // Start the pause
             pause.play();
         }
-        playerCount++;
+        // playerCount++;
     }
 
     @FXML
     public void initialize() {
+        // playerCount = 0;
     }
     @FXML
     private void handleExitButtonClick(){}

@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" prefHeight="720" prefWidth="1080" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController2">
+
+<AnchorPane fx:id="mainPane" prefHeight="720" prefWidth="1080" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="oopp.team16.controller.GameViewController2">
   <children>
       <AnchorPane fx:id="rulesPane" layoutX="377.0" layoutY="25.0" opacity="0.02" prefHeight="566.0" prefWidth="334.0">
          <children>
@@ -38,7 +39,7 @@
     </Label>
     <ImageView fx:id="imageViewWishColor" fitHeight="40.0" fitWidth="40.0" layoutX="372.0" layoutY="278.0" pickOnBounds="true" preserveRatio="true" />
     <HBox fx:id="hboxInfo" alignment="CENTER" layoutX="217.0" layoutY="421.0" prefHeight="25.0" prefWidth="338.0" />
-    <Button fx:id="buttonStart" layoutX="370.0" layoutY="117.0" mnemonicParsing="false" onAction="#initialize" text="START">
+    <Button fx:id="buttonStart" layoutX="493.0" layoutY="119.0" mnemonicParsing="false" onAction="#initialize" text="START">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>

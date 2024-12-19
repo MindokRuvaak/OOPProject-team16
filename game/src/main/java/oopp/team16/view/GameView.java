@@ -18,6 +18,9 @@ public class GameView {
     public GameView(Stage primaryStage, int playerCount) {
         this.primaryStage = primaryStage;
         this.playerCount = playerCount;
+        System.out.println(getClass().getResource("/MainGUI.fxml"));
+        System.out.println(getClass().getResource("/MainGUI3.fxml"));
+        System.out.println(getClass().getResource("/MainGUI4.fxml"));
         initializeUI();
     }
 

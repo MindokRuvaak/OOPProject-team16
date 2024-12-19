@@ -18,7 +18,7 @@ public class AppTerminal {
 
         m.addGameListener(c);
         m.addListener(c);
-
+        
         m.initGame();
         m.startGame();
     }

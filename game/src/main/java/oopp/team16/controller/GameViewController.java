@@ -274,7 +274,6 @@ public class GameViewController implements GameListener, ModelListener {
                 VBox.setMargin(cardView, new Insets(-30, 0, 0, 0));
             }
             cardView.setOnMouseClicked(event -> {
-
                 int cardIndex = hand.getChildren().indexOf(cardView);
                 playCard(cardIndex+1);
                 System.out.println("Clicked card at index: " + cardIndex);
