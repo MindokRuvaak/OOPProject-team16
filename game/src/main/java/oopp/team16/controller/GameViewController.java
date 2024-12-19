@@ -63,6 +63,8 @@ public class GameViewController implements GameListener, ModelListener{
     private Button x;
     @FXML
     private TextArea rulesText;
+    @FXML
+    private Label labelUno;
 
     private final Map<String, Pane> playersHand = new HashMap<>();
     private final List<Pane> paneList = new ArrayList<>();
@@ -106,6 +108,9 @@ public class GameViewController implements GameListener, ModelListener{
         rules.setOnAction(event -> {
             openRulesView();
         });
+        buttonUno.setOnAction(event -> {
+            uno();
+        });
 
     }
      public void setPlayers(){
@@ -135,6 +140,7 @@ public class GameViewController implements GameListener, ModelListener{
     }
 
     public void uno() {
+        labelUno.setText(m.getCurrentPlayerName() + "has UNO!");
         System.out.println(m.getCurrentPlayerName() + " has decclared UNO!");
     }
 

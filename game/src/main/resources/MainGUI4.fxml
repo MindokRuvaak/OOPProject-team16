@@ -79,5 +79,6 @@
             <Button layoutX="177.0" layoutY="552.0" mnemonicParsing="false" onAction="#closeRulesView" text="X" fx:id="x" />
          </children>
       </AnchorPane>
+      <Label fx:id="labelUno" layoutX="769.0" layoutY="200.0" textFill="#06ee4b" />
   </children>
 </AnchorPane>
