@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="616.0" prefWidth="1080" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController4">
+<AnchorPane prefHeight="720.0" prefWidth="1080" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController4">
   <children>
     <ImageView fitHeight="720" fitWidth="1080" pickOnBounds="true" preserveRatio="true">
       <image>
@@ -75,7 +75,7 @@
       <Label layoutX="90.0" layoutY="215.0" text="Player 3" />
       <Label layoutX="927.0" layoutY="178.0" text="Player 4" />
       <Button fx:id="rules" layoutX="1022.0" mnemonicParsing="false" onAction="#openRulesView" prefHeight="26.0" prefWidth="58.0" text="Rules" />
-      <AnchorPane fx:id="rulesPane" layoutX="360.0" layoutY="20.0" opacity="0.0" prefHeight="592.0" prefWidth="380.0">
+      <AnchorPane fx:id="rulesPane" layoutX="360.0" layoutY="20.0" prefHeight="592.0" prefWidth="380.0">
          <children>
             <TextArea fx:id="rulesText" editable="false" layoutX="-8.0" prefHeight="588.0" prefWidth="388.0" wrapText="true" />
             <Button layoutX="177.0" layoutY="552.0" mnemonicParsing="false" onAction="#closeRulesView" text="X" fx:id="x" />

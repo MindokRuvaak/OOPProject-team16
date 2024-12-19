@@ -10,21 +10,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="1080" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController3">
+<AnchorPane prefHeight="720.0" prefWidth="1080" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.GameViewController3">
   <children>
     <ImageView fitHeight="720" fitWidth="1080" pickOnBounds="true" preserveRatio="true">
       <image>
         <Image url="@ui/resources/GameViewBackground.png" />
       </image>
     </ImageView>
-    <Button fx:id="buttonPlayDeck" layoutX="617.0" layoutY="351.0" mnemonicParsing="false" onAction="#drawCard" prefHeight="60.0" prefWidth="32.0">
-         <graphic>
-        <ImageView fitHeight="60.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-          <image>
-            <Image url="@ui/resources/unocards/Uno.png" />
-          </image>
-        </ImageView>
-         </graphic></Button>
+    <Button fx:id="buttonPlayDeck" layoutX="617.0" layoutY="351.0" mnemonicParsing="false" onAction="#drawCard" prefHeight="60.0" prefWidth="32.0" />
     <Label fx:id="labelCurrentPlayer" alignment="CENTER" contentDisplay="CENTER" layoutX="250.0" layoutY="420.0" prefHeight="31.0" prefWidth="286.0" textAlignment="CENTER">
       <font>
         <Font name="System Bold" size="19.0" />
@@ -56,11 +49,16 @@
         <Image url="@ui/resources/avatars/avatar1.png" />
       </image>
     </ImageView>
-    <HBox fx:id="player1Hand" layoutX="80.0" layoutY="550.0" prefHeight="60.0" prefWidth="1000.0" />
+    <HBox fx:id="player1Hand" layoutX="40.0" layoutY="550.0" prefHeight="60.0" prefWidth="1000.0" />
     <Label fx:id="labelTurn" layoutX="521.0" layoutY="302.0" text="Label" />
     <Label layoutX="168.0" layoutY="522.0" text="Player 1" />
     <Label layoutX="215.0" layoutY="148.0" text="Player 2" />
       <VBox fx:id="player3Hand" layoutY="40.0" prefHeight="550.0" prefWidth="60.0" />
+  <ImageView fitHeight="60.0" fitWidth="32.0" layoutX="652.0" layoutY="354.0" pickOnBounds="true" preserveRatio="true">
+    <image>
+      <Image url="@ui/resources/unocards/Uno.png" />
+    </image>
+  </ImageView>
     <Button fx:id="buttonDisplayHand" layoutX="477.0" layoutY="182.0" mnemonicParsing="false" onAction="#initialize" text="displayHand" />
       <ImageView fitHeight="81.0" fitWidth="74.0" layoutX="77.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -69,7 +67,7 @@
       </ImageView>
       <Label layoutX="90.0" layoutY="215.0" text="Player 3" />
       <Button fx:id="rules" layoutX="1022.0" mnemonicParsing="false" onAction="#openRulesView" text="Rules" />
-      <AnchorPane fx:id="rulesPane" layoutX="360.0" layoutY="10.0" opacity="0.01" prefHeight="603.0" prefWidth="388.0">
+      <AnchorPane fx:id="rulesPane" layoutX="360.0" layoutY="10.0" prefHeight="603.0" prefWidth="388.0">
          <children>
             <TextArea fx:id="rulesText" prefHeight="592.0" prefWidth="380.0" wrapText="true" />
             <Button layoutX="177.0" layoutY="552.0" mnemonicParsing="false" onAction="#closeRulesView" text="X" fx:id="x" />

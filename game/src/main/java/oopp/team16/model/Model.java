@@ -60,13 +60,6 @@ public class Model { // maybe change name ?ModelGameSetup?
         game.currentPlayerDrawCard();
     }
 
-    @Override
-    public void announceWinner(String name, int score) {
-        for (ModelListener listener : listeners) {
-            listener.announceWinner(name, score);
-        }
-    }
-
     public void endTurn() {
         game.endCurrentPlayerTurn();
     }
