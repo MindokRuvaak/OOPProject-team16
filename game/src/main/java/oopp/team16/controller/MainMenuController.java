@@ -22,10 +22,7 @@ import java.io.IOException;
 
 public class MainMenuController {
 
-    @FXML
-    private Label errorS;
-    @FXML
-    private Label errorS1;
+
     @FXML
     private Button uno;
     @FXML
