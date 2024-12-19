@@ -5,7 +5,6 @@ import java.util.Scanner;
 import oopp.team16.model.GameListener;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
-import oopp.team16.view.View;
 import oopp.team16.view.ViewTerminal;
 
 public class ControllerTerminal implements ModelListener, GameListener {
@@ -115,7 +114,7 @@ public class ControllerTerminal implements ModelListener, GameListener {
     }
 
     @Override
-    public void announceWinner(String name) {
+    public void announceWinner(String name, int score) {
         v.announceWinner(name);
     }
 
@@ -131,4 +130,12 @@ public class ControllerTerminal implements ModelListener, GameListener {
         v.announceMustPlayCard();
         waitForUserConfirmation();
     }
+
+    @Override
+    public void requestWildColor() {
+        v.requestWildColor();
+        String ans = input.nextLine(); 
+        m.setWildColor(ans);
+    }
+
 }

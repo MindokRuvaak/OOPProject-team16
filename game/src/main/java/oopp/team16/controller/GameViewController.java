@@ -15,11 +15,12 @@ import javafx.scene.layout.VBox;
 import oopp.team16.model.GameListener;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
+import oopp.team16.server.GameClientController;
 import oopp.team16.view.CreateCardView;
 
 import java.util.*;
 
-public class GameViewController implements GameListener, ModelListener{
+public class GameViewController implements GameListener, ModelListener {
 
     Model m = new Model();
 
@@ -42,7 +43,6 @@ public class GameViewController implements GameListener, ModelListener{
 
     @FXML
     private Button buttonDisplayHand;
-    // TODO: remove this button? maybe
     @FXML
     private ImageView imageStartingCard;
     @FXML
@@ -70,6 +70,8 @@ public class GameViewController implements GameListener, ModelListener{
     private final List<Pane> paneList = new ArrayList<>();
     CreateCardView cc;
 
+    private GameClientController clientController; // WE DO A LITTLE BIT OF TESTING
+
     public void initialize() {
         m.addListener(this);
         m.initGame();
@@ -88,6 +90,7 @@ public class GameViewController implements GameListener, ModelListener{
             setPlayers();
             buttonDisplayHand.setVisible(true);
             m.start();
+            updateHide();
         });
         buttonDisplayHand.setOnAction(event -> {
             updateDisplay();
@@ -188,7 +191,7 @@ public class GameViewController implements GameListener, ModelListener{
 
     // TODO: move to view
     @Override
-    public void announceWinner(String name) {
+    public void announceWinner(String name, int score) {
         winningPane.setVisible(true);
         winningPane.toFront();
         winningPane.setOpacity(1.0);
@@ -213,10 +216,11 @@ public class GameViewController implements GameListener, ModelListener{
     public void endTurn() {
         if (m.canEndTurn()) {
             m.endTurn();
-            if (!m.haveWinner())
-            m.nextPlayerTurn();
-            updateHide();
-            buttonDisplayHand.setVisible(true);
+            if (!m.haveWinner()) {
+                m.nextPlayerTurn();
+                updateHide();
+                buttonDisplayHand.setVisible(true);
+            }
         }
     }
 
@@ -306,7 +310,6 @@ public class GameViewController implements GameListener, ModelListener{
     public ImageView createCard(String card) {
 
         String[] seperateCardStrings = card.split("\\s");
-
         String imagePath = "/ui/resources/unocards/" + seperateCardStrings[0] + "_" + seperateCardStrings[1] + ".png";
         return getCardImage(imagePath);
     }
@@ -339,17 +342,30 @@ public class GameViewController implements GameListener, ModelListener{
         updateHide();
     }
 
-    // TODO: implement observer pattern methods
+    // TODO: implement gui for these
 
     @Override
     public void badMove() {
-        // TODO: implement
+        // TODO: implement gui
         System.out.println("cant play that card");
     }
 
     @Override
     public void announceMustPlayCard() {
-        // TODO: implement
+        // TODO: implement gui
         System.out.println("must play card");
     }
+
+    @Override
+    public void requestWildColor() {
+        // temporary termianl input
+        // TODO: implement gui
+
+        java.util.Scanner input = new java.util.Scanner(System.in);
+        System.out.print("What color do you declare the wild?\n> ");
+        String ans = input.nextLine();
+        m.setWildColor(ans);
+        input.close();
+    }
+
 }

@@ -4,6 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import oopp.team16.controller.GameViewController;
+import oopp.team16.server.GameClient;
 
 import java.io.IOException;
 
@@ -42,6 +44,7 @@ public class GameView {
             System.err.println("Failed to load GameView.fxml for " + playerCount + " players");
         }
     }
+
 
     public void show() {
         primaryStage.show();

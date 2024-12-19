@@ -1,13 +1,12 @@
 package oopp.team16.model.gameLogic.Cards.Colors;
 public class StdColors implements Color {
     private final String colorName;
-    private static Color GREEN = new StdColors("green");
-    private static Color BLUE = new StdColors("blue");
-    private static Color RED = new StdColors("red");
-    private static Color YELLOW = new StdColors("yellow");
+    private static StdColors GREEN = new StdColors("green");
+    private static StdColors BLUE = new StdColors("blue");
+    private static StdColors RED = new StdColors("red");
+    private static StdColors YELLOW = new StdColors("yellow");
+    private static StdColors WILD = new StdColors("wild"); //for wildCards
 
-    //make a nocolor color? or black
-    // maybe ''wild'' as a colour?
 
     private StdColors(String colorName){
         this.colorName = colorName;
@@ -27,6 +26,10 @@ public class StdColors implements Color {
 
     public static Color yellow() {
         return YELLOW;
+    }
+
+    public static StdColors wild(){
+        return WILD;
     }
 
     @Override

@@ -2,67 +2,60 @@ package oopp.team16.model;
 
 import java.util.*;
 
-import javafx.application.Platform;
 import oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.model.gameLogic.Cards.SpecialCard;
+import oopp.team16.model.gameLogic.Cards.Colors.Color;
 import oopp.team16.model.gameLogic.Deck;
-import oopp.team16.model.gameLogic.GameLogic;
 import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
-class Game {
+public class Game implements SpecialCardLogic {
 
     private final ArrayList<GameListener> listeners;
-    private final LinkedList<Player> players;
-    private Iterator<Player> turnOrder;
-    private Player currentPlayer;
-    private final Deck deck;
-    private final Stack<Card> playedCards;
     private final int startingHandSize;
-    // private GameLogic gamelogic; // can be final? Unnecessary?
-    // alot of overlap between GameLogic and GameRules
+    private int toSkip;
+    private final DeckHandler dh;
+    private final PlayerHandler ph;
 
     Game(Deck deck, int startingHandSize) {
         this.listeners = new ArrayList<>();
-        this.players = new LinkedList<>();
         this.startingHandSize = startingHandSize;
-        this.deck = deck;
-        this.deck.shuffle();
-        playedCards = new Stack<>();
+        this.toSkip = 0;
+        this.dh = new DeckHandler(deck);
+        this.ph = new PlayerHandler();
     }
 
     void init(Collection<Player> players) {
-        this.players.addAll(players);
-        this.turnOrder = players.iterator();
-        setUpGame();
+        ph.init(players);
+        dh.init(ph.getPlayers(), startingHandSize);
     }
 
-    void startGame() {// TODO: rename to startGameLoop
+    void startGameLoop() {
         gameLoop();
     }
 
     void start() {
-        if (currentPlayer == null) {
+        if (ph.getCurrentPlayer() == null) {
             nextTurn();
             startTurn();
-            reUpDeck();
             takeTurn();
         }
     }
 
     LinkedList<Player> getPlayers() {
-        return players;
+        return ph.getPlayers();
     }
 
     Player getCurrentPlayer() {
-        return this.currentPlayer;
+        return ph.getCurrentPlayer();
     }
 
     Card getTopPlayedCard() {
-        return playedCards.peek();
+        return dh.topCard();
     }
 
     Card[] getPlayerHand() {
-        return this.currentPlayer.getHand();
+        return ph.currentPlayerHand();
     }
 
     // Main game loop,
@@ -72,73 +65,47 @@ class Game {
             nextTurn(); // setup first player, after turn order iterator is initiaized, call next to
                         // setup first player in list as first current player
             startTurn();
-            while (this.currentPlayer.stillTakingTurn()) {
-                reUpDeck();
+            while (ph.playerStillTakingTurn()) {
                 takeTurn();
             }
             noWinner = !checkWinner();
         }
     }
 
-    private void reUpDeck() {
-        if (deck.isEmpty()) {
-            Card top = playedCards.pop();
-            deck.add(playedCards);
-            playedCards.empty();
-            playedCards.add(top);
-        }
-    }
-
     boolean checkWinner() {
         boolean haveWinner = false;
-        if (!currentPlayer.hasCards()) {
+        if (ph.playerHandEmpty()) {
+            ph.calculateWinningScore();
+            announceWinner(ph.playerName(), ph.playerScore());
             haveWinner = true;
-            announceWinner(currentPlayer.getName());
         }
         return haveWinner;
     }
 
     void startTurn() {
-        this.currentPlayer.startTurn();
+        for (int i = 0; i < toSkip; i++) {
+            // announce skipping player?
+            nextTurn();
+        }
+        toSkip = 0;
+        ph.startPlayerTurn();
         for (GameListener listener : listeners) {
             listener.startPlayerTurn();
         }
     }
 
     void endTurn() {
-        this.currentPlayer.resetTurnInfo();
-        this.currentPlayer.endTurn();
+        ph.endPlayerTurn();
     }
 
-    private void announceWinner(String name) {
+    private void announceWinner(String name, int score) {
         for (GameListener listener : listeners) {
-            listener.announceWinner(name);
+            listener.announceWinner(name, score);
         }
     }
 
-    void nextTurn() {
-        if (!this.turnOrder.hasNext()) {// not hasNext => current is last player
-            this.turnOrder = this.players.iterator(); // reset iterator
-        }
-        this.currentPlayer = this.turnOrder.next();// get next
-    }
-
-    private void setUpGame() {
-        givePLayersCards(startingHandSize);// give all players a starting hand
-        playedCards.add(deck.drawCard());// add one card to start
-
-    }
-
-    private void givePLayersCards(int n) {
-        for (int i = 0; i < n; i++) {
-            givePlayersCard();
-        }
-    }
-
-    private void givePlayersCard() {
-        for (Player p : players) {
-            p.drawCard(deck.drawCard());
-        }
+    public void nextTurn() {
+        ph.nextTurn();
     }
 
     private void takeTurn() {
@@ -152,17 +119,18 @@ class Game {
     }
 
     void tryPlay(int index) {
-        if (!currentPlayer.hasPlayedCard()) {
-            tryPlayCard(index);
-        } else {
-            tryPlayMoreCards(index);
+        if ((0 <= index && index < ph.playerHandSize())) {
+            if (ph.firstPlayedCard()) {
+                tryPlayCard(index);
+            } else {
+                tryPlayMoreCards(index);
+            }
         }
     }
 
     private void tryPlayCard(int index) {
-        if ((0 <= index && index < currentPlayer.getHandSize())
-                && GameRules.allowedPlay(currentPlayer.getCard(index),
-                        getTopPlayedCard())) {
+        if (GameRules.allowedPlay(ph.getPlayerCard(index),
+                dh.topCard())) {
             playCard(index);
         } else {
             announceBadMove();
@@ -170,7 +138,12 @@ class Game {
     }
 
     private void playCard(int index) {
-        playedCards.add(currentPlayer.playCard(index));
+        Card card = ph.playCard(index);
+        dh.play(card);
+
+        if (card instanceof SpecialCard) {
+            ((SpecialCard) card).getAction().executeAction(this);
+        }
     }
 
     private void announceBadMove() {
@@ -180,7 +153,7 @@ class Game {
     }
 
     void currentPlayerDrawCard() {
-        currentPlayer.drawCard(deck.drawCard());
+        ph.playerDrawCard(dh.drawCard());
     }
 
     void endCurrentPlayerTurn() {
@@ -192,7 +165,7 @@ class Game {
     }
 
     boolean canEndTurn() {
-        return currentPlayer.hasPlayedCard() || currentPlayer.drawnThree();
+        return ph.canEndTurn();
     }
 
     private void announceMustPlayCard() {
@@ -202,10 +175,40 @@ class Game {
     }
 
     void tryPlayMoreCards(int index) {
-        if (GameRules.stackable(currentPlayer.getCard(index), getTopPlayedCard())) {
+        if (GameRules.stackable(ph.getPlayerCard(index), dh.topCard())) {
             playCard(index);
         } else {
             announceBadMove();
         }
     }
+
+    public void reverseTurn() {
+        ph.reverseTurn();
+    }
+
+    public void chooseColor() {
+        requestColor();
+    }
+
+    private void requestColor() {
+        for (GameListener listener : listeners) {
+            listener.requestWildColor();
+        }
+    }
+
+    public void nextPlayerDraws(int num) {
+        ph.nextPlayerDraws(dh.drawCards(num));
+        if (toSkip >= 1) {
+            skip();
+        }
+    }
+
+    public void skip() {
+        toSkip += 1;
+    }
+
+    void setWildColor(Color c) {
+        getTopPlayedCard().setWildColor(c);
+    }
+
 }

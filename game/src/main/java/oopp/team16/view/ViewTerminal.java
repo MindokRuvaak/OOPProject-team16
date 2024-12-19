@@ -2,7 +2,7 @@ package oopp.team16.view;
 
 import oopp.team16.model.Model;
 
-public class ViewTerminal implements oopp.team16.view.View {
+public class ViewTerminal implements View {
 
     Model m;
 
@@ -103,5 +103,9 @@ public class ViewTerminal implements oopp.team16.view.View {
 
     public void badInput() {
         System.out.println("Unable to parse input");
+    }
+
+    public void requestWildColor() {
+        System.out.print("What color do you declare the wild?\n> ");
     }
 }

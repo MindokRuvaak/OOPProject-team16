@@ -86,6 +86,21 @@ public class Player {
         return this.takingTurn;
     }
 
+    public int getHandValue() {
+        int value = 0;
+        for (Card card : hand) {
+            value += card.getValue();
+        }
+        return value;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
     public int getid() {
         return this.id;
     }
