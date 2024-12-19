@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 public class GameServerApp {
     private static final Logger logger = Logger.getLogger(GameServerApp.class.getName());
+    private static volatile boolean manualShutdown = false;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -16,16 +17,17 @@ public class GameServerApp {
         addShutdownHook(gameServer);
 
         try {
-            synchronized (GameServerApp.class) {
-                GameServerApp.class.wait();
+            gameServer.startup();
+            System.out.println("Type 'exit' to shut down the server.");
+            while (scanner.hasNextLine()) {
+                if ("exit".equalsIgnoreCase(scanner.nextLine().trim())) {
+                    manualShutdown = true;
+                    break;
+                }
             }
-        } catch (InterruptedException e) {
-            logger.severe("Main thread interrupted: " + e.getMessage());
-            Thread.currentThread().interrupt();
         } catch (Exception e) {
             logger.severe("Error running GameServer: " + e.getMessage());
         } finally {
-            //behövs denna om jag har shutdownhook?
             gameServer.shutdown();
             scanner.close();
         }
@@ -45,8 +47,10 @@ public class GameServerApp {
 
     private static void addShutdownHook(GameServer gameServer) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            logger.info("Shutdown signal received. Shutting down the server...");
-            gameServer.shutdown();
+            if (!manualShutdown) {
+                logger.info("Shutdown signal received. Shutting down the server...");
+                gameServer.shutdown();
+            }
         }));
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
+//ConnectionManager hanterar connections, från serversidan
 public class ConnectionManager {
     private static final Logger logger = Logger.getLogger(ConnectionManager.class.getName());
 
@@ -22,50 +23,37 @@ public class ConnectionManager {
         this.clients = new CopyOnWriteArrayList<>();
     }
 
+    private int generatePlayerId() {
+        return (clients.size());
+    }
+
     public void acceptConnections() {
-        try {
-            //behöver en && !GameHasNotStarted clause, eller något liknande?
-            while (gameServer.isRunning()) {
-                if (clients.size() >= maxPlayers) {
-                    logger.info("Max players reached. Waiting for open slots...");
-                    Thread.sleep(1000); // Prevent tight looping
-                    continue;
-                }
-                try {
-                    Socket clientSocket = serverSocket.accept();
-                    logger.info("Accepted connection from: " + clientSocket.getInetAddress());
+        while (gameServer.isRunning() && clients.size() < maxPlayers) {
+            try {
+                Socket clientSocket = serverSocket.accept();
+                int id = generatePlayerId();
+                ClientManager clientManager = new ClientManager(clientSocket, this, gameServer, id);
+                clients.add(clientManager);
 
-                    int id = generatePlayerId();
-                    ClientManager clientManager = new ClientManager(clientSocket, gameServer, id);
-                    clients.add(clientManager);
+                logger.info(String.format("Accepted connection from %s. Player %d connected. Total players: %d.",
+                    clientSocket.getInetAddress(), id, clients.size()));
 
-                    logger.info("Player " + id + " connected. Total players: " + clients.size());
-                    clientManager.run();
+                new Thread(clientManager, "ClientManager-" + id).start();
 
-                } catch (IOException e) {
-                    if (gameServer.isRunning()) {
-                        logger.severe("Error accepting connection: " + e.getMessage());
-                    } else {
-                        logger.info("Server socket closed. Stopping acceptConnections.");
-                        break;
-                    }
+            } catch (IOException e) {
+                if (gameServer.isRunning()) {
+                    logger.severe("Error accepting connection: " + e.getMessage());
+                } else {
+                    logger.info("Server socket closed. Stopping acceptConnections.");
+                    break;
                 }
             }
-        } catch (Exception e) {
-            logger.severe("Unhandled exception in acceptConnections: " + e.getMessage());
-        } finally {
-            logger.info("acceptConnections has stopped.");
+        }
+        if (clients.size() >= maxPlayers) {
+            logger.info("Max players connected. No longer accepting connections.");
         }
     }
 
-    //vart borde den här användas? hur hanterar klienter en annan klients disconnect? kan det enbart kanske uppdatera view och visa en "Disconnected"?
-    public void removeClient(ClientManager client) {
-        if (clients.remove(client)) {
-            logger.info("Removed client: " + client.getClientId());
-            /*gameServer.broadcastMessage(new GameMessage("playerDisconnected")
-                .addData("playerId", client.getClientId()));*/
-        }
-    }
 
     public void closeConnections() {
         logger.info("Closing all client connections...");
@@ -76,11 +64,13 @@ public class ConnectionManager {
         logger.info("All client connections closed.");
     }
 
-    private int generatePlayerId() {
-        return (clients.size());
-    }
-
     public List<ClientManager> getClients() {
         return clients;
+    }
+
+    public synchronized void removeClient(ClientManager clientManager) {
+        clients.remove(clientManager);
+        logger.info(String.format("Player %d disconnected. Connection closed. Total players: %d.",
+            clientManager.getClientId(), clients.size()));
     }
 }

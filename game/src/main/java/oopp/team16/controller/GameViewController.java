@@ -191,12 +191,12 @@ public class GameViewController implements GameListener, ModelListener {
 
     // TODO: move to view
     @Override
-    public void announceWinner(String name, int score) {
+    public void announceWinner(int id, int score) {
         winningPane.setVisible(true);
         winningPane.toFront();
         winningPane.setOpacity(1.0);
         winningPane.setStyle("-fx-background-color: #2ecc71;");
-        labelWinner.setText("Winner is " + name);
+        labelWinner.setText("Winner is player" + id);
     }
 
     public void drawCard() {

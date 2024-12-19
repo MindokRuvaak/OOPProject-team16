@@ -23,8 +23,8 @@ public class ServerMessageHandler {
                 handleDrawCard(message);
                 break;
 
-            case "playerMove":
-                handlePlayerMove(message);
+            case "playCard":
+                handlePlayCard(message);
                 break;
 
             case "endTurn":
@@ -35,44 +35,48 @@ public class ServerMessageHandler {
                 //handleGameWin(sender)?
                 break;
 
+            case "playerDisconnect":
+                //handlePlayerDisconnect(sender);
+                break;
+
             default:
                 logger.warning("Unknown message type: " + message.getType());
         }
     }
 
-    //detta ska skickas från start-game knappen
+    //får meddelande från start-game knappen
     private void handleGameStart() {
         gameServer.startGame();
     }
 
-    //detta ska skickas från playcard-knapp, antagligen då när man trycker på ett kort.
-    //TODO: Special cards är inte numeric
-    private void handlePlayerMove(GameMessage message) {
-
-        Object cardPlayedObj = message.getData().get("cardPlayed");
-        String sender = message.getSender();
-
-        if (cardPlayedObj instanceof Number) { //Gson gör ibland saker till double?
-            int cardPlayed = ((Number) cardPlayedObj).intValue();
-            gameServer.handlePlayerMove(sender, cardPlayed);
-        } else if (cardPlayedObj instanceof String) {
-            String specialCard = (String) cardPlayedObj;
-            //gameServer.handleSpecialCard(specialCard); // Add this method to GameServer
-        } else {
-            logger.warning("Invalid 'cardPlayed' data type in message: " + cardPlayedObj);
-        }
-    }
-
-    //detta ska skickas från drawcard knappen
+    //får meddelande från drawcard knappen
     private void handleDrawCard(GameMessage message) {
-        String sender = message.getSender();
-        //map på card details
+        int sender = message.getSender();
         gameServer.handleDrawCard(sender);
     }
 
-    //detta ska skickas från endturn knappen
+    //får meddelande från playcard-knapp, antagligen då när man trycker på ett kort.
+    private void handlePlayCard(GameMessage message) {
+        Object cardData = message.getData().get("cardPlayed");
+        int sender = message.getSender();
+
+        if (cardData instanceof Number) { //Gson gör ibland int till double.
+            int cardNumber = ((Number) cardData).intValue();
+            gameServer.handlePlayCard(sender, cardNumber);
+        }
+    }
+
+    //får meddelande från endturn knappen
     private void handleEndTurn(GameMessage message) {
-        String sender = message.getSender();
+        int sender = message.getSender();
         gameServer.handleEndTurn(sender);
+    }
+
+    private void handleGameWin(GameMessage message) {
+        //gameServer.handleGameWin();
+    }
+
+    private void handlePlayerDisconnect(GameMessage message) {
+        //gameServer.handlePlayerDisconnect();
     }
 }

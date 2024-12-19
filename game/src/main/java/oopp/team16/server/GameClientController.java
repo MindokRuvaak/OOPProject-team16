@@ -25,7 +25,7 @@ public class GameClientController {
         }
     }
 
-    //kopplas till shutdownknappen för client. denna behöver ha en gameclient i sig?
+    //kopplas till shutdownknappen för client. denna behöver ha en gameclient i sig? eller kanske inte. idk.
     public void disconnect() {
         if (gameClient != null && gameClient.isConnected()) {
             gameClient.closeClientConnection();
@@ -33,16 +33,17 @@ public class GameClientController {
         }
     }
 
-    public void playCard(int cardId) {
-        GameMessage message = new GameMessage("playerMove");
-        message.setSender("Player"); // Replace with actual player name if available. getcurrentid av clientmanager?
-        message.addData("cardPlayed", cardId);
-        gameClient.sendMessage(message);
+    //TODO: FIXA SENDER!!!
+    public void playCard(int cardId, String color) {
+        GameMessage playCardMessage = new GameMessage("playCard");
+        playCardMessage.addData("cardNumber", cardId); // Example data
+        playCardMessage.addData("color", color);
+        gameClient.sendMessage(playCardMessage);
     }
 
     public void endTurn() {
         GameMessage message = new GameMessage("endTurn");
-        message.setSender("Player");
+        message.setSender(0);
         gameClient.sendMessage(message);
     }
 }

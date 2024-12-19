@@ -53,8 +53,6 @@ public class Model { // maybe change name ?ModelGameSetup?
     }
 
     public void playCard(int cardNumber) {
-        // change from card number displayed to player to corresponding card index in
-        // hand array
         game.tryPlay(cardNumber - 1);
     }
 
@@ -71,7 +69,7 @@ public class Model { // maybe change name ?ModelGameSetup?
     }
 
     public int getCurrentPlayerID() {
-        return game.getCurrentPlayer().getid();
+        return game.getCurrentPlayer().getId();
     }
 
     public String getTopPlayedCard() {

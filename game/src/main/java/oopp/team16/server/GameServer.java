@@ -1,12 +1,13 @@
 package oopp.team16.server;
 
 import oopp.team16.model.Model;
+import oopp.team16.model.ModelListener;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.logging.Logger;
 
-public class GameServer {
+public class GameServer implements ModelListener{
     private static final Logger logger = Logger.getLogger(GameServer.class.getName());
 
     private final int port;
@@ -14,54 +15,55 @@ public class GameServer {
     private volatile boolean running = false;
     private ServerSocket serverSocket;
     private ConnectionManager connectionManager;
-    //göra server till modellistener?
     private Model model;
     private ServerMessageHandler messageHandler;
 
     public GameServer(int port, int maxPlayers) {
         this.port = port;
         this.maxPlayers = maxPlayers;
-        startup();
-        logger.info("Server started on port " + port + ". Waiting for players...");
     }
 
-    public void startup() {
+    public synchronized void startup() {
         try {
 
-            serverSocket = new ServerSocket(port);
             model = new Model();
-            messageHandler = new ServerMessageHandler(this);
-            connectionManager = new ConnectionManager(serverSocket, maxPlayers, this);
+            this.model.addListener(this);
 
+            serverSocket = new ServerSocket(port);
+            messageHandler = new ServerMessageHandler(this);
+
+            connectionManager = new ConnectionManager(serverSocket, maxPlayers, this);
             new Thread(connectionManager::acceptConnections, "ConnectionManagerThread").start();
+
+            running = true;
+            logger.info("Server started on port " + port + ". Waiting for players...");
 
         } catch (IOException e) {
             logger.severe("Unexpected error during GameServer startup: " + e.getMessage());
             shutdown();
         }
-        running = true;
     }
 
-    public void shutdown() {
-        running = false;
+    public synchronized void shutdown() {
+        if (!running) {
+            logger.info("GameServer is already shut down.");
+            return;
+        }
 
+        running = false;
         try {
-            logger.info("Closing server socket...");
+            logger.info("Shutting down GameServer...");
             connectionManager.closeConnections();
             serverSocket.close();
-
             logger.info("GameServer shutdown completed.");
         } catch (IOException e) {
             logger.warning("Error during shutdown: " + e.getMessage());
         }
     }
 
+
     public synchronized void startGame() {
         logger.info("Starting the game...");
-        if (model.getListOfPlayers().length == 0) {
-            logger.warning("Cannot start the game: No players connected.");
-            return;
-        }
         model.initGame();
         model.startGame();
         broadcastGameState();
@@ -77,33 +79,52 @@ public class GameServer {
         connectionManager.getClients().forEach(client -> client.sendMessage(message));
     }
 
-    //TODO: denna bör göra mer? händer bör uppdateras.
+    //TODO: denna bör göra mer? händer bör uppdateras. //Jag tror den här är fine nu? det här ska bara uppdatera view
     public void broadcastGameState() {
         GameMessage gameStateMessage = new GameMessage("gameState");
-        gameStateMessage.addData("topCard", model.getTopPlayedCard());
-        gameStateMessage.addData("currentPlayer", model.getCurrentPlayerID());
-
         broadcastMessage(gameStateMessage);
     }
 
-    public synchronized void handlePlayerMove(String sender, int cardPlayed) {
-        //playcard måste kolla att rätt sender kan dra kort
-        model.playCard(cardPlayed);
-        broadcastGameState();
+    public synchronized void handlePlayCard(int sender, int cardNumber) {
+        if (validSender(sender)) {
+            model.playCard(cardNumber);
+            broadcastGameState();
+        }
     }
 
-    public synchronized void handleEndTurn(String sender) {
-        model.endTurn();
-        broadcastGameState();
+    public synchronized void handleEndTurn(int sender) {
+        if (validSender(sender)) {
+            model.endTurn();
+            model.nextPlayerTurn();
+            broadcastGameState();
+        }
     }
 
-    public synchronized void handleDrawCard(String sender) {
-        //drawcard måste kolla att rätt sender kan dra kort
-        model.drawCard();
-        broadcastGameState();
+    public synchronized void handleDrawCard(int sender) {
+        if (validSender(sender)) {
+            model.drawCard();
+            broadcastGameState();
+        }
+    }
+
+    public boolean validSender(int sender) {
+        return model.getCurrentPlayerID() == sender;
     }
 
     public boolean isRunning() {
         return running;
+    }
+
+    //TODO: DESSA?
+    @Override
+    public void requestPlayers(int lower, int upper) {
+    }
+
+    @Override
+    public void announceWinner(int id, int score) {
+    }
+
+    @Override
+    public void requestWildColor() {
     }
 }

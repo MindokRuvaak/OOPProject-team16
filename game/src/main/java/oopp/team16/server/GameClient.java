@@ -13,7 +13,7 @@ public class GameClient extends MessageHandler {
     public GameClient(String serverAddress, int serverPort) {
         connectToServer(serverAddress, serverPort);
     }
-
+//TODO: Varför hanterar gameServer kommunikation mellan server och model, men gameclientController hanterar mellan client och view? typ
     public synchronized void connectToServer(String serverAddress, int serverPort) {
         try {
             clientSocket = new Socket(serverAddress, serverPort);
@@ -34,11 +34,10 @@ public class GameClient extends MessageHandler {
             logger.info("Client is already disconnected.");
             return;
         }
-        logger.info("Closing connection to the server...");
         try {
             closeStreams();
             clientSocket.close();
-            logger.info("Connection closed successfully.");
+            logger.info("Client connection closed successfully.");
         } catch (IOException e) {
             logger.severe("Error while closing client socket: " + e.getMessage());
         }

@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class GameMessage {
     private String type;
-    private String sender;
+    private int sender;
     private Map<String, Object> data;
 
     // Default constructor (required for deserialization)
@@ -21,7 +21,7 @@ public class GameMessage {
     }
 
     // Constructor with type and sender
-    public GameMessage(String type, String sender) {
+    public GameMessage(String type, int sender) {
         this.type = type;
         this.sender = sender;
         this.data = new HashMap<>();
@@ -36,11 +36,11 @@ public class GameMessage {
         this.type = type;
     }
 
-    public String getSender() {
+    public int getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(int sender) {
         this.sender = sender;
     }
 
