@@ -19,6 +19,6 @@ Weekly**.pdf
 
 **/old**
 *.xlsx
-*.class
+**/*.class
 *.iml
 *.txt
