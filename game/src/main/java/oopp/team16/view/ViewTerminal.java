@@ -2,7 +2,7 @@ package oopp.team16.view;
 
 import oopp.team16.model.Model;
 
-public class ViewTerminal implements oopp.team16.view.View {
+public class ViewTerminal implements View {
 
     Model m;
 

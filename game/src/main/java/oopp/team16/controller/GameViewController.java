@@ -60,7 +60,6 @@ public class GameViewController implements GameListener, ModelListener {
 
     @FXML
     private Button buttonDisplayHand;
-    // TODO: remove this button? maybe
     @FXML
     private ImageView imageStartingCard;
     @FXML
