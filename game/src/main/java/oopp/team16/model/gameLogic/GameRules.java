@@ -4,6 +4,11 @@ import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Cards.CardType;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
+/**
+ * The class contains logic for determining whether certain moves
+ * in the game are valid.
+ * It checks if a card can be played based on its color, type or value
+ */
 public class GameRules {
 
     private GameRules() {
