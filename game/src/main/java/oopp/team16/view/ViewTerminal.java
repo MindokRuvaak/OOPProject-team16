@@ -14,7 +14,7 @@ public class ViewTerminal implements View {
     private void printGameState() {
         StringBuilder printMessage = new StringBuilder("\n\n");
         printMessage.append("Player: ");
-        printMessage.append(m.getCurrentPlayerName());
+        printMessage.append(m.getCurrentPlayerID());
         printMessage.append("'s turn.\n");
 
         printMessage.append("Current card in play: ");
