@@ -122,11 +122,11 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
 
-     public void setPlayers(){
+     public void setPlayers(){//TODO: fix
         int n = 0;
          for (int i = 0; i < players.size(); i++) {
-             String[] ps = namesOf(players.toArray(new String[0]));
-             playersHand.put(ps[i], paneList.get(n));
+            //  String[] ps = namesOf(players.toArray(new String[0]));
+            //  playersHand.put(ps[i], paneList.get(n));
                  n++;
          }
      }
@@ -293,7 +293,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     // move to view
     private void hideHands() {
         for (String p : players) {
-            displayBackOfHand(playersHand.get(nameOf(p)), handSizeOf(p));
+            displayBackOfHand(playersHand.get(String.valueOf(idOf(p))), handSizeOf(p));
         }
     }
 
