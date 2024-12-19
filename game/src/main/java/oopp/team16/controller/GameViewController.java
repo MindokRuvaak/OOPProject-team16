@@ -12,7 +12,6 @@ import oopp.team16.model.GameListener;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
 import oopp.team16.server.GameClientController;
-import oopp.team16.server.GameMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -284,7 +283,6 @@ public class GameViewController implements GameListener, ModelListener{
     public ImageView createCard(String card) {
 
         String[] seperateCardStrings = card.split("\\s");
-
         String imagePath = "/ui/resources/unocards/" + seperateCardStrings[0] + "_" + seperateCardStrings[1] + ".png";
         return getCardImage(imagePath);
     }
@@ -315,24 +313,30 @@ public class GameViewController implements GameListener, ModelListener{
         updateHide();
     }
 
-    // TODO: implement observer pattern methods
+    // TODO: implement gui for these
 
     @Override
     public void badMove() {
-        // TODO: implement
+        // TODO: implement gui
         System.out.println("cant play that card");
     }
 
     @Override
     public void announceMustPlayCard() {
-        // TODO: implement
+        // TODO: implement gui
         System.out.println("must play card");
     }
 
     @Override
     public void requestWildColor() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'requestWildColor'");
+        // temporary termianl input 
+        // TODO: implement gui
+        
+        java.util.Scanner input = new java.util.Scanner(System.in);
+        System.out.print("What color do you declare the wild?\n> ");
+        String ans = input.nextLine(); 
+        m.setWildColor(ans);
+        input.close();
     }
 
 }

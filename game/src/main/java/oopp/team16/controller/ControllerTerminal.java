@@ -5,7 +5,6 @@ import java.util.Scanner;
 import oopp.team16.model.GameListener;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
-import oopp.team16.view.View;
 import oopp.team16.view.ViewTerminal;
 
 public class ControllerTerminal implements ModelListener, GameListener {
