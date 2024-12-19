@@ -19,7 +19,7 @@ public class ClientMessageHandler {
         switch (message.getType()) {
 
             case "gameState":
-                handleGameState(message);
+                handleGameState();
                 break;
 
             case "gameOver":
@@ -36,7 +36,7 @@ public class ClientMessageHandler {
     }
 
     //TODO: vad ska uppdateras?
-    private void handleGameState(GameMessage message) {
+    private void handleGameState() {
         viewController.updateDisplay();
     }
 
