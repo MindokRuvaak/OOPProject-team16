@@ -19,6 +19,7 @@ import oopp.team16.server.GameClientController;
 import oopp.team16.view.CreateCardView;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class GameViewController /* implements GameListener, ModelListener */ {
 
@@ -69,7 +70,9 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private final Map<String, Pane> playersHand = new HashMap<>();
     private final List<Pane> paneList = new ArrayList<>();
     private int playerId;
+    private String[] playerHand;
     private String currentPlayer;
+    private List<String> players = new ArrayList<>();
     CreateCardView cc;
 
     private GameClientController clientController; // WE DO A LITTLE BIT OF TESTING
@@ -116,17 +119,16 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         buttonUno.setOnAction(event -> {
             uno();
         });
-
     }
 
 
      public void setPlayers(){
         int n = 0;
-        //  for (int i = 0; i < m.getListOfPlayers().length; i++) {
-        //      String[] players = namesOf(m.getListOfPlayers());
-        //      playersHand.put(players[i], paneList.get(n));
-        //          n++;
-        //  }
+         for (int i = 0; i < players.size(); i++) {
+             String[] ps = namesOf(players.toArray(new String[0]));
+             playersHand.put(ps[i], paneList.get(n));
+                 n++;
+         }
      }
 
     // player data contains name/id and number of cards in hand as name:num,
@@ -376,6 +378,18 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     public void setPlayerId(int id) {
         playerId = id;
         System.out.println("Setting id to: " + playerId);
+    }
+
+
+    public void recieveServerData(Map<String, String[]> dataMap) {
+        this.currentPlayer = dataMap.get("currentPlayer")[0];
+        players.clear();
+        for (Entry<String, String[]> e : dataMap.entrySet()) {
+            players.add(e.getKey());
+            if ((""+playerId).equals(e.getKey())) {
+                playerHand = e.getValue();
+            }
+        }
     }
 
 }

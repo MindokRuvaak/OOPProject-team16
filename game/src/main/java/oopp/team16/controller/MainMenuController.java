@@ -59,8 +59,6 @@ public class MainMenuController {
     // Going to GameView
     @FXML
     public void start(ActionEvent event) throws IOException {
-        // playerCount = 3;//TODO: recieve from server
-        
         // signal server that player pressed start
         // recieve signal from server: bool true if all connected players pressed start
         if(2 <= playerCount && playerCount <=4) {
@@ -117,13 +115,11 @@ public class MainMenuController {
             // Start the pause
             pause.play();
         }
-        // playerCount++;
-        // gameViewController.ping();
     }
 
     @FXML
     public void initialize() {
-        // playerCount = 0;
+        playerCount = 0;
     }
     @FXML
     private void handleExitButtonClick(){}

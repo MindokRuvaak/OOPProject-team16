@@ -39,8 +39,8 @@ public class GameClientController {
     // TODO: FIXA SENDER!!!
     public void playCard(int cardId, String color) {
         GameMessage playCardMessage = new GameMessage("playCard");
-        playCardMessage.addData("cardNumber", cardId); // Example data
-        playCardMessage.addData("color", color);
+        playCardMessage.addData("cardNumber", new String[] {String.valueOf(cardId)}); // Example data
+        playCardMessage.addData("color", new String[] {color});
         gameClient.sendMessage(playCardMessage);
     }
 

@@ -32,6 +32,7 @@ public class ClientMessageHandler {
 
             case "id":
                 setPlayerId(message.getSender());
+
             case "ping":
                 pong();
                 break;
@@ -43,6 +44,7 @@ public class ClientMessageHandler {
 
     // TODO: vad ska uppdateras?
     private void handleGameState(GameMessage message) {
+        viewController.recieveServerData(message.getData());
         viewController.updateDisplay();
     }
 
