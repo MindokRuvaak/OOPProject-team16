@@ -40,7 +40,6 @@ public class Game implements SpecialCardLogic {
         if (ph.getCurrentPlayer() == null) {
             nextTurn();
             startTurn();
-            // reUpDeck();
             takeTurn();
         }
     }
@@ -69,7 +68,6 @@ public class Game implements SpecialCardLogic {
                         // setup first player in list as first current player
             startTurn();
             while (ph.playerStillTakingTurn()) {
-                // reUpDeck(); // move to draw card method in DeckHandler
                 takeTurn();
             }
             noWinner = !checkWinner();
@@ -202,7 +200,9 @@ public class Game implements SpecialCardLogic {
 
     public void nextPlayerDraws(int num) {
         ph.nextPlayerDraws(dh.drawCards(num));
-        skip();
+        if (toSkip >= 1) {
+            skip();
+        }
     }
 
     public void skip() {
