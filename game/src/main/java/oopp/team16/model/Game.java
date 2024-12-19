@@ -76,7 +76,7 @@ public class Game implements SpecialCardLogic {
         boolean haveWinner = false;
         if (ph.playerHandEmpty()) {
             ph.calculateWinningScore();
-            announceWinner(ph.playerName(), ph.playerScore());
+            announceWinner(ph.getCurrentPlayer().getId(), ph.playerScore());
             haveWinner = true;
         }
         return haveWinner;
@@ -98,9 +98,9 @@ public class Game implements SpecialCardLogic {
         ph.endPlayerTurn();
     }
 
-    private void announceWinner(String name, int score) {
+    private void announceWinner(int id, int score) {
         for (GameListener listener : listeners) {
-            listener.announceWinner(name, score);
+            listener.announceWinner(id, score);
         }
     }
 
