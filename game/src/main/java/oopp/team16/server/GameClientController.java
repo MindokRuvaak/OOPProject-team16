@@ -78,5 +78,8 @@ public class GameClientController {
         // System.out.println(gameClient == null);
         this.gameClient.sendMessage(new GameMessage("ping", viewController.getPlayerId()));
     }
+    public void provideRed(){
+        this.gameClient.sendMessage(new GameMessage("red") );
+    }
 
 }

@@ -61,13 +61,15 @@ public class MainMenuController implements GameStartListener{
     @FXML
     public void start(ActionEvent event) throws IOException {
         playerCount = this.gameViewController.numPlayersConnected();
-        
+
         if (2 <= playerCount && playerCount <= 4) {
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             this.gameView = new GameView(primaryStage, gameViewController);
 
             gameClientController.pressedStart();
+
+
         }
         // else
         // errorS.setText("cannot start game");
@@ -125,7 +127,7 @@ public class MainMenuController implements GameStartListener{
     @FXML
     private void handleExitButtonClick() {
     }
-    
+
     @Override
     public void startGame() {
         this.gameView.show();
