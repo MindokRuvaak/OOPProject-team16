@@ -50,7 +50,6 @@ public class GameServer implements ModelListener {
             logger.info("GameServer is already shut down.");
             return;
         }
-
         running = false;
         try {
             logger.info("Shutting down GameServer...");
@@ -120,6 +119,7 @@ public class GameServer implements ModelListener {
         if (validSender(sender)) {
             model.playCard(cardNumber);
             broadcastGameState();
+            // if spelare har vunnit: skicka win message till clients?
         }
     }
 

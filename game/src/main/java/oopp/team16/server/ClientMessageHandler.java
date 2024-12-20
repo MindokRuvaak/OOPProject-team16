@@ -34,9 +34,11 @@ public class ClientMessageHandler {
             case "id":
                 setPlayerId(message.getSender());
                 break;
+
             case "nPlayers":
                 viewController.setNumPlayersConnected(readNum(message.getData()));
                 break;
+
             case "ping":
                 pong();
                 break;
@@ -58,7 +60,6 @@ public class ClientMessageHandler {
     private void handleGameOver(GameMessage message) {
         int winner = message.getSender();
         int score = readNum(message.getData());
-        // score används inte i announcewinner även fast den tar in en score-parameter.
         viewController.announceWinner(winner, score);
     }
 
@@ -66,12 +67,12 @@ public class ClientMessageHandler {
         // viewController.disconnectPlayer?
     }
 
+    private void setPlayerId(int id) {
+        viewController.setPlayerId(id);
+    }
+
     private void pong() {
         System.out.println("pong");
         viewController.ping();
-    }
-
-    private void setPlayerId(int id) {
-        viewController.setPlayerId(id);
     }
 }
