@@ -16,12 +16,10 @@ import oopp.team16.view.LobbyView;
 import oopp.team16.view.LobbyWaitingView;
 import oopp.team16.view.StartView;
 
-
 import java.awt.*;
 import java.io.IOException;
 
 public class MainMenuController {
-
 
     @FXML
     private Button uno;
@@ -52,27 +50,31 @@ public class MainMenuController {
     private int playerCount;
     GameViewController gameViewController = new GameViewController();
 
-
     // Going to GameView
     @FXML
     public void start(ActionEvent event) throws IOException {
         // signal server that player pressed start
-        // recieve signal from server: bool true if all connected players pressed start
-        if(2 <= playerCount && playerCount <=4) {
+
+        gameClientController.pressedStart();
+        playerCount = gameViewController.numPlayersConnected();
+
+        if (2 <= playerCount && playerCount <= 4) {
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             GameView gameView = new GameView(primaryStage, playerCount);
 
             gameView.show();
+
         }
-      //  else
-         //   errorS.setText("cannot start game");
-        //    errorS1.setText("must be atleast 2 or max 4 players");
+        // else
+        // errorS.setText("cannot start game");
+        // errorS1.setText("must be atleast 2 or max 4 players");
     }
+
     // Going to lobby port
     @FXML
-    private void uno(ActionEvent event) throws IOException{
-        //going to lobby port
+    private void uno(ActionEvent event) throws IOException {
+        // going to lobby port
         Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         LobbyView lobbyView = new LobbyView(primaryStage);
         lobbyView.show();
@@ -80,7 +82,7 @@ public class MainMenuController {
 
     // Going to lobby queue
     @FXML
-    private void goToLobby(ActionEvent event) throws IOException{
+    private void goToLobby(ActionEvent event) throws IOException {
         boolean connected = false;
         String serverAddress = serverAddressField.getText().trim();
         System.out.println(serverAddress);
@@ -100,7 +102,7 @@ public class MainMenuController {
             connectionStatusLabel.setText("Failed to connect: " + e.getMessage());
         }
 
-        if(connected) {
+        if (connected) {
             PauseTransition pause = new PauseTransition(Duration.seconds(2));
             pause.setOnFinished(actionEvent -> {
                 // Transition to the lobby view after the delay
@@ -118,8 +120,9 @@ public class MainMenuController {
     public void initialize() {
         playerCount = 0;
     }
+
     @FXML
-    private void handleExitButtonClick(){}
+    private void handleExitButtonClick() {
+    }
 
 }
-

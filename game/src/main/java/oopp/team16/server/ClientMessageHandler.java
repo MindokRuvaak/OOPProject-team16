@@ -2,6 +2,7 @@ package oopp.team16.server;
 
 import oopp.team16.controller.GameViewController;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class ClientMessageHandler {
@@ -32,7 +33,10 @@ public class ClientMessageHandler {
 
             case "id":
                 setPlayerId(message.getSender());
-
+                break;
+            case "nPlayers":
+                viewController.setNumPlayersConnected(readNum(message.getData()));
+                break;
             case "ping":
                 pong();
                 break;
@@ -42,7 +46,10 @@ public class ClientMessageHandler {
         }
     }
 
-    // TODO: vad ska uppdateras?
+    private int readNum(Map<String,String[]> map) {
+        return Integer.parseInt(map.get("n")[0]);
+    }
+
     private void handleGameState(GameMessage message) {
         viewController.recieveServerData(message.getData());
         viewController.updateDisplay();
@@ -50,8 +57,9 @@ public class ClientMessageHandler {
 
     private void handleGameOver(GameMessage message) {
         int winner = message.getSender();
+        int score = readNum(message.getData());
         // score används inte i announcewinner även fast den tar in en score-parameter.
-        viewController.announceWinner(winner, 0);
+        viewController.announceWinner(winner, score);
     }
 
     private void handlePlayerDisconnected(GameMessage message) {

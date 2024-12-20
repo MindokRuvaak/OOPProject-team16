@@ -14,7 +14,6 @@ import oopp.team16.server.GameClientController;
 import oopp.team16.view.CreateCardView;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 public class GameViewController /* implements GameListener, ModelListener */ {
 
@@ -71,6 +70,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     CreateCardView cc;
 
     private GameClientController clientController; // WE DO A LITTLE BIT OF TESTING
+    private int numConnectedPlayers;
 
     private String cardInPlay;
 
@@ -339,4 +339,12 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         cardInPlay = dataMap.get("topCard")[0];
     }
 
+    public int numPlayersConnected() {
+        return numConnectedPlayers;
+    }
+
+
+    public void setNumPlayersConnected(int n) {
+        this.numConnectedPlayers = n;
+    }
 }
