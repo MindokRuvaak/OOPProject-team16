@@ -122,7 +122,7 @@ public class GameServer implements ModelListener{
     @Override
     public void requestPlayers(int lower, int upper) {
         for (ClientManager client : connectionManager.getClients()) {
-            model.addPlayer(""+client.getClientId());
+            model.addPlayer(client.getClientId());
         }
     }
 
