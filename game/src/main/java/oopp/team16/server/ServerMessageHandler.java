@@ -31,12 +31,16 @@ public class ServerMessageHandler {
                 handleEndTurn(message);
                 break;
 
+            case "sayUno":
+                handleSayUno(message);
+                break;
+
             case "gameWin":
-                // handleGameWin(sender)?
+                handleGameWin(message);
                 break;
 
             case "playerDisconnect":
-                // handlePlayerDisconnect(sender);
+                handlePlayerDisconnect(message);
                 break;
 
             case "ping":
@@ -59,15 +63,12 @@ public class ServerMessageHandler {
     }
 
     // får meddelande från playcard-knapp, antagligen då när man trycker på ett
-    // kort.
+    // kort. denna
     private void handlePlayCard(GameMessage message) {
         Object cardData = message.getData().get("cardPlayed");
         int sender = message.getSender();
+        gameServer.handlePlayCard(sender, 3); // TODO: HandlePlayCard i server ska inte ta emot
 
-        if (cardData instanceof Number) { // Gson gör ibland int till double.
-            int cardNumber = ((Number) cardData).intValue();
-            gameServer.handlePlayCard(sender, cardNumber);
-        }
     }
 
     // får meddelande från endturn knappen
@@ -76,10 +77,17 @@ public class ServerMessageHandler {
         gameServer.handleEndTurn(sender);
     }
 
+    // får meddelande från uno knappen
+    private void handleSayUno(GameMessage message){
+        // gameServer.handleSayUno
+    }
+
+    // får meddelande när en klient når 0 kort och sagt uno
     private void handleGameWin(GameMessage message) {
         // gameServer.handleGameWin();
     }
 
+    // får meddelande när klient disconnectar. ta bort player i modellen.
     private void handlePlayerDisconnect(GameMessage message) {
         // gameServer.handlePlayerDisconnect();
     }
@@ -87,6 +95,10 @@ public class ServerMessageHandler {
     private void ping() {
         gameServer.pong();
     }
-    
+
+
+    private void handePlayerConnection() {
+        // gameServer.getClientId();
+    }
 
 }

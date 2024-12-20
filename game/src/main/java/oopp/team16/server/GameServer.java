@@ -6,8 +6,6 @@ import oopp.team16.model.gameLogic.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class GameServer implements ModelListener{
@@ -20,8 +18,6 @@ public class GameServer implements ModelListener{
     private ConnectionManager connectionManager;
     private Model model;
     private ServerMessageHandler messageHandler;
-    private final Map<GameClient, Player> clientToPlayerMap = new HashMap<>();
-
 
     public GameServer(int port, int maxPlayers) {
         this.port = port;

@@ -54,6 +54,10 @@ public class GameClientController {
         gameClient.sendMessage(new GameMessage("start"));
     }
 
+    public void sayUno(){
+        gameClient.sendMessage(new GameMessage("sayUno"));
+    }
+
     public void ping() {
         System.out.println(gameClient == null);
         gameClient.sendMessage(new GameMessage("ping"));
