@@ -104,7 +104,7 @@ public class Game implements SpecialCardLogic {
         }
     }
 
-    public void nextTurn() {
+    void nextTurn() {
         ph.nextTurn();
     }
 
@@ -182,9 +182,11 @@ public class Game implements SpecialCardLogic {
         }
     }
 
+
     public void reverseTurn() {
         ph.reverseTurn();
     }
+
 
     public void chooseColor() {
         requestColor();
@@ -196,12 +198,14 @@ public class Game implements SpecialCardLogic {
         }
     }
 
+
     public void nextPlayerDraws(int num) {
         ph.nextPlayerDraws(dh.drawCards(num));
         if (toSkip == 0) {
             skip();
         }
     }
+
 
     public void skip() {
         toSkip += 1;
