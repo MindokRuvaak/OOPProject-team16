@@ -24,11 +24,6 @@ public class ClientManager extends MessageHandler implements Runnable {
     }
 
     @Override
-    protected void onMessageReceived(GameMessage message) {
-        gameServer.processClientMessage(message);
-    }
-
-    @Override
     public void run() {
         try {
             listenForMessages();
@@ -47,6 +42,11 @@ public class ClientManager extends MessageHandler implements Runnable {
         } catch (IOException e) {
             logger.warning(String.format("Error closing connection for player %d: %s", id, e.getMessage()));
         }
+    }
+
+    @Override
+    protected void onMessageReceived(GameMessage message) {
+        gameServer.processClientMessage(message);
     }
 
     public int getClientId() {

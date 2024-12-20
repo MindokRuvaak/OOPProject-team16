@@ -90,7 +90,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         paneList.add(player3Hand);
         paneList.add(player4Hand);
 
-        buttonStart.setOnAction(event -> {//this button will be redundant?
+        buttonStart.setOnAction(event -> {// this button will be redundant?
             buttonStart.setVisible(false);
             setPlayers();
             buttonDisplayHand.setVisible(true);
@@ -190,10 +190,10 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         5 **Card Meanings**:
            - **Skip: Skip the next players turn.
            - **Reverse: Reverses the turn order.
-           - **Draw 2: The next player draws 2 cards (can be stacked!).
+           - **Draw 2: The next player draws 2 cards (can be stacked!)
            - **Wild: Change the color to anything you want.
            - **Wild Draw: Change the color and force the next player to draw 4 cards (can be stacked!).
-        """;
+        """; // Bror man får inte stacka draw-cards, source: UNO
         rulesText.setText(rules);
     }
 

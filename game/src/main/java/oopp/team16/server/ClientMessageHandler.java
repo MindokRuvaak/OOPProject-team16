@@ -29,7 +29,7 @@ public class ClientMessageHandler {
             case "playerDisconnected":
                 handlePlayerDisconnected(message);
                 break;
-
+                
             case "id":
                 setPlayerId(message.getSender());
 
@@ -58,12 +58,12 @@ public class ClientMessageHandler {
         // viewController.disconnectPlayer?
     }
 
+    private void setPlayerId(int id) {
+        viewController.setPlayerId(id);
+    }
+
     private void pong() {
         System.out.println("pong");
         viewController.ping();
-    }
-
-    private void setPlayerId(int id) {
-        viewController.setPlayerId(id);
     }
 }

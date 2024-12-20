@@ -2,7 +2,6 @@ package oopp.team16.server;
 
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
-import oopp.team16.model.gameLogic.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -49,7 +48,6 @@ public class GameServer implements ModelListener{
             logger.info("GameServer is already shut down.");
             return;
         }
-
         running = false;
         try {
             logger.info("Shutting down GameServer...");
@@ -88,6 +86,7 @@ public class GameServer implements ModelListener{
         if (validSender(sender)) {
             model.playCard(cardNumber);
             broadcastGameState();
+            // if spelare har vunnit: skicka win message till clients?
         }
     }
 

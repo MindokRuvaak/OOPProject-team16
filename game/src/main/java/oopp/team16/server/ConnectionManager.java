@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-//ConnectionManager hanterar connections, från serversidan
+// ConnectionManager hanterar connections, från serversidan
 public class ConnectionManager {
     private static final Logger logger = Logger.getLogger(ConnectionManager.class.getName());
 
@@ -15,6 +15,7 @@ public class ConnectionManager {
     private final int maxPlayers;
     private final GameServer gameServer;
     private final List<ClientManager> clients;
+    private int idCounter = 0;
 
     public ConnectionManager(ServerSocket serverSocket, int maxPlayers, GameServer gameServer) {
         this.serverSocket = serverSocket;
@@ -23,8 +24,8 @@ public class ConnectionManager {
         this.clients = new CopyOnWriteArrayList<>();
     }
 
-    private int generatePlayerId() {
-        return (clients.size());
+    private synchronized int generatePlayerId() {
+        return idCounter++;  // vi kan använda UUID också men vet inte om det behövs. good practice kanske
     }
 
     public void acceptConnections() {

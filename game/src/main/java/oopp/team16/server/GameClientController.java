@@ -27,16 +27,23 @@ public class GameClientController {
         }
     }
 
-    // kopplas till shutdownknappen för client. denna behöver ha en gameclient i
-    // sig? eller kanske inte. idk.
+    // kopplas till shutdown-knappen för client.
     public void disconnect() {
         if (gameClient != null && gameClient.isConnected()) {
             gameClient.closeClientConnection();
+            playerDisconnect();
             logger.info("Disconnected from the server.");
         }
     }
+    // TODO: FIXA SENDER FÖR ALLA DE HÄR ?
+    public void gameStart() {
+        gameClient.sendMessage(new GameMessage("gameStart"));
+    }
 
-    // TODO: FIXA SENDER!!!
+    public void drawCard() {
+        gameClient.sendMessage(new GameMessage("drawCard"));
+    }
+
     public void playCard(int cardId, String color) {
         GameMessage playCardMessage = new GameMessage("playCard");
         playCardMessage.addData("cardNumber", new String[] {String.valueOf(cardId)}); // Example data
@@ -45,17 +52,15 @@ public class GameClientController {
     }
 
     public void endTurn() {
-        GameMessage message = new GameMessage("endTurn");
-        message.setSender(0);
-        gameClient.sendMessage(message);
+        gameClient.sendMessage(new GameMessage("endTurn"));
     }
 
-    public void pressedStart() {
-        gameClient.sendMessage(new GameMessage("start"));
-    }
-
-    public void sayUno(){
+    public void sayUno() {
         gameClient.sendMessage(new GameMessage("sayUno"));
+    }
+
+    public void playerDisconnect() {
+        gameClient.sendMessage(new GameMessage("playerDisconnect"));
     }
 
     public void ping() {

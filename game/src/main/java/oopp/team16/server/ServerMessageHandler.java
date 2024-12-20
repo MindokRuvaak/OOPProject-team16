@@ -35,10 +35,6 @@ public class ServerMessageHandler {
                 handleSayUno(message);
                 break;
 
-            case "gameWin":
-                handleGameWin(message);
-                break;
-
             case "playerDisconnect":
                 handlePlayerDisconnect(message);
                 break;
@@ -51,7 +47,7 @@ public class ServerMessageHandler {
         }
     }
 
-    // får meddelande från start-game knappen
+    // får meddelande från play-knappen i lobbyn
     private void handleGameStart() {
         gameServer.startGame();
     }
@@ -64,11 +60,11 @@ public class ServerMessageHandler {
 
     // får meddelande från playcard-knapp, antagligen då när man trycker på ett
     // kort. denna
+    // TODO: HandlePlayCard i server ska inte ta emot number, den ska väl ta emot object?
     private void handlePlayCard(GameMessage message) {
         Object cardData = message.getData().get("cardPlayed");
         int sender = message.getSender();
-        gameServer.handlePlayCard(sender, 3); // TODO: HandlePlayCard i server ska inte ta emot
-
+        gameServer.handlePlayCard(sender, 3);
     }
 
     // får meddelande från endturn knappen
@@ -82,12 +78,7 @@ public class ServerMessageHandler {
         // gameServer.handleSayUno
     }
 
-    // får meddelande när en klient når 0 kort och sagt uno
-    private void handleGameWin(GameMessage message) {
-        // gameServer.handleGameWin();
-    }
-
-    // får meddelande när klient disconnectar. ta bort player i modellen.
+    // får meddelande när klient disconnectar. ta bort player i modellen?
     private void handlePlayerDisconnect(GameMessage message) {
         // gameServer.handlePlayerDisconnect();
     }
@@ -96,9 +87,7 @@ public class ServerMessageHandler {
         gameServer.pong();
     }
 
-
     private void handePlayerConnection() {
         // gameServer.getClientId();
     }
-
 }
