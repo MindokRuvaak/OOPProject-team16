@@ -1,21 +1,31 @@
 package oopp.team16.model.gameLogic.Cards;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
+/**
+ * A number card, with a numeric value and no action.
+ */
 public class NumCard implements Card {
     private final int value;
-    private final BaseCard bCard;
+    private final BaseCard baseCard;
 
+    /**
+     * Constructor for creating a number card.
+     * The card type is set to NUMBER
+     *
+     * @param color Color of the card
+     * @param value Numeric value of the card
+     */
     public NumCard(Color color, int value) {
-        this.bCard = new BaseCard(color, CardType.NUMBER, value);
+        this.baseCard = new BaseCard(color, CardType.NUMBER, value);
         this.value = value;
     }
     @Override
     public Color getColor() {
-        return bCard.getColor();
+        return baseCard.getColor();
     }
     @Override
     public CardType getType() {
-        return bCard.getType();
+        return baseCard.getType();
     }
 
     public int getValue() {
@@ -24,12 +34,12 @@ public class NumCard implements Card {
 
     @Override
     public String toString() {
-        return bCard.getColor().toString() + " " + getValue();
+        return baseCard.getColor().toString() + " " + getValue();
     }
 
     @Override
     public void setWildColor(Color c) {
-        bCard.setWildColor(c); // won't do anything
+        baseCard.setWildColor(c); // won't do anything
     }
 
 }

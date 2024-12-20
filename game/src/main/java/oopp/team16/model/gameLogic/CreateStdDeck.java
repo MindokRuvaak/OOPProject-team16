@@ -6,6 +6,10 @@ import oopp.team16.model.gameLogic.Cards.*;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 
+/**
+ * Creates a card deck for the standard UNO game.
+ */
+
 public class CreateStdDeck implements DeckFactory {
 
     CardFactory cardFactory = new CardFactory();

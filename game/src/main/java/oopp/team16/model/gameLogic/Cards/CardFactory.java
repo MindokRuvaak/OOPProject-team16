@@ -4,13 +4,18 @@ import oopp.team16.model.gameLogic.Actions.*;
 import oopp.team16.model.gameLogic.Cards.Colors.Color;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
+/**
+ * A factory class responsible for creating different types of cards.
+ */
 public class CardFactory {
 
     private final int actionValue =  20;
     private final int wildValue = 50;
+
     public Card createNumCard(Color color, int value) {
         return new NumCard(color, value);
     }
+
     public Card createSkipCard(Color color){
         return new SpecialCard(color, CardType.SKIP, actionValue, new SkipAction());
     }
