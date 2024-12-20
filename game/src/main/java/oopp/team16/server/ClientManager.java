@@ -11,7 +11,7 @@ public class ClientManager extends MessageHandler implements Runnable {
     private final ConnectionManager connectionManager;
     private final GameServer gameServer;
     private final Socket socket;
-    private final int id; //Gör id något förutom logging just nu? typ nej. måste linka player med id tror jag
+    private final int id;
 
     public ClientManager(Socket socket, ConnectionManager connectionManager, GameServer gameServer, int id) throws IOException {
         this.connectionManager = connectionManager;
@@ -21,11 +21,6 @@ public class ClientManager extends MessageHandler implements Runnable {
 
         initializeStreams(socket.getInputStream(), socket.getOutputStream());
         logger.info("ClientManager created for player " + id + " at " + socket.getRemoteSocketAddress());
-    }
-
-    @Override
-    protected void onMessageReceived(GameMessage message) {
-        gameServer.processClientMessage(message);
     }
 
     @Override
@@ -47,6 +42,11 @@ public class ClientManager extends MessageHandler implements Runnable {
         } catch (IOException e) {
             logger.warning(String.format("Error closing connection for player %d: %s", id, e.getMessage()));
         }
+    }
+
+    @Override
+    protected void onMessageReceived(GameMessage message) {
+        gameServer.processClientMessage(message);
     }
 
     public int getClientId() {

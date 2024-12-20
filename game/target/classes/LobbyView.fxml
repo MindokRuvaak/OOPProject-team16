@@ -12,7 +12,8 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="LobbyView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@mainmenustyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="LobbyView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
+            stylesheets="@ui/mainmenustyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" >
   <children>
     <HBox fx:id="lobbyContainer" prefHeight="400.0" prefWidth="600.0">
       <children>
@@ -41,20 +42,11 @@
         <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="208.0">
           <children>
             <Pane prefHeight="249.0" prefWidth="203.0" />
-            <Button fx:id="lobbyPlayButton" mnemonicParsing="false" onAction="#handlePlayButtonClick">
+            <Button fx:id="lobbyPlayButton" mnemonicParsing="false" onAction="#start">
               <graphic>
                 <ImageView fitHeight="52.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@resources/PlayButton.png" />
-                  </image>
-                </ImageView>
-              </graphic>
-            </Button>
-            <Button fx:id="leaveLobbyButton" mnemonicParsing="false" onAction="#handleLeaveLobbyButtonClick">
-              <graphic>
-                <ImageView fx:id="leaveLobbyButton" fitHeight="38.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                    <Image url="@resources/leaveLobbyButton.png" />
+                    <Image url="@ui/resources/PlayButton.png" />
                   </image>
                 </ImageView>
               </graphic>

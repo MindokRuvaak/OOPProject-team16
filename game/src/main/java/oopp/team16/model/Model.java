@@ -22,7 +22,7 @@ public class Model { // maybe change name ?ModelGameSetup?
 
     public void initGame() {
         // this will change?, when possible to create loby with set amount of players
-        getPlayers(2, 5);
+        getPlayers(2, 6);
         game.init(players);
     }
 
@@ -34,8 +34,8 @@ public class Model { // maybe change name ?ModelGameSetup?
         game.start();
     }
 
-    public void addPlayer(String name) {
-        players.add(new Player(name, players.size()));
+    public void addPlayer(int playerId) {
+        players.add(new Player(playerId));
     }
 
     public void addListener(ModelListener l) {
@@ -62,10 +62,6 @@ public class Model { // maybe change name ?ModelGameSetup?
 
     public void endTurn() {
         game.endCurrentPlayerTurn();
-    }
-
-    public String getCurrentPlayerName() {
-        return game.getCurrentPlayer().getName();
     }
 
     public int getCurrentPlayerID() {
@@ -128,5 +124,9 @@ public class Model { // maybe change name ?ModelGameSetup?
                 game.chooseColor();// if input color does not match, try again
                 break;
         }
+    }
+
+    public String[] getPlayerHandById(int playerId){
+        return toStrings(game.getPlayerHandById(playerId));
     }
 }

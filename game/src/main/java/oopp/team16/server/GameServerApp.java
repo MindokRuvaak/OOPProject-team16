@@ -20,9 +20,14 @@ public class GameServerApp {
             gameServer.startup();
             System.out.println("Type 'exit' to shut down the server.");
             while (scanner.hasNextLine()) {
+                // hanterar både manuell och unexpeceted shutdown. vet ej om necessary.
                 if ("exit".equalsIgnoreCase(scanner.nextLine().trim())) {
                     manualShutdown = true;
                     break;
+                }
+                if ("ping".equalsIgnoreCase(scanner.nextLine().trim())) {
+                    System.out.println("pinging clients.");
+                    gameServer.ping();
                 }
             }
         } catch (Exception e) {
@@ -33,7 +38,7 @@ public class GameServerApp {
         }
     }
 
-    //helper function för port och ip input
+    // helper function för port och ip input
     private static int promptForInt(Scanner scanner, String message, int defaultValue) {
         logger.info(message);
         String input = scanner.nextLine();

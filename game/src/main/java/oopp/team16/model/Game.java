@@ -198,7 +198,7 @@ public class Game implements SpecialCardLogic {
 
     public void nextPlayerDraws(int num) {
         ph.nextPlayerDraws(dh.drawCards(num));
-        if (toSkip >= 1) {
+        if (toSkip == 0) {
             skip();
         }
     }
@@ -209,6 +209,10 @@ public class Game implements SpecialCardLogic {
 
     void setWildColor(Color c) {
         getTopPlayedCard().setWildColor(c);
+    }
+
+    public Card[] getPlayerHandById(int playerId) {
+        return ph.getPlayerById(playerId).getHand();
     }
 
 }

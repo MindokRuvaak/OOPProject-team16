@@ -18,7 +18,7 @@ public class ControllerTerminal implements ModelListener, GameListener {
         this.v = v;
     }
 
-    public void addPlayer(String id) {
+    public void addPlayer(int id) {
         m.addPlayer(id);
     }
 
@@ -67,7 +67,7 @@ public class ControllerTerminal implements ModelListener, GameListener {
         for (int i = 0; i < n; i++) {
             v.requestPlayerName(i);
             String id = input.nextLine();
-            addPlayer(id);
+            addPlayer(Integer.parseInt(id));
         }
     }
 

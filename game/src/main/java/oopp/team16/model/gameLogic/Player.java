@@ -12,15 +12,13 @@ import java.util.List;
 public class Player {
     private List<Card> hand;
     private int score;  // hur räknar vi score
-    private final String name;
     private final int id;
     // turn taken info
     private boolean playedCard;
     private int cardsDrawn;
     private boolean takingTurn;
 
-    public Player (String name, int id){
-        this.name = name;
+    public Player (int id){
         this.id = id;
         this.hand = new ArrayList<>();
         this.playedCard = false;
@@ -59,13 +57,8 @@ public class Player {
         return !this.hand.isEmpty();
     }
 
-    public String getName(){
-        return this.name;
-    }
-
     public boolean hasPlayedCard(){
         return this.playedCard;
-
     }
 
     public boolean drawnThree(){
@@ -110,35 +103,23 @@ public class Player {
         return this.id;
     }
 
-    // returns string containing the name of player and number of cards in their hand
-    // seperated by a '':''
     @Override
     public String toString() {
-        return getName() + ":" + getHandSize();
+        return "Player " + id + " - Cards: " + getHandSize();
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
+        return Integer.hashCode(id);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
+        if (obj == null || getClass() != obj.getClass())
             return false;
         Player other = (Player) obj;
-        if (id == other.id) {
-        return true;
-        } else {
-            return false;
-        }
+        return id == other.id;
     }
-
 }

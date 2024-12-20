@@ -38,7 +38,6 @@ public class SpecialCard implements Card{
     public int getValue() {
         return baseCard.getValue();
     }
-
     public ActionStrategy getAction(){
         return this.action;
     }

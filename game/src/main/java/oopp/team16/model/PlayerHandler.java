@@ -1,20 +1,20 @@
 package oopp.team16.model;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.*;
 
 import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Card;
+import oopp.team16.server.GameClient;
 
 class PlayerHandler {
     private final LinkedList<Player> players;
+    private final Map<GameClient, Player> clientToPlayerMap; // Maps GameClient to Player
     private ListIterator<Player> turnOrder;
     private Player currentPlayer;
 
     PlayerHandler() {
         this.players = new LinkedList<>();
+        this.clientToPlayerMap = new HashMap<>();
     }
 
     void init(Collection<Player> players) {
@@ -40,10 +40,6 @@ class PlayerHandler {
 
     boolean playerHandEmpty() {
         return !this.currentPlayer.hasCards();
-    }
-
-    String playerName() {
-        return currentPlayer.getName();
     }
 
     int playerScore() {
@@ -115,6 +111,10 @@ class PlayerHandler {
         for (Card c : cards) {
             nextPlayer.drawCard(c);
         }
+    }
+
+    public Player getPlayerById(int playerId) {
+        return players.get(playerId);
     }
 
 }

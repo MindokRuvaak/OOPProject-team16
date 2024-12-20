@@ -7,9 +7,9 @@ import java.util.Map;
 public class GameMessage {
     private String type;
     private int sender;
-    private Map<String, Object> data;
+    private Map<String, String[]> data;
 
-    // Default constructor (required for deserialization)
+    // Default constructor (required for deserialization)  // denna kommer nog inte användas nån gång.
     public GameMessage() {
         this.data = new HashMap<>();
     }
@@ -32,6 +32,7 @@ public class GameMessage {
         return type;
     }
 
+    // set metoder används ej hittills.
     public void setType(String type) {
         this.type = type;
     }
@@ -44,16 +45,16 @@ public class GameMessage {
         this.sender = sender;
     }
 
-    public Map<String, Object> getData() {
+    public Map<String, String[]> getData() {
         return Collections.unmodifiableMap(data);
     }
 
 
-    public void setData(Map<String, Object> data) {
+    public void setData(Map<String, String[]> data) {
         this.data = data;
     }
 
-    public void addData(String key, Object value) {
+    public void addData(String key, String[] value) {
         this.data.put(key, value);
     }
 }
