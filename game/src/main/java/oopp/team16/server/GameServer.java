@@ -70,6 +70,7 @@ public class GameServer implements ModelListener {
             logger.info("Game has started successfully.");
             gameStarted = true;
             broadcastGameStart();
+            broadcastGameState();
         }
     }
 
@@ -85,7 +86,7 @@ public class GameServer implements ModelListener {
     }
 
     private void broadcastGameStart() {
-        broadcastMessage(new GameMessage("Start"));
+        broadcastMessage(new GameMessage("start"));
     }
 
     public void processClientMessage(GameMessage message) {

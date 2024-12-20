@@ -69,7 +69,8 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private String currentPlayer;
     private List<String> players = new ArrayList<>();
     CreateCardView cc;
-    private GameStartListener gameStartListener;
+    private boolean gameStarted;
+    // private GameStartListener gameStartListener;
 
     private GameClientController clientController; // WE DO A LITTLE BIT OF TESTING
     private int numConnectedPlayers;
@@ -77,8 +78,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private String cardInPlay;
 
     public void initialize() {
-        // m.addListener(this);
-        // m.initGame();
+        this.gameStarted = false;
         winningPane.setVisible(false);
         buttonDisplayHand.setVisible(false);
         rulesPane.setVisible(false);
@@ -88,19 +88,17 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         paneList.add(player2Hand);
         paneList.add(player3Hand);
         paneList.add(player4Hand);
-        setPlayers();
-        updateDisplay();
 
-        buttonStart.setOnAction(event -> {// this button will be redundant?
-            buttonStart.setVisible(false);
-            setPlayers();
-            buttonDisplayHand.setVisible(true);
-            updateDisplay();
-        });
-        buttonDisplayHand.setOnAction(event -> {
-            updateDisplay();
-            buttonDisplayHand.setVisible(false);
-        });
+        // buttonStart.setOnAction(event -> {// this button will be redundant?
+        // buttonStart.setVisible(false);
+        // setPlayers();
+        // buttonDisplayHand.setVisible(true);
+        // updateDisplay();
+        // });
+        // buttonDisplayHand.setOnAction(event -> {
+        // updateDisplay();
+        // buttonDisplayHand.setVisible(false);
+        // });
 
         endTurnButton.setOnAction(event -> {
             endTurn();
@@ -122,11 +120,9 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     public void setPlayers() {
-        // int n = 0;
         for (int i = 0; i < players.size(); i++) {
             int[] ps = idsOf(players.toArray(new String[0]));
             playersHand.put(ps[i], paneList.get(i));
-            // n++;
         }
     }
 
@@ -207,26 +203,34 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     public void drawCard() {
-        // TODO: send draw card message
-        updateDisplay();
+        if (gameStarted) {
+            // TODO: send draw card message
+            updateDisplay();
+        }
     }
 
-    // @Override
     public void startPlayerTurn() {
-        updateTurnLabel();
+        if (gameStarted) {
+            updateTurnLabel();
+        }
     }
 
     private void updateTurnLabel() {
-        labelTurn.setText(currentPlayer + "'s turn");
+        // labelCurrentPlayer.setText(currentPlayer + "'s turn");
     }
 
     public void endTurn() {
         // TODO: send end turn attempt message
+        if (gameStarted) {
+
+        }
     }
 
     public void playCard(int cardIndex) {
         // TODO: play card message
-        updateDisplay();
+        if (gameStarted) {
+            updateDisplay();
+        }
     }
 
     // move to view
@@ -239,9 +243,11 @@ public class GameViewController /* implements GameListener, ModelListener */ {
 
     // move to view
     public void updateDisplay() {
-        updateTurnLabel();
-        displayTopCard();
-        displayHands();
+        if (gameStarted) {
+            updateTurnLabel();
+            displayTopCard();
+            displayHands();
+        }
     }
 
     // should go to view
@@ -340,7 +346,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         System.out.println("Setting id to: " + playerId);
     }
 
-    public int getPlayerId(){
+    public int getPlayerId() {
         return this.playerId;
     }
 
@@ -352,9 +358,9 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     // "playerId":<[] hand of player>
     public void recieveServerData(Map<String, String[]> dataMap) {
         this.currentPlayer = dataMap.get("currentPlayer")[0];
-        players = List.of(dataMap.get("listOfPlayers"));
-        playerHand = dataMap.get(String.valueOf(this.playerId));
-        cardInPlay = dataMap.get("topCard")[0];
+        this.players = List.of(dataMap.get("listOfPlayers"));
+        this.playerHand = dataMap.get(String.valueOf(this.playerId));
+        this.cardInPlay = dataMap.get("topCard")[0];
     }
 
     public int numPlayersConnected() {
@@ -366,10 +372,9 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     public void startGame() {
-        gameStartListener.startGame();
+        this.gameStarted = true;
+        setPlayers();
+        // updateDisplay();
     }
 
-    public void addListener(GameStartListener gameStartListener) {
-        this.gameStartListener = gameStartListener;
-    }
 }
