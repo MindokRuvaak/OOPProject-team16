@@ -53,7 +53,7 @@
     </Button>
       <HBox fx:id="player2Hand" prefHeight="90.0" prefWidth="800.0" />
       <ImageView fx:id="imageStartingCard" fitHeight="90.0" fitWidth="57.0" layoutX="434.0" layoutY="338.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="endTurnButton" layoutX="492.0" layoutY="242.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn"> 
+      <Button fx:id="endTurnButton" layoutX="492.0" layoutY="242.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
@@ -85,12 +85,12 @@
       <Label fx:id="labelTurn" layoutX="511.0" layoutY="307.0" text="Label" />
       <Label layoutX="170.0" layoutY="519.0" text="Player 1" />
       <Label layoutX="215.0" layoutY="155.0" text="Player 2" />
-      <Button fx:id="rulesButton" layoutX="1009.0" layoutY="2.0" mnemonicParsing="false" onAction="#openRulesView" prefHeight="17.0" prefWidth="57.0" text="Rules"> 
+      <Button fx:id="rulesButton" layoutX="1009.0" layoutY="2.0" mnemonicParsing="false" onAction="#openRulesView" prefHeight="17.0" prefWidth="57.0" text="Rules">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
       </Button>
-      <Button fx:id="buttonDisplayHand" layoutX="492.0" layoutY="199.0" mnemonicParsing="false" onAction="#initialize" text="displayHand"> 
+      <Button fx:id="buttonDisplayHand" layoutX="492.0" layoutY="199.0" mnemonicParsing="false" onAction="#initialize" text="displayHand">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
@@ -110,5 +110,14 @@
       </ImageView>
       <Label layoutX="87.0" layoutY="250.0" text="Player 3" />
       <Label fx:id="labelUno" layoutX="740.0" layoutY="191.0" textFill="#00ff22" />
+    <AnchorPane fx:id="paneColour" layoutX="409.0" layoutY="372.0" prefHeight="200.0" prefWidth="200.0">
+      <children>
+        <Label layoutX="58.0" layoutY="18.0" text="choose a colour" />
+        <Button fx:id="buttonGreen" layoutX="31.0" layoutY="56.0" mnemonicParsing="false" onAction="#provideGreen" text="Green" textFill="#00ff33" />
+        <Button fx:id="buttonYellow" layoutX="117.0" layoutY="57.0" mnemonicParsing="false" onAction="#provideYellow" text="Yellow" textFill="#fbff00" />
+        <Button fx:id="buttonBlue" layoutX="31.0" layoutY="122.0" mnemonicParsing="false" onAction="#provideBlue" text="Blue" textFill="#0037ff" />
+        <Button fx:id="buttonRed" layoutX="120.0" layoutY="120.0" mnemonicParsing="false" onAction="#provideRed" text="Red" textFill="RED" />
+      </children>
+    </AnchorPane>
   </children>
 </AnchorPane>

@@ -61,6 +61,19 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private TextArea rulesText;
     @FXML
     private Label labelUno;
+    @FXML
+    private Button buttonBlue;
+    @FXML
+    private Button buttonYellow;
+    @FXML
+    private Button buttonGreen;
+    @FXML
+    private Button buttonRed;
+    @FXML
+    private AnchorPane paneColour;
+    @FXML
+    private Label labelBadMove;
+
 
     private final Map<Integer, Pane> playersHand = new HashMap<>();
     private final List<Pane> paneList = new ArrayList<>();
@@ -82,6 +95,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         winningPane.setVisible(false);
         buttonDisplayHand.setVisible(false);
         rulesPane.setVisible(false);
+        paneColour.setVisible(false);
         loadGameRules();
         cc = new CreateCardView();
         paneList.add(player1Hand);
@@ -117,7 +131,37 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         buttonUno.setOnAction(event -> {
             uno();
         });
+        buttonBlue.setOnAction(event -> {
+            provideBlue();
+        });
+        buttonGreen.setOnAction(event -> {
+           provideGreen();
+        });
+        buttonYellow.setOnAction(event -> {
+            provideYellow();
+        });
+        buttonRed.setOnAction(event -> {
+            provideRed();
+        });
     }
+    public void provideBlue(){
+        clientController.provideBlue();
+        paneColour.setVisible(false);
+    }
+    public void provideGreen(){
+        clientController.provideGreen();
+        paneColour.setVisible(false);
+    }
+    public void provideYellow(){
+        clientController.provideYellow();
+        paneColour.setVisible(false);
+    }
+    public void provideRed(){
+        clientController.provideRed();
+        paneColour.setVisible(false);
+    }
+
+
 
     public void setPlayers() {
         for (int i = 0; i < players.size(); i++) {
@@ -304,8 +348,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
 
     // @Override
     public void badMove() {
-        // TODO: implement gui
-        System.out.println("cant play that card");
+        labelBadMove.setText("cant play that card");
     }
 
     // @Override
@@ -318,9 +361,9 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     public void requestWildColor() {
         // temporary termianl input
         // TODO: implement gui
+        paneColour.setVisible(true);
         // need winidow popup with 4 buttons, one for each color
-        // button "COLOR" calls setWildColor("COLOR") with "COLOR" to be the actual
-        // color name as string eg. "red"
+        //button "COLOR" calls setWildColor("COLOR") with "COLOR" to be the actual color name as string eg. "red"
     }
 
     public void addClientController(GameClientController gcc) {

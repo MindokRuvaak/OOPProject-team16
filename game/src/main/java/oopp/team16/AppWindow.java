@@ -13,8 +13,6 @@ public class AppWindow extends Application {
         MainMenuController mmc = new MainMenuController();
         StartView startView = new StartView(primaryStage, mmc);
         startView.show();
-        // GameView gameView = new GameView(primaryStage, 3);
-        // gameView.show(); 
     }
 
     public static void main(String[] args) {
