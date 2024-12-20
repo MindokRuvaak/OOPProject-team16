@@ -9,7 +9,7 @@ public class GameMessage {
     private int sender;
     private Map<String, String[]> data;
 
-    // Default constructor (required for deserialization)
+    // Default constructor (required for deserialization)  // denna kommer nog inte användas nån gång.
     public GameMessage() {
         this.data = new HashMap<>();
     }
@@ -32,6 +32,7 @@ public class GameMessage {
         return type;
     }
 
+    // set metoder används ej hittills.
     public void setType(String type) {
         this.type = type;
     }

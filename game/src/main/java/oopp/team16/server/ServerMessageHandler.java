@@ -2,6 +2,7 @@ package oopp.team16.server;
 
 import java.util.logging.Logger;
 
+// både denna och clientmessagehandler borde kunna göras bättre. interfaces istället?
 public class ServerMessageHandler {
     private static final Logger logger = Logger.getLogger(ServerMessageHandler.class.getName());
     private final GameServer gameServer;

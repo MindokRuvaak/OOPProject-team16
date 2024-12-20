@@ -11,7 +11,7 @@ public class ClientManager extends MessageHandler implements Runnable {
     private final ConnectionManager connectionManager;
     private final GameServer gameServer;
     private final Socket socket;
-    private final int id; //Gör id något förutom logging just nu? typ nej. måste linka player med id tror jag
+    private final int id;
 
     public ClientManager(Socket socket, ConnectionManager connectionManager, GameServer gameServer, int id) throws IOException {
         this.connectionManager = connectionManager;

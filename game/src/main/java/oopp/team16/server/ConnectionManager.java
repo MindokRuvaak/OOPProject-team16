@@ -24,9 +24,13 @@ public class ConnectionManager {
         this.clients = new CopyOnWriteArrayList<>();
     }
 
-    private synchronized int generatePlayerId() {
-        return idCounter++;  // vi kan använda UUID också men vet inte om det behövs. good practice kanske
+    private int generatePlayerId() {
+        return (clients.size());
     }
+
+    /*private synchronized int generatePlayerId() { // är det här en bättre approach än den ovanför?
+        return idCounter++;                         // vi kan använda UUID också men vet inte om det behövs. good practice kanske.
+    }*/
 
     public void acceptConnections() {
         while (gameServer.isRunning() && clients.size() < maxPlayers) {
@@ -38,6 +42,7 @@ public class ConnectionManager {
                 System.out.println("player connected with id: " + id);
                 clients.add(clientManager);
 
+                // id och clients.size är ju same egentligen men
                 logger.info(String.format("Accepted connection from %s. Player %d connected. Total players: %d.",
                     clientSocket.getInetAddress(), id, clients.size()));
 
@@ -52,6 +57,7 @@ public class ConnectionManager {
                 }
             }
         }
+        // fall som inte hanteras: clients når maxplayers, någon disconnectar. nu är clients inte maxsize men acc-connections kör ej
         if (clients.size() >= maxPlayers) {
             logger.info("Max players connected. No longer accepting connections.");
         }
@@ -76,6 +82,7 @@ public class ConnectionManager {
             clientManager.getClientId(), clients.size()));
     }
 
+    // kan vi använda generateplayerid för denna? det är ju samma xd
     public int numConnected() {
         return clients.size();
     }
