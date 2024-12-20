@@ -10,16 +10,18 @@ import java.io.IOException;
 public class LobbyView {
     private Stage primaryStage;
     private Scene scene;
+    private FXMLLoader loader;
 
-    public LobbyView(Stage primaryStage) {
+    public LobbyView(Stage primaryStage, Object controller) {
         this.primaryStage = primaryStage;
+        // Load the FXML file
+        this.loader = new FXMLLoader(getClass().getResource("/PortLobbyView.fxml"));
+        loader.setController(controller);
         initializeUI();
     }
 
     private void initializeUI() {
         try {
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PortLobbyView.fxml"));
             Parent root = loader.load();
 
             // Set up the scene

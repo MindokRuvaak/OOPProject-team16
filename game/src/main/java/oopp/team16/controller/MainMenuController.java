@@ -48,20 +48,23 @@ public class MainMenuController {
     private GameClientController gameClientController;
 
     private int playerCount;
-    GameViewController gameViewController = new GameViewController();
+    GameViewController gameViewController;
 
+    public MainMenuController() {
+        this.playerCount = 0;
+        this.gameViewController = new GameViewController();
+        this.gameClientController = new GameClientController(this.gameViewController);
+    }
     // Going to GameView
     @FXML
     public void start(ActionEvent event) throws IOException {
-        // signal server that player pressed start
-
-        gameClientController.pressedStart();
-        playerCount = gameViewController.numPlayersConnected();
-
+        playerCount = this.gameViewController.numPlayersConnected();
         if (2 <= playerCount && playerCount <= 4) {
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            GameView gameView = new GameView(primaryStage, playerCount);
+            GameView gameView = new GameView(primaryStage, gameViewController);
+
+            gameClientController.pressedStart();
 
             gameView.show();
 
@@ -76,7 +79,7 @@ public class MainMenuController {
     private void uno(ActionEvent event) throws IOException {
         // going to lobby port
         Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        LobbyView lobbyView = new LobbyView(primaryStage);
+        LobbyView lobbyView = new LobbyView(primaryStage, this);
         lobbyView.show();
     }
 
@@ -89,9 +92,8 @@ public class MainMenuController {
         String portText = serverPortField.getText().trim();
         try {
             int port = Integer.parseInt(portText);
-            gameClientController = new GameClientController(gameViewController);
             System.out.println(serverPortField);
-            gameClientController.connect(serverAddress, port);
+            this.gameClientController.connect(serverAddress, port);
             System.out.println("Connected to " + serverAddress + ":" + port);
             connected = true;
             // gameViewController.ping();
@@ -107,7 +109,7 @@ public class MainMenuController {
             pause.setOnFinished(actionEvent -> {
                 // Transition to the lobby view after the delay
                 Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                LobbyWaitingView lobbyWaitingView = new LobbyWaitingView(primaryStage);
+                LobbyWaitingView lobbyWaitingView = new LobbyWaitingView(primaryStage, this);
                 lobbyWaitingView.show();
             });
 
@@ -118,7 +120,6 @@ public class MainMenuController {
 
     @FXML
     public void initialize() {
-        playerCount = 0;
     }
 
     @FXML

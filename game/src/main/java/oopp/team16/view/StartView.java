@@ -10,16 +10,18 @@ import java.io.IOException;
 public class StartView {
     private Stage primaryStage;
     private Scene scene;
+    private FXMLLoader loader;
 
-    public StartView(Stage primaryStage) {
+    public StartView(Stage primaryStage, Object controller) {
+        // Load the FXML file
+        this.loader = new FXMLLoader(getClass().getResource("/MainMenu.fxml"));
+        loader.setController(controller);
         this.primaryStage = primaryStage;
         initializeUI();
     }
 
     private void initializeUI() {
         try {
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainMenu.fxml"));
             Parent root = loader.load();
 
             // Set up the scene

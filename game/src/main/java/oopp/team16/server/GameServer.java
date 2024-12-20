@@ -1,9 +1,7 @@
 package oopp.team16.server;
 
-import oopp.team16.model.Game;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
-import oopp.team16.model.gameLogic.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -169,6 +167,7 @@ public class GameServer implements ModelListener {
 
     public void ping() {
         broadcastMessage(new GameMessage("ping"));
+        broadcastGameState();
     }
 
     public void pong() {

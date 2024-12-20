@@ -144,7 +144,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     private int handSizeOf(String player) {
-        return Integer.parseInt(player.split(":")[4]);
+        return Integer.parseInt(player.split(" ")[4]);
     }
 
     public void uno() {
@@ -319,6 +319,17 @@ public class GameViewController /* implements GameListener, ModelListener */ {
 
     public void ping() {
         clientController.ping();
+        printGameState();
+    }
+
+    private void printGameState() {
+        System.out.println("\nthisPlayerID: " + playerId + 
+            "\nList of players: " + Arrays.toString(players.toArray(new String[0])) + 
+            "\nthis player cards: " + playersHand + 
+            "\ncurrent card: " + cardInPlay + 
+            "\ncurrent player: " + currentPlayer + 
+            "\nplayers connected: " + numConnectedPlayers
+            );
     }
 
     public void setPlayerId(int id) {

@@ -17,10 +17,10 @@ public class GameClientController {
     // kopplas till join-knappen
     public void connect(String serverAddress, int port) {
         try {
-            gameClient = new GameClient(serverAddress, port);
-            gameClient.startListening(messageHandler);
+            this.gameClient = new GameClient(serverAddress, port);
+            this.gameClient.startListening(messageHandler);
             logger.info("Connected to server and started listening for messages.");
-            // System.out.println(gameClient == null);
+            connected();
         } catch (RuntimeException e) {
             logger.severe("Failed to connect: " + e.getMessage());
             throw e;
@@ -30,8 +30,8 @@ public class GameClientController {
     // kopplas till shutdownknappen för client. denna behöver ha en gameclient i
     // sig? eller kanske inte. idk.
     public void disconnect() {
-        if (gameClient != null && gameClient.isConnected()) {
-            gameClient.closeClientConnection();
+        if (this.gameClient != null && this.gameClient.isConnected()) {
+            this.gameClient.closeClientConnection();
             logger.info("Disconnected from the server.");
         }
     }
@@ -39,29 +39,32 @@ public class GameClientController {
     // TODO: FIXA SENDER!!!
     public void playCard(int cardId, String color) {
         GameMessage playCardMessage = new GameMessage("playCard");
-        playCardMessage.addData("cardNumber", new String[] {String.valueOf(cardId)}); // Example data
-        playCardMessage.addData("color", new String[] {color});
-        gameClient.sendMessage(playCardMessage);
+        playCardMessage.addData("cardNumber", new String[] { String.valueOf(cardId) }); // Example data
+        playCardMessage.addData("color", new String[] { color });
+        this.gameClient.sendMessage(playCardMessage);
     }
 
     public void endTurn() {
         GameMessage message = new GameMessage("endTurn");
         message.setSender(0);
-        gameClient.sendMessage(message);
+        this.gameClient.sendMessage(message);
     }
 
     public void pressedStart() {
-        gameClient.sendMessage(new GameMessage("start"));
+        this.gameClient.sendMessage(new GameMessage("gameStart"));
     }
 
-    public void sayUno(){
-        gameClient.sendMessage(new GameMessage("sayUno"));
+    public void sayUno() {
+        this.gameClient.sendMessage(new GameMessage("sayUno"));
+    }
+
+    private void connected() {
+        this.gameClient.sendMessage(new GameMessage("playerConnected"));
     }
 
     public void ping() {
         // System.out.println(gameClient == null);
-        gameClient.sendMessage(new GameMessage("ping"));
+        this.gameClient.sendMessage(new GameMessage("ping"));
     }
-
 
 }

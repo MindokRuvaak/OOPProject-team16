@@ -38,17 +38,22 @@ public class ServerMessageHandler {
             case "gameWin":
                 handleGameWin(message);
                 break;
-
             case "playerDisconnect":
                 handlePlayerDisconnect(message);
                 break;
-
+            case "playerConnected":
+                handlePlayerConnect();
+                break;
             case "ping":
                 ping();
                 break;
             default:
                 logger.warning("Unknown message type: " + message.getType());
         }
+    }
+
+    private void handlePlayerConnect() {
+        gameServer.broadCastNumberOfConnected();
     }
 
     // får meddelande från start-game knappen
@@ -78,7 +83,7 @@ public class ServerMessageHandler {
     }
 
     // får meddelande från uno knappen
-    private void handleSayUno(GameMessage message){
+    private void handleSayUno(GameMessage message) {
         // gameServer.handleSayUno
     }
 
@@ -95,7 +100,6 @@ public class ServerMessageHandler {
     private void ping() {
         gameServer.pong();
     }
-
 
     private void handePlayerConnection() {
         // gameServer.getClientId();

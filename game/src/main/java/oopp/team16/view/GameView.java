@@ -14,13 +14,12 @@ public class GameView {
     private Stage primaryStage;
     private Scene scene;
     private int playerCount;
+    private GameViewController controller;
 
-    public GameView(Stage primaryStage, int playerCount) {
+    public GameView(Stage primaryStage, GameViewController controller) {
         this.primaryStage = primaryStage;
-        this.playerCount = playerCount;
-        System.out.println(getClass().getResource("/MainGUI.fxml"));
-        System.out.println(getClass().getResource("/MainGUI3.fxml"));
-        System.out.println(getClass().getResource("/MainGUI4.fxml"));
+        this.playerCount = controller.numPlayersConnected();
+        this.controller = controller;
         initializeUI();
     }
 
@@ -35,6 +34,7 @@ public class GameView {
                 case 4 -> loader = new FXMLLoader(getClass().getResource("/MainGUI4.fxml"));
                 default -> throw new IllegalArgumentException("Invalid player count");
             }
+            loader.setController(this.controller);
 
             Parent root = loader.load();
             scene = new Scene(root, 1080, 720);

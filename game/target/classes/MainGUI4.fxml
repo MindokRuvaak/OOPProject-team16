@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane fx:id="mainPane" prefHeight="720" prefWidth="1080" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="oopp.team16.controller.GameViewController4">
+<AnchorPane fx:id="mainPane" prefHeight="720" prefWidth="1080" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" >
   <children>
       <AnchorPane fx:id="rulesPane" layoutX="377.0" layoutY="25.0" opacity="0.02" prefHeight="566.0" prefWidth="334.0">
          <children>

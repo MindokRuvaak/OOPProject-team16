@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="LobbyView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
-            stylesheets="@ui/mainmenustyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oopp.team16.controller.MainMenuController">
+            stylesheets="@ui/mainmenustyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" >
   <children>
     <HBox fx:id="lobbyContainer" prefHeight="400.0" prefWidth="600.0">
       <children>

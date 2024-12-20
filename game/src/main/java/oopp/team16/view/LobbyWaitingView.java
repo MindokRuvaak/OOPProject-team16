@@ -10,18 +10,19 @@ import java.io.IOException;
 public class LobbyWaitingView {
     private Stage primaryStage;
     private Scene scene;
-
-    public LobbyWaitingView(Stage primaryStage) {
+    private FXMLLoader loader;
+    public LobbyWaitingView(Stage primaryStage, Object controller) {
         this.primaryStage = primaryStage;
+        // Load the FXML file
+        this.loader = new FXMLLoader(getClass().getResource("/LobbyView.fxml"));
+        loader.setController(controller);
         initializeUI();
     }
 
     private void initializeUI() {
         try {
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LobbyView.fxml"));
+            
             Parent root = loader.load();
-
             // Set up the scene
             scene = new Scene(root, 600, 400);
 
@@ -33,6 +34,8 @@ public class LobbyWaitingView {
             System.err.println("Failed to load LobbyView.fxml");
         }
     }
+
+
 
     public void show() {
         primaryStage.show();
