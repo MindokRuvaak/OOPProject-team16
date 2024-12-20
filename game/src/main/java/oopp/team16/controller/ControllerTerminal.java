@@ -115,7 +115,7 @@ public class ControllerTerminal implements ModelListener, GameListener {
 
     @Override
     public void announceWinner(int id, int score) {
-        v.announceWinner(id);
+        v.announceWinner(id, score);
     }
 
     @Override

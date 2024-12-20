@@ -77,9 +77,9 @@ public class ViewTerminal implements View {
     }
 
     // @Override
-    public void announceWinner(int name) {
+    public void announceWinner(int name, int score) {
         clearTerminal();
-        System.out.println("The winner is player" + name + "!!");
+        System.out.println("The winner is player" + name + " with a score of "+ score +"!!");
     }
 
     // @Override
