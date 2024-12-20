@@ -113,4 +113,8 @@ class PlayerHandler {
         }
     }
 
+    public Player getPlayerById(int playerId) {
+        return players.get(playerId);
+    }
+
 }

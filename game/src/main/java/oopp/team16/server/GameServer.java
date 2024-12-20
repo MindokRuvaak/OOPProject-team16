@@ -81,7 +81,30 @@ public class GameServer implements ModelListener{
     //TODO: denna bör göra mer? händer bör uppdateras. //Jag tror den här är fine nu? det här ska bara uppdatera view
     public void broadcastGameState() {
         GameMessage gameStateMessage = new GameMessage("gameState");
+        gameStateMessage.addData("currentPlayer", 
+                                new String[]{String.valueOf(model.getCurrentPlayerID())});
+        gameStateMessage.addData("listOfPlayers", model.getListOfPlayers());
+        gameStateMessage.addData("topCard", new String[]{model.getTopPlayedCard()});
+        for (int player : idsOf(model.getListOfPlayers())) {
+            gameStateMessage.addData(String.valueOf(player), model.getPlayerHandById(player));
+        }
         broadcastMessage(gameStateMessage);
+    }
+    
+    // player data contains name/id and number of cards in hand as
+    // this returns array in same order, but only with player names
+    private int[] idsOf(String[] players) {
+        int[] ids = new int[players.length];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = idOf(players[i]);
+        }
+        return ids;
+    }
+
+    //                             [0]     [1]   [2]  [3]         [4]
+    // player object toString: "Player " + id + " - Cards: " + handSize;
+    private int idOf(String player) {
+        return Integer.parseInt(player.split(" ")[1]);
     }
 
     public synchronized void handlePlayCard(int sender, int cardNumber) {

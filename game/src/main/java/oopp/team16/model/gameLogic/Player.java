@@ -99,8 +99,6 @@ public class Player {
         return this.id;
     }
 
-    // returns string containing the name of player and numer of cards in their hand
-    // seperated by a '':''
     @Override
     public String toString() {
         return "Player " + id + " - Cards: " + getHandSize();

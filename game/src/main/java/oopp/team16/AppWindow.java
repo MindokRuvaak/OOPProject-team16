@@ -2,8 +2,6 @@ package oopp.team16;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import oopp.team16.view.GameView;
-import oopp.team16.view.LobbyView;
 import oopp.team16.view.StartView;
 
 public class AppWindow extends Application {
