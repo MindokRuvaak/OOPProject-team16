@@ -121,6 +121,8 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         });
     }
 
+
+
     public void setPlayers() {
         // int n = 0;
         for (int i = 0; i < players.size(); i++) {
