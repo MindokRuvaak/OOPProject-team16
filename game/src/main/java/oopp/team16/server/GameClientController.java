@@ -64,8 +64,9 @@ public class GameClientController {
     }
 
     public void ping() {
-        System.out.println(gameClient == null);
+        // System.out.println(gameClient == null);
         gameClient.sendMessage(new GameMessage("ping"));
     }
+
 
 }

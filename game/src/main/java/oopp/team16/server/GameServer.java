@@ -1,5 +1,6 @@
 package oopp.team16.server;
 
+import oopp.team16.model.Game;
 import oopp.team16.model.Model;
 import oopp.team16.model.ModelListener;
 
@@ -7,7 +8,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.logging.Logger;
 
-public class GameServer implements ModelListener{
+public class GameServer implements ModelListener {
     private static final Logger logger = Logger.getLogger(GameServer.class.getName());
 
     private final int port;
@@ -17,10 +18,12 @@ public class GameServer implements ModelListener{
     private ConnectionManager connectionManager;
     private Model model;
     private ServerMessageHandler messageHandler;
+    private boolean gameStarted;
 
     public GameServer(int port, int maxPlayers) {
         this.port = port;
         this.maxPlayers = maxPlayers;
+        this.gameStarted = false;
     }
 
     public synchronized void startup() {
@@ -60,11 +63,14 @@ public class GameServer implements ModelListener{
     }
 
     public synchronized void startGame() {
-        logger.info("Starting the game...");
-        model.initGame();
-        model.startGame();
-        broadcastGameState();
-        logger.info("Game has started successfully.");
+        if (!gameStarted) {
+            logger.info("Starting the game...");
+            model.initGame();
+            model.startGame();
+            broadcastGameState();
+            logger.info("Game has started successfully.");
+            gameStarted = true;
+        }
     }
 
     public void processClientMessage(GameMessage message) {
@@ -76,10 +82,38 @@ public class GameServer implements ModelListener{
         connectionManager.getClients().forEach(client -> client.sendMessage(message));
     }
 
-    //TODO: denna bör göra mer? händer bör uppdateras. //Jag tror den här är fine nu? det här ska bara uppdatera view
     public void broadcastGameState() {
         GameMessage gameStateMessage = new GameMessage("gameState");
+        gameStateMessage.addData("currentPlayer",
+                new String[] { String.valueOf(model.getCurrentPlayerID()) });
+        gameStateMessage.addData("listOfPlayers", model.getListOfPlayers());
+        gameStateMessage.addData("topCard", new String[] { model.getTopPlayedCard() });
+        for (int player : idsOf(model.getListOfPlayers())) {
+            gameStateMessage.addData(String.valueOf(player), model.getPlayerHandById(player));
+        }
         broadcastMessage(gameStateMessage);
+    }
+
+    public void broadCastNumberOfConnected() {
+        GameMessage numConMessage = new GameMessage("nPlayers");
+        String num = String.valueOf(connectionManager.numConnected());
+        numConMessage.addData("n", new String[] { num });
+        broadcastMessage(numConMessage);
+    }
+
+    // player data contains name/id and number of cards in hand as
+    // this returns array in same order, but only with player names
+    private int[] idsOf(String[] players) {
+        int[] ids = new int[players.length];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = idOf(players[i]);
+        }
+        return ids;
+    }
+
+    // player object toString: "Player " + id + " - Cards: " + handSize;
+    private int idOf(String player) {
+        return Integer.parseInt(player.split(" ")[1]);
     }
 
     public synchronized void handlePlayCard(int sender, int cardNumber) {
@@ -113,7 +147,7 @@ public class GameServer implements ModelListener{
         return running;
     }
 
-    //TODO: DESSA?
+    // TODO: DESSA?
     @Override
     public void requestPlayers(int lower, int upper) {
         for (ClientManager client : connectionManager.getClients()) {
@@ -123,14 +157,16 @@ public class GameServer implements ModelListener{
 
     @Override
     public void announceWinner(int id, int score) {
+        GameMessage winMessage = new GameMessage("gameOver", id);
+        winMessage.addData("n", new String[] { String.valueOf(score) });
     }
 
     @Override
     public void requestWildColor() {
+        //TODO: current player to choose color
     }
 
-
-    public void ping(){
+    public void ping() {
         broadcastMessage(new GameMessage("ping"));
     }
 

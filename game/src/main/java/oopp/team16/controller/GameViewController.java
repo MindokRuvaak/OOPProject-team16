@@ -5,21 +5,15 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import oopp.team16.model.GameListener;
-import oopp.team16.model.Model;
-import oopp.team16.model.ModelListener;
 import oopp.team16.server.GameClientController;
 import oopp.team16.view.CreateCardView;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 public class GameViewController /* implements GameListener, ModelListener */ {
 
@@ -67,7 +61,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     @FXML
     private Label labelUno;
 
-    private final Map<String, Pane> playersHand = new HashMap<>();
+    private final Map<Integer, Pane> playersHand = new HashMap<>();
     private final List<Pane> paneList = new ArrayList<>();
     private int playerId;
     private String[] playerHand;
@@ -76,6 +70,9 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     CreateCardView cc;
 
     private GameClientController clientController; // WE DO A LITTLE BIT OF TESTING
+    private int numConnectedPlayers;
+
+    private String cardInPlay;
 
     public void initialize() {
         // m.addListener(this);
@@ -95,7 +92,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
             setPlayers();
             buttonDisplayHand.setVisible(true);
             // m.start();
-            updateHide();
+            updateDisplay();
         });
         buttonDisplayHand.setOnAction(event -> {
             updateDisplay();
@@ -121,18 +118,16 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         });
     }
 
+    public void setPlayers() {
+        // int n = 0;
+        for (int i = 0; i < players.size(); i++) {
+            int[] ps = idsOf(players.toArray(new String[0]));
+            playersHand.put(ps[i], paneList.get(i));
+            // n++;
+        }
+    }
 
-     public void setPlayers(){//TODO: fix
-        int n = 0;
-         for (int i = 0; i < players.size(); i++) {
-            //  String[] ps = namesOf(players.toArray(new String[0]));
-            //  playersHand.put(ps[i], paneList.get(n));
-                 n++;
-         }
-     }
-
-
-    // player data contains name/id and number of cards in hand as name:num,
+    // player data contains name/id and number of cards in hand as
     // this returns array in same order, but only with player names
     private int[] idsOf(String[] players) {
         int[] ids = new int[players.length];
@@ -142,63 +137,64 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         return ids;
     }
 
-
+    // [0] [1] [2] [3] [4]
+    // player object toString: "Player " + id + " - Cards: " + handSize;
     private int idOf(String player) {
-        return Integer.parseInt(player.split(":")[0]);
+        return Integer.parseInt(player.split(" ")[1]);
     }
 
     private int handSizeOf(String player) {
-        return Integer.parseInt(player.split(":")[1]);
+        return Integer.parseInt(player.split(":")[4]);
     }
 
     public void uno() {
         labelUno.setText(currentPlayer + "has UNO!");
     }
 
-    public void openRulesView(){
+    public void openRulesView() {
         rulesPane.setVisible(true);
         rulesPane.toFront();
         rulesPane.setOpacity(1.0);
         rulesPane.setStyle("-fx-background-color: #2ecc71;");
     }
 
-    public void closeRulesView(){
+    public void closeRulesView() {
         rulesPane.setVisible(false);
     }
+
     public void loadGameRules() {
         String rules = """
-        🎉 UNO Game Rules 🎉
+                🎉 UNO Game Rules 🎉
 
 
-        1⃣ **Setup**:
-           Each player starts with 7 cards. The rest of the deck is placed face-down as the draw pile.
+                1⃣ **Setup**:
+                   Each player starts with 7 cards. The rest of the deck is placed face-down as the draw pile.
 
-        2 **Gameplay**:
-           - Match the top card on the discard pile by **color**, **number**, or **symbol**.
-           - You can play action cards (like Skip, Reverse, and Draw 2) to add strategy.
-           - You can stack **Draw 2** cards on top of each other, forcing the next player to draw multiple cards.
-           - You can also stack **Draw 4** Wild cards on top of each other, increasing the draw count.
+                2 **Gameplay**:
+                   - Match the top card on the discard pile by **color**, **number**, or **symbol**.
+                   - You can play action cards (like Skip, Reverse, and Draw 2) to add strategy.
+                   - You can stack **Draw 2** cards on top of each other, forcing the next player to draw multiple cards.
+                   - You can also stack **Draw 4** Wild cards on top of each other, increasing the draw count.
 
-        3 **Special Rules**:
-           - If you don't have a playable card, draw **up to 3 cards**.
-           - If you still can't play, your turn is over.
-           - If you forget to say "UNO!" when you have one card left, other players can call you out, and you must draw **2 penalty cards**.
+                3 **Special Rules**:
+                   - If you don't have a playable card, draw **up to 3 cards**.
+                   - If you still can't play, your turn is over.
+                   - If you forget to say "UNO!" when you have one card left, other players can call you out, and you must draw **2 penalty cards**.
 
-        4 **Winning**:
-           - The first player to play all their cards wins the round.
+                4 **Winning**:
+                   - The first player to play all their cards wins the round.
 
-        5 **Card Meanings**:
-           - **Skip: Skip the next players turn.
-           - **Reverse: Reverses the turn order.
-           - **Draw 2: The next player draws 2 cards (can be stacked!)
-           - **Wild: Change the color to anything you want.
-           - **Wild Draw: Change the color and force the next player to draw 4 cards (can be stacked!).
-        """; // Bror man får inte stacka draw-cards, source: UNO
+                5 **Card Meanings**:
+                   - **Skip: Skip the next players turn.
+                   - **Reverse: Reverses the turn order.
+                   - **Draw 2: The next player draws 2 cards (can be stacked!).
+                   - **Wild: Change the color to anything you want.
+                   - **Wild Draw: Change the color and force the next player to draw 4 cards (can be stacked!).
+                """;
         rulesText.setText(rules);
     }
 
     // TODO: move to view
-    // @Override
     public void announceWinner(int id, int score) {
         winningPane.setVisible(true);
         winningPane.toFront();
@@ -208,7 +204,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     public void drawCard() {
-        // m.drawCard();
+        // TODO: send draw card message
         updateDisplay();
     }
 
@@ -222,28 +218,20 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     public void endTurn() {
-        // if (m.canEndTurn()) {
-        //     m.endTurn();
-        //     if (!m.haveWinner()) {
-        //         m.nextPlayerTurn();
-                updateHide();
-                buttonDisplayHand.setVisible(true);
-        //     }
-        // }
+        // TODO: send end turn attempt message
     }
 
     public void playCard(int cardIndex) {
-        // m.playCard(cardIndex);
+        // TODO: play card message
         updateDisplay();
     }
 
     // move to view
     public void displayTopCard() {
-        // String startingCard = m.getTopPlayedCard();
-        // if (startingCard != null) {
-        //     ImageView cardView = cc.createCard(startingCard);
-        //     imageStartingCard.setImage(cardView.getImage());
-        // }
+        if (cardInPlay != null) {
+        ImageView cardView = cc.createCard(cardInPlay);
+        imageStartingCard.setImage(cardView.getImage());
+        }
     }
 
     // move to view
@@ -253,47 +241,34 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         displayHands();
     }
 
-    // // move to view
-    public void updateHide() {
-        updateTurnLabel();
-        displayTopCard();
-        hideHands();
-    }
-
     // should go to view
     public void displayHands() {
-        // for (String p : m.getListOfPlayers()) {
-        //     String name = nameOf(p);
-        //     if (nameOf(p).equals(m.getCurrentPlayerName())) {
-        //         displayHand(playersHand.get(name));
-        //     } else {
-        //         displayBackOfHand(playersHand.get(name), handSizeOf(p));
-        //     }
-        // }
+        for (String p : players) {
+            int name = idOf(p);
+            if (idOf(p) == this.playerId) {
+                displayHand(playersHand.get(name));
+            } else {
+                displayBackOfHand(playersHand.get(name), handSizeOf(p));
+            }
+        }
     }
 
     // move to view
     public void displayHand(Pane hand) {
         hand.getChildren().clear(); // Clear existing cards
-        // for (String card : m.getCurrentPlayerHand()) {
-        //     ImageView cardView = cc.createCard(card); // Create an ImageView for each card
-        //     if (hand instanceof VBox) {
-        //         cardView.setRotate(90); // Rotate the card to align vertically
-        //         VBox.setMargin(cardView, new Insets(-30, 0, 0, 0));
-        //     }
-        //     cardView.setOnMouseClicked(event -> {
-        //         int cardIndex = hand.getChildren().indexOf(cardView);
-        //         playCard(cardIndex+1);
-        //         System.out.println("Clicked card at index: " + cardIndex);
-        //     });
-        //     hand.getChildren().add(cardView); // Add the card to the HBox
-        // }
-    }
+        for (String card : this.playerHand) {
 
-    // move to view
-    private void hideHands() {
-        for (String p : players) {
-            displayBackOfHand(playersHand.get(String.valueOf(idOf(p))), handSizeOf(p));
+            ImageView cardView = cc.createCard(card); // Create an ImageView for each card
+            if (hand instanceof VBox) {
+                cardView.setRotate(90); // Rotate the card to align vertically
+                VBox.setMargin(cardView, new Insets(-30, 0, 0, 0));
+            }
+            cardView.setOnMouseClicked(event -> {
+                int cardIndex = hand.getChildren().indexOf(cardView);
+                playCard(cardIndex + 1);
+                System.out.println("Clicked card at index: " + cardIndex);
+            });
+            hand.getChildren().add(cardView); // Add the card to the HBox
         }
     }
 
@@ -303,50 +278,17 @@ public class GameViewController /* implements GameListener, ModelListener */ {
             ImageView cardBack = cc.createCardBack();
             if (hand instanceof VBox) {
                 // cardView.setFitWidth(CARD_HEIGHT); // Flip width and height
-                //cardView.setFitHeight(CARD_WIDTH);
+                // cardView.setFitHeight(CARD_WIDTH);
                 cardBack.setRotate(90); // Rotate the card to align vertically
                 VBox.setMargin(cardBack, new Insets(-30, 0, 0, 0));
-
 
             }
             hand.getChildren().add(cardBack);
         }
     }
-/*
-    // move to view
-    public ImageView createCard(String card) {
 
-        String[] seperateCardStrings = card.split("\\s");
-        String imagePath = "/ui/resources/unocards/" + seperateCardStrings[0] + "_" + seperateCardStrings[1] + ".png";
-        return getCardImage(imagePath);
-    }
-
-    private ImageView getCardImage(String imagePath) {
-        ImageView imageView = new ImageView(
-                new Image(getClass().getResourceAsStream(imagePath)));
-        imageView.setFitHeight(CARD_HEIGHT); // Adjust these constants as needed
-        imageView.setFitWidth(CARD_WIDTH);
-        imageView.setSmooth(true);
-
-        return imageView;
-    }
-
-    private ImageView createCardBack() {
-        String imagePath = "/ui/resources/unocards/Uno.png";
-        return getCardImage(imagePath);
-    }
-
-
- */
-    // @Override
-    // public void requestPlayers(int lower, int upper) {
-    //     m.addPlayer("Player 1");
-    //     m.addPlayer("Player 2");
-    // }
-
-    // @Override
     public void takePlayerTurn() {
-        updateHide();
+        updateDisplay();
     }
 
     // TODO: implement gui for these
@@ -367,6 +309,8 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     public void requestWildColor() {
         // temporary termianl input
         // TODO: implement gui
+        // need winidow popup with 4 buttons, one for each color
+        //button "COLOR" calls setWildColor("COLOR") with "COLOR" to be the actual color name as string eg. "red"
     }
 
     public void addClientController(GameClientController gcc) {
@@ -382,16 +326,25 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         System.out.println("Setting id to: " + playerId);
     }
 
-
+    // gameStateMessage expected to contain <key>:<value>
+    // "currentPlayer":<Id of current player> -- singleton array value
+    // "listOfPlayers":<[] Ids of all players>
+    // "topCard":<card currently in play> -- singleton array value
+    // --for each player in game--
+    // "playerId":<[] hand of player>
     public void recieveServerData(Map<String, String[]> dataMap) {
         this.currentPlayer = dataMap.get("currentPlayer")[0];
-        players.clear();
-        for (Entry<String, String[]> e : dataMap.entrySet()) {
-            players.add(e.getKey());
-            if ((""+playerId).equals(e.getKey())) {
-                playerHand = e.getValue();
-            }
-        }
+        players = List.of(dataMap.get("listOfPlayers"));
+        playerHand = dataMap.get(String.valueOf(this.playerId));
+        cardInPlay = dataMap.get("topCard")[0];
     }
 
+    public int numPlayersConnected() {
+        return numConnectedPlayers;
+    }
+
+
+    public void setNumPlayersConnected(int n) {
+        this.numConnectedPlayers = n;
+    }
 }

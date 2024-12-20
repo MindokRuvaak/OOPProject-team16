@@ -211,4 +211,8 @@ public class Game implements SpecialCardLogic {
         getTopPlayedCard().setWildColor(c);
     }
 
+    public Card[] getPlayerHandById(int playerId) {
+        return ph.getPlayerById(playerId).getHand();
+    }
+
 }

@@ -66,8 +66,8 @@ public class ControllerTerminal implements ModelListener, GameListener {
     private void providePlayers(int n) {
         for (int i = 0; i < n; i++) {
             v.requestPlayerName(i);
-            int id = Integer.parseInt(input.nextLine());
-            addPlayer(id);
+            String id = input.nextLine();
+            addPlayer(Integer.parseInt(id));
         }
     }
 

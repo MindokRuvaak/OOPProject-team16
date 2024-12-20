@@ -57,7 +57,6 @@ public class ConnectionManager {
         }
     }
 
-
     public void closeConnections() {
         logger.info("Closing all client connections...");
         for (ClientManager client : clients) {
@@ -75,5 +74,9 @@ public class ConnectionManager {
         clients.remove(clientManager);
         logger.info(String.format("Player %d disconnected. Connection closed. Total players: %d.",
             clientManager.getClientId(), clients.size()));
+    }
+
+    public int numConnected() {
+        return clients.size();
     }
 }

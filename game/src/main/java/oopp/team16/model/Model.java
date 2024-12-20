@@ -125,4 +125,8 @@ public class Model { // maybe change name ?ModelGameSetup?
                 break;
         }
     }
+
+    public String[] getPlayerHandById(int playerId){
+        return toStrings(game.getPlayerHandById(playerId));
+    }
 }
