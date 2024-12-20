@@ -69,7 +69,6 @@ public class MainMenuController implements GameStartListener{
 
             gameClientController.pressedStart();
 
-
         }
         // else
         // errorS.setText("cannot start game");

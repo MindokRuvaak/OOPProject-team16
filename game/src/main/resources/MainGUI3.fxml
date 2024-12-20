@@ -113,10 +113,10 @@
     <AnchorPane fx:id="paneColour" layoutX="409.0" layoutY="372.0" prefHeight="200.0" prefWidth="200.0">
       <children>
         <Label layoutX="58.0" layoutY="18.0" text="choose a colour" />
-        <Button fx:id="buttonGreen" layoutX="31.0" layoutY="56.0" mnemonicParsing="false" text="Green" textFill="#00ff33" />
-        <Button fx:id="buttonYellow" layoutX="117.0" layoutY="57.0" mnemonicParsing="false" text="Yellow" textFill="#fbff00" />
-        <Button fx:id="buttonBlue" layoutX="31.0" layoutY="122.0" mnemonicParsing="false" text="Blue" textFill="#0037ff" />
-        <Button fx:id="buttonRed" layoutX="120.0" layoutY="120.0" mnemonicParsing="false" text="Red" textFill="RED" />
+        <Button fx:id="buttonGreen" layoutX="31.0" layoutY="56.0" mnemonicParsing="false" onAction="#provideGreen" text="Green" textFill="#00ff33" />
+        <Button fx:id="buttonYellow" layoutX="117.0" layoutY="57.0" mnemonicParsing="false" onAction="#provideYellow" text="Yellow" textFill="#fbff00" />
+        <Button fx:id="buttonBlue" layoutX="31.0" layoutY="122.0" mnemonicParsing="false" onAction="#provideBlue" text="Blue" textFill="#0037ff" />
+        <Button fx:id="buttonRed" layoutX="120.0" layoutY="120.0" mnemonicParsing="false" onAction="#provideRed" text="Red" textFill="RED" />
       </children>
     </AnchorPane>
   </children>

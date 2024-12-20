@@ -134,17 +134,33 @@ public class GameViewController /* implements GameListener, ModelListener */ {
             uno();
         });
         buttonBlue.setOnAction(event -> {
-            paneColour.setVisible(false);
+            provideBlue();
         });
         buttonGreen.setOnAction(event -> {
-            paneColour.setVisible(false);
+           provideGreen();
         });
         buttonYellow.setOnAction(event -> {
-            paneColour.setVisible(false);
+            provideYellow();
         });
         buttonRed.setOnAction(event -> {
-            paneColour.setVisible(false);
+            provideRed();
         });
+    }
+    public void provideBlue(){
+        clientController.provideBlue();
+        paneColour.setVisible(false);
+    }
+    public void provideGreen(){
+        clientController.provideGreen();
+        paneColour.setVisible(false);
+    }
+    public void provideYellow(){
+        clientController.provideYellow();
+        paneColour.setVisible(false);
+    }
+    public void provideRed(){
+        clientController.provideRed();
+        paneColour.setVisible(false);
     }
 
 
