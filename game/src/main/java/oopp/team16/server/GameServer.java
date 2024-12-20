@@ -18,6 +18,7 @@ public class GameServer implements ModelListener {
     private Model model;
     private ServerMessageHandler messageHandler;
     private boolean gameStarted;
+    private boolean[] playersReady;
 
     public GameServer(int port, int maxPlayers) {
         this.port = port;
@@ -62,14 +63,30 @@ public class GameServer implements ModelListener {
     }
 
     public synchronized void startGame() {
-        if (!gameStarted) {
+        if ((!gameStarted) && allReady()) {
             logger.info("Starting the game...");
             model.initGame();
-            model.startGame();
-            broadcastGameState();
+            model.start();
             logger.info("Game has started successfully.");
             gameStarted = true;
+            broadcastGameStart();
+            broadcastGameState();
         }
+    }
+
+    private boolean allReady() {
+        for (boolean b : playersReady) {
+            if(!b) {
+                System.out.println("notReady");
+                return false;
+            }
+        }
+        System.out.println("allReady");
+        return true;
+    }
+
+    private void broadcastGameStart() {
+        broadcastMessage(new GameMessage("start"));
     }
 
     public void processClientMessage(GameMessage message) {
@@ -162,7 +179,7 @@ public class GameServer implements ModelListener {
 
     @Override
     public void requestWildColor() {
-        //TODO: current player to choose color
+        // TODO: current player to choose color
     }
 
     public void ping() {
@@ -173,5 +190,28 @@ public class GameServer implements ModelListener {
     public void pong() {
         System.out.println("pong");
     }
+
+    public void setPlayerReady(int i) {
+        System.out.println("player ready: "+ i);
+        this.playersReady[i] = true;
+    }
+
+	public void addNonReadyPlayer() {
+        System.out.println("new player connected");
+        int n = connectionManager.numConnected();
+        if(this.playersReady == null) {
+            this.playersReady = new boolean[n];
+        } else {
+            boolean[] newReady = new boolean[n];
+            for (int i = 0; i < n; i++) {
+                if (i < this.playersReady.length) {
+                    newReady[i] = this.playersReady[i];
+                } else {
+                    newReady[i] = false;
+                }
+            }
+            this.playersReady = newReady;
+        }
+	}
 
 }

@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import oopp.team16.GameStartListener;
 import oopp.team16.server.GameClientController;
 import oopp.team16.view.CreateCardView;
 
@@ -60,6 +61,19 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private TextArea rulesText;
     @FXML
     private Label labelUno;
+    @FXML
+    private Button buttonBlue;
+    @FXML
+    private Button buttonYellow;
+    @FXML
+    private Button buttonGreen;
+    @FXML
+    private Button buttonRed;
+    @FXML
+    private AnchorPane paneColour;
+    @FXML
+    private Label labelBadMove;
+
 
     private final Map<Integer, Pane> playersHand = new HashMap<>();
     private final List<Pane> paneList = new ArrayList<>();
@@ -68,6 +82,8 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private String currentPlayer;
     private List<String> players = new ArrayList<>();
     CreateCardView cc;
+    private boolean gameStarted;
+    // private GameStartListener gameStartListener;
 
     private GameClientController clientController; // WE DO A LITTLE BIT OF TESTING
     private int numConnectedPlayers;
@@ -75,11 +91,11 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private String cardInPlay;
 
     public void initialize() {
-        // m.addListener(this);
-        // m.initGame();
+        this.gameStarted = false;
         winningPane.setVisible(false);
         buttonDisplayHand.setVisible(false);
         rulesPane.setVisible(false);
+        paneColour.setVisible(false);
         loadGameRules();
         cc = new CreateCardView();
         paneList.add(player1Hand);
@@ -87,17 +103,16 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         paneList.add(player3Hand);
         paneList.add(player4Hand);
 
-        buttonStart.setOnAction(event -> {// this button will be redundant?
-            buttonStart.setVisible(false);
-            setPlayers();
-            buttonDisplayHand.setVisible(true);
-            // m.start();
-            updateDisplay();
-        });
-        buttonDisplayHand.setOnAction(event -> {
-            updateDisplay();
-            buttonDisplayHand.setVisible(false);
-        });
+        // buttonStart.setOnAction(event -> {// this button will be redundant?
+        // buttonStart.setVisible(false);
+        // setPlayers();
+        // buttonDisplayHand.setVisible(true);
+        // updateDisplay();
+        // });
+        // buttonDisplayHand.setOnAction(event -> {
+        // updateDisplay();
+        // buttonDisplayHand.setVisible(false);
+        // });
 
         endTurnButton.setOnAction(event -> {
             endTurn();
@@ -116,14 +131,42 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         buttonUno.setOnAction(event -> {
             uno();
         });
+        buttonBlue.setOnAction(event -> {
+            provideBlue();
+        });
+        buttonGreen.setOnAction(event -> {
+           provideGreen();
+        });
+        buttonYellow.setOnAction(event -> {
+            provideYellow();
+        });
+        buttonRed.setOnAction(event -> {
+            provideRed();
+        });
+    }
+    public void provideBlue(){
+        clientController.provideBlue();
+        paneColour.setVisible(false);
+    }
+    public void provideGreen(){
+        clientController.provideGreen();
+        paneColour.setVisible(false);
+    }
+    public void provideYellow(){
+        clientController.provideYellow();
+        paneColour.setVisible(false);
+    }
+    public void provideRed(){
+        clientController.provideRed();
+        paneColour.setVisible(false);
     }
 
+
+
     public void setPlayers() {
-        // int n = 0;
         for (int i = 0; i < players.size(); i++) {
             int[] ps = idsOf(players.toArray(new String[0]));
             playersHand.put(ps[i], paneList.get(i));
-            // n++;
         }
     }
 
@@ -204,41 +247,51 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     public void drawCard() {
-        // TODO: send draw card message
-        updateDisplay();
+        if (gameStarted) {
+            // TODO: send draw card message
+            updateDisplay();
+        }
     }
 
-    // @Override
     public void startPlayerTurn() {
-        updateTurnLabel();
+        if (gameStarted) {
+            updateTurnLabel();
+        }
     }
 
     private void updateTurnLabel() {
-        labelTurn.setText(currentPlayer + "'s turn");
+        // labelCurrentPlayer.setText(currentPlayer + "'s turn");
     }
 
     public void endTurn() {
         // TODO: send end turn attempt message
+        if (gameStarted) {
+
+        }
     }
 
     public void playCard(int cardIndex) {
         // TODO: play card message
-        updateDisplay();
+        if (gameStarted) {
+            updateDisplay();
+        }
     }
 
     // move to view
     public void displayTopCard() {
         if (cardInPlay != null) {
-        ImageView cardView = cc.createCard(cardInPlay);
-        imageStartingCard.setImage(cardView.getImage());
+            ImageView cardView = cc.createCard(cardInPlay);
+            imageStartingCard.setImage(cardView.getImage());
         }
     }
 
     // move to view
     public void updateDisplay() {
-        updateTurnLabel();
-        displayTopCard();
-        displayHands();
+        if (gameStarted) {
+            updateTurnLabel();
+            displayTopCard();
+            displayHands();
+        }
     }
 
     // should go to view
@@ -295,8 +348,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
 
     // @Override
     public void badMove() {
-        // TODO: implement gui
-        System.out.println("cant play that card");
+        labelBadMove.setText("cant play that card");
     }
 
     // @Override
@@ -309,6 +361,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     public void requestWildColor() {
         // temporary termianl input
         // TODO: implement gui
+        paneColour.setVisible(true);
         // need winidow popup with 4 buttons, one for each color
         //button "COLOR" calls setWildColor("COLOR") with "COLOR" to be the actual color name as string eg. "red"
     }
@@ -323,18 +376,21 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     private void printGameState() {
-        System.out.println("\nthisPlayerID: " + playerId + 
-            "\nList of players: " + Arrays.toString(players.toArray(new String[0])) + 
-            "\nthis player cards: " + playersHand + 
-            "\ncurrent card: " + cardInPlay + 
-            "\ncurrent player: " + currentPlayer + 
-            "\nplayers connected: " + numConnectedPlayers
-            );
+        System.out.println("\nthisPlayerID: " + playerId +
+                "\nList of players: " + Arrays.toString(players.toArray(new String[0])) +
+                "\nthis player cards: " + playersHand +
+                "\ncurrent card: " + cardInPlay +
+                "\ncurrent player: " + currentPlayer +
+                "\nplayers connected: " + numConnectedPlayers);
     }
 
     public void setPlayerId(int id) {
         playerId = id;
         System.out.println("Setting id to: " + playerId);
+    }
+
+    public int getPlayerId() {
+        return this.playerId;
     }
 
     // gameStateMessage expected to contain <key>:<value>
@@ -345,17 +401,23 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     // "playerId":<[] hand of player>
     public void recieveServerData(Map<String, String[]> dataMap) {
         this.currentPlayer = dataMap.get("currentPlayer")[0];
-        players = List.of(dataMap.get("listOfPlayers"));
-        playerHand = dataMap.get(String.valueOf(this.playerId));
-        cardInPlay = dataMap.get("topCard")[0];
+        this.players = List.of(dataMap.get("listOfPlayers"));
+        this.playerHand = dataMap.get(String.valueOf(this.playerId));
+        this.cardInPlay = dataMap.get("topCard")[0];
     }
 
     public int numPlayersConnected() {
         return numConnectedPlayers;
     }
 
-
     public void setNumPlayersConnected(int n) {
         this.numConnectedPlayers = n;
     }
+
+    public void startGame() {
+        this.gameStarted = true;
+        setPlayers();
+        // updateDisplay();
+    }
+
 }
