@@ -53,6 +53,10 @@ public class ServerMessageHandler {
         }
     }
 
+    private void handleGameWin(GameMessage message) {
+        // gameServer.broadCastWinner()// tror detta görs i 
+    }
+
     private void handlePlayerConnect() {
         gameServer.broadCastNumberOfConnected();
     }
@@ -70,7 +74,8 @@ public class ServerMessageHandler {
 
     // får meddelande från playcard-knapp, antagligen då när man trycker på ett
     // kort. denna
-    // TODO: HandlePlayCard i server ska inte ta emot number, den ska väl ta emot object?
+    // TODO: HandlePlayCard i server ska inte ta emot number, den ska väl ta emot
+    // object?
     private void handlePlayCard(GameMessage message) {
         Object cardData = message.getData().get("cardPlayed");
         int sender = message.getSender();
