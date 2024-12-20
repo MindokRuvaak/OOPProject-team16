@@ -9,6 +9,11 @@ import oopp.team16.model.gameLogic.Deck;
 import oopp.team16.model.gameLogic.GameRules;
 import oopp.team16.model.gameLogic.Player;
 
+/**
+ * The Game class represents the main logic for the Uno game.
+ * It manages the game loop, players, deck, and special game actions.
+ * It implements SpecialCardLogic to handle special card actions during gameplay
+ */
 public class Game implements SpecialCardLogic {
 
     private final ArrayList<GameListener> listeners;
@@ -25,6 +30,11 @@ public class Game implements SpecialCardLogic {
         this.ph = new PlayerHandler();
     }
 
+    /**
+     * Initialize the players
+     *
+     * @param players A collection of players participating in the game.
+     */
     void init(Collection<Player> players) {
         ph.init(players);
         dh.init(ph.getPlayers(), startingHandSize);
