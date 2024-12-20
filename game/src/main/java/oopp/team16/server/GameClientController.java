@@ -8,10 +8,12 @@ public class GameClientController {
 
     private GameClient gameClient;
     private final ClientMessageHandler messageHandler;
+    private final GameViewController viewController;
 
     public GameClientController(GameViewController viewController) {
-        this.messageHandler = new ClientMessageHandler(viewController);
-        viewController.addClientController(this);
+        this.viewController = viewController;
+        this.messageHandler = new ClientMessageHandler(this.viewController);
+        this.viewController.addClientController(this);
     }
 
     // kopplas till join-knappen
@@ -37,45 +39,44 @@ public class GameClientController {
     }
     // TODO: FIXA SENDER FÖR ALLA DE HÄR ?
     public void gameStart() {
-        gameClient.sendMessage(new GameMessage("gameStart"));
+        gameClient.sendMessage(new GameMessage("gameStart", viewController.getPlayerId()));
     }
 
     public void drawCard() {
-        gameClient.sendMessage(new GameMessage("drawCard"));
+        gameClient.sendMessage(new GameMessage("drawCard", viewController.getPlayerId()));
     }
 
     public void playCard(int cardId, String color) {
-        GameMessage playCardMessage = new GameMessage("playCard");
+        GameMessage playCardMessage = new GameMessage("playCard", viewController.getPlayerId());
         playCardMessage.addData("cardNumber", new String[] { String.valueOf(cardId) }); // Example data
         playCardMessage.addData("color", new String[] { color });
         this.gameClient.sendMessage(playCardMessage);
     }
 
     public void endTurn() {
-        GameMessage message = new GameMessage("endTurn");
-        message.setSender(0);
+        GameMessage message = new GameMessage("endTurn", viewController.getPlayerId());
         this.gameClient.sendMessage(message);
     }
 
     public void pressedStart() {
-        this.gameClient.sendMessage(new GameMessage("gameStart"));
+        this.gameClient.sendMessage(new GameMessage("gameStart", viewController.getPlayerId()));
     }
 
     public void sayUno() {
-        this.gameClient.sendMessage(new GameMessage("sayUno"));
+        this.gameClient.sendMessage(new GameMessage("sayUno", viewController.getPlayerId()));
     }
 
     private void connected() {
-        this.gameClient.sendMessage(new GameMessage("playerConnected"));
+        this.gameClient.sendMessage(new GameMessage("playerConnected", viewController.getPlayerId()));
     }
 
     public void playerDisconnect() {
-        gameClient.sendMessage(new GameMessage("playerDisconnect"));
+        gameClient.sendMessage(new GameMessage("playerDisconnect", viewController.getPlayerId()));
     }
 
     public void ping() {
         // System.out.println(gameClient == null);
-        this.gameClient.sendMessage(new GameMessage("ping"));
+        this.gameClient.sendMessage(new GameMessage("ping", viewController.getPlayerId()));
     }
 
 }

@@ -17,7 +17,7 @@ public class ServerMessageHandler {
         switch (message.getType()) {
 
             case "gameStart":
-                handleGameStart();
+                handleGameStart(message.getSender());
                 break;
 
             case "drawCard":
@@ -59,10 +59,12 @@ public class ServerMessageHandler {
 
     private void handlePlayerConnect() {
         gameServer.broadCastNumberOfConnected();
+        gameServer.addNonReadyPlayer();
     }
 
     // får meddelande från play-knappen i lobbyn
-    private void handleGameStart() {
+    private void handleGameStart(int i) {
+        gameServer.setPlayerReady(i);
         gameServer.startGame();
     }
 

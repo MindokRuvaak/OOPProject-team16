@@ -39,6 +39,9 @@ public class ClientMessageHandler {
                 viewController.setNumPlayersConnected(readNum(message.getData()));
                 break;
 
+            case "start":
+                viewController.startGame();
+                break;
             case "ping":
                 pong();
                 break;

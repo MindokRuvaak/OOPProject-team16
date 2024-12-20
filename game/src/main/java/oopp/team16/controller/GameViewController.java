@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import oopp.team16.GameStartListener;
 import oopp.team16.server.GameClientController;
 import oopp.team16.view.CreateCardView;
 
@@ -68,6 +69,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private String currentPlayer;
     private List<String> players = new ArrayList<>();
     CreateCardView cc;
+    private GameStartListener gameStartListener;
 
     private GameClientController clientController; // WE DO A LITTLE BIT OF TESTING
     private int numConnectedPlayers;
@@ -86,12 +88,13 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         paneList.add(player2Hand);
         paneList.add(player3Hand);
         paneList.add(player4Hand);
+        setPlayers();
+        updateDisplay();
 
         buttonStart.setOnAction(event -> {// this button will be redundant?
             buttonStart.setVisible(false);
             setPlayers();
             buttonDisplayHand.setVisible(true);
-            // m.start();
             updateDisplay();
         });
         buttonDisplayHand.setOnAction(event -> {
@@ -229,8 +232,8 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     // move to view
     public void displayTopCard() {
         if (cardInPlay != null) {
-        ImageView cardView = cc.createCard(cardInPlay);
-        imageStartingCard.setImage(cardView.getImage());
+            ImageView cardView = cc.createCard(cardInPlay);
+            imageStartingCard.setImage(cardView.getImage());
         }
     }
 
@@ -310,7 +313,8 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         // temporary termianl input
         // TODO: implement gui
         // need winidow popup with 4 buttons, one for each color
-        //button "COLOR" calls setWildColor("COLOR") with "COLOR" to be the actual color name as string eg. "red"
+        // button "COLOR" calls setWildColor("COLOR") with "COLOR" to be the actual
+        // color name as string eg. "red"
     }
 
     public void addClientController(GameClientController gcc) {
@@ -323,18 +327,21 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     private void printGameState() {
-        System.out.println("\nthisPlayerID: " + playerId + 
-            "\nList of players: " + Arrays.toString(players.toArray(new String[0])) + 
-            "\nthis player cards: " + playersHand + 
-            "\ncurrent card: " + cardInPlay + 
-            "\ncurrent player: " + currentPlayer + 
-            "\nplayers connected: " + numConnectedPlayers
-            );
+        System.out.println("\nthisPlayerID: " + playerId +
+                "\nList of players: " + Arrays.toString(players.toArray(new String[0])) +
+                "\nthis player cards: " + playersHand +
+                "\ncurrent card: " + cardInPlay +
+                "\ncurrent player: " + currentPlayer +
+                "\nplayers connected: " + numConnectedPlayers);
     }
 
     public void setPlayerId(int id) {
         playerId = id;
         System.out.println("Setting id to: " + playerId);
+    }
+
+    public int getPlayerId(){
+        return this.playerId;
     }
 
     // gameStateMessage expected to contain <key>:<value>
@@ -354,8 +361,15 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         return numConnectedPlayers;
     }
 
-
     public void setNumPlayersConnected(int n) {
         this.numConnectedPlayers = n;
+    }
+
+    public void startGame() {
+        gameStartListener.startGame();
+    }
+
+    public void addListener(GameStartListener gameStartListener) {
+        this.gameStartListener = gameStartListener;
     }
 }

@@ -7,10 +7,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="mainPane" prefHeight="720" prefWidth="1080" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" >
+<AnchorPane fx:id="mainPane" prefHeight="615.0" prefWidth="1080" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <AnchorPane fx:id="rulesPane" layoutX="377.0" layoutY="25.0" opacity="0.02" prefHeight="566.0" prefWidth="334.0">
          <children>
@@ -53,7 +53,7 @@
     </Button>
       <HBox fx:id="player2Hand" prefHeight="90.0" prefWidth="800.0" />
       <ImageView fx:id="imageStartingCard" fitHeight="90.0" fitWidth="57.0" layoutX="434.0" layoutY="338.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="endTurnButton" layoutX="492.0" layoutY="242.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn" > 
+      <Button fx:id="endTurnButton" layoutX="492.0" layoutY="242.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn"> 
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
@@ -85,19 +85,12 @@
       <Label fx:id="labelTurn" layoutX="511.0" layoutY="307.0" text="Label" />
       <Label layoutX="170.0" layoutY="519.0" text="Player 1" />
       <Label layoutX="215.0" layoutY="155.0" text="Player 2" />
-      <Button fx:id="rulesButton" layoutX="1028.0" layoutY="4.0" mnemonicParsing="false" onAction="#openRulesView" text="Rules" > 
+      <Button fx:id="rulesButton" layoutX="1009.0" layoutY="2.0" mnemonicParsing="false" onAction="#openRulesView" prefHeight="17.0" prefWidth="57.0" text="Rules"> 
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
-         <graphic>
-            <ImageView fitHeight="63.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@ui/resources/rulesButton.png" />
-               </image>
-            </ImageView>
-         </graphic>
       </Button>
-      <Button fx:id="buttonDisplayHand" layoutX="492.0" layoutY="199.0" mnemonicParsing="false" onAction="#initialize" text="displayHand" > 
+      <Button fx:id="buttonDisplayHand" layoutX="492.0" layoutY="199.0" mnemonicParsing="false" onAction="#initialize" text="displayHand"> 
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
@@ -109,5 +102,13 @@
             </ImageView>
          </graphic>
       </Button>
+      <VBox fx:id="player3Hand" layoutY="60.0" prefHeight="500.0" prefWidth="60.0" />
+      <ImageView fitHeight="81.0" fitWidth="76.0" layoutX="76.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@ui/resources/avatars/avatar7.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="87.0" layoutY="250.0" text="Player 3" />
+      <Label fx:id="labelUno" layoutX="740.0" layoutY="191.0" textFill="#00ff22" />
   </children>
 </AnchorPane>
