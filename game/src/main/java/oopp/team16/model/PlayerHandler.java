@@ -6,6 +6,10 @@ import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.server.GameClient;
 
+/**
+ * Manages players in the game.
+ * Handles for example player order and player turns.
+ */
 class PlayerHandler {
     private final LinkedList<Player> players;
     private final Map<GameClient, Player> clientToPlayerMap; // Maps GameClient to Player

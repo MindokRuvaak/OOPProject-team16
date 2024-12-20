@@ -7,6 +7,12 @@ import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
+
+/**
+ * The Model class serves as the core game logic manager.
+ * It handles game setup, player management, and coordinates actions between the game and listeners.
+ * It manages the creation of the deck, player actions, and communicates with listeners for updates.
+ */
 public class Model { // maybe change name ?ModelGameSetup?
     private List<ModelListener> listeners;
     private final Game game;

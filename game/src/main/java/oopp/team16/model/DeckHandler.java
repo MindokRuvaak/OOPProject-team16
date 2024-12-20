@@ -8,10 +8,19 @@ import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Card;
 import oopp.team16.model.gameLogic.Cards.SpecialCard;
 
+/**
+ * Manages the deck of cards in the game.
+ */
 public class DeckHandler {
     private final Deck deck;
     private final Stack<Card> playedCards;
 
+    /**
+     *  Constructor for the DeckHandler class.
+     *  Shuffles and initializes the deck and provides a discard pile.
+     *
+     * @param deck The deck of card to be used in the game.
+     */
     public DeckHandler(Deck deck) {
         this.deck = deck;
         this.deck.shuffle();
@@ -24,6 +33,12 @@ public class DeckHandler {
         return drawn;
     }
 
+    /**
+     *  Gives cards to all players and puts the first card in play.
+     *
+     * @param players The collection of players in the game.
+     * @param numCards The number of card each player starts with.
+     */
     void init(Collection<Player> players, int numCards) {
         for (int i = 0; i < numCards; i++) {
             givePlayersCard(players); // give all players a starting hand
