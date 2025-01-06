@@ -26,5 +26,7 @@ to the configuration for the AppWindow launcher.
 If you (a peer-reviewer) have issues running the code or encounter a bug please do create a new issue here on git <3
 
 ### known issues
-If you use AppWindow.java to start the game, there will be exceptions printed in the terminal, but the game works. We are working on fixing this.
-Using AppWIndow, Players are labeled incorrectly, "player 1" is named "player 2" and vice versa.
+it is possible to start a server and connect multiple people to it. Once more than two clients have connected to the server it is possible to start a game, this is done when every connected player has pressed start. Pressing start will send the client to the game board but the game won't start untill all players have entered the game board. 
+The players are able to recieve the relevant game info from the server but there will occur NullPointerException s which we don't understand and did not have time to figure out before the deadline. 
+
+the GUI view has had alot of it's ability to play stripped from it in preparation for the multiplayer implementation and thus it is not possible to play the game with this.

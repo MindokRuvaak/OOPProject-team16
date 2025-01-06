@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="mainPane" prefHeight="720" prefWidth="1080" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" >
+<AnchorPane fx:id="mainPane" prefHeight="720" prefWidth="1080" stylesheets="@MainGUIstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <AnchorPane fx:id="rulesPane" layoutX="377.0" layoutY="25.0" opacity="0.02" prefHeight="566.0" prefWidth="334.0">
          <children>
@@ -39,7 +38,7 @@
     </Label>
     <ImageView fx:id="imageViewWishColor" fitHeight="40.0" fitWidth="40.0" layoutX="372.0" layoutY="278.0" pickOnBounds="true" preserveRatio="true" />
     <HBox fx:id="hboxInfo" alignment="CENTER" layoutX="217.0" layoutY="421.0" prefHeight="25.0" prefWidth="338.0" />
-    <Button fx:id="buttonStart" layoutX="493.0" layoutY="119.0" mnemonicParsing="false" onAction="#initialize" text="START">
+    <Button fx:id="buttonStart" layoutX="370.0" layoutY="117.0" mnemonicParsing="false" onAction="#initialize" text="START">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
@@ -53,7 +52,7 @@
     </Button>
       <HBox fx:id="player2Hand" prefHeight="90.0" prefWidth="800.0" />
       <ImageView fx:id="imageStartingCard" fitHeight="90.0" fitWidth="57.0" layoutX="434.0" layoutY="338.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="endTurnButton" layoutX="492.0" layoutY="242.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn" > 
+      <Button fx:id="endTurnButton" layoutX="492.0" layoutY="242.0" mnemonicParsing="false" onAction="#endTurn" text="End Turn">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
@@ -85,7 +84,7 @@
       <Label fx:id="labelTurn" layoutX="511.0" layoutY="307.0" text="Label" />
       <Label layoutX="170.0" layoutY="519.0" text="Player 1" />
       <Label layoutX="215.0" layoutY="155.0" text="Player 2" />
-      <Button fx:id="rulesButton" layoutX="1028.0" layoutY="4.0" mnemonicParsing="false" onAction="#openRulesView" text="Rules" > 
+      <Button fx:id="rulesButton" layoutX="970.0" layoutY="7.0" mnemonicParsing="false" onAction="#openRulesView" prefHeight="51.0" prefWidth="82.0" text="Rules">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
@@ -97,7 +96,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="buttonDisplayHand" layoutX="492.0" layoutY="199.0" mnemonicParsing="false" onAction="#initialize" text="displayHand" > 
+      <Button fx:id="buttonDisplayHand" layoutX="492.0" layoutY="199.0" mnemonicParsing="false" onAction="#initialize" text="displayHand">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
@@ -109,5 +108,19 @@
             </ImageView>
          </graphic>
       </Button>
+      <AnchorPane fx:id="paneColour" layoutX="409.0" layoutY="372.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Label layoutX="58.0" layoutY="18.0" text="choose a colour" />
+            <Button fx:id="buttonGreen" layoutX="31.0" layoutY="56.0" mnemonicParsing="false" onAction="#provideGreen" text="Green" textFill="#00ff33" />
+            <Button fx:id="buttonYellow" layoutX="117.0" layoutY="57.0" mnemonicParsing="false" onAction="#provideYellow" text="Yellow" textFill="#fbff00" />
+            <Button fx:id="buttonBlue" layoutX="31.0" layoutY="122.0" mnemonicParsing="false" onAction="#provideBlue" text="Blue" textFill="#0037ff" />
+            <Button fx:id="buttonRed" layoutX="120.0" layoutY="120.0" mnemonicParsing="false" onAction="#provideRed" text="Red" textFill="RED" />
+         </children>
+      </AnchorPane>
+      <Label fx:id="labelBadMove" layoutX="762.0" layoutY="299.0" textFill="#f50505">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
   </children>
 </AnchorPane>

@@ -26,7 +26,6 @@ public class GameView {
     private void initializeUI() {
         try {
             FXMLLoader loader;
-
             // Load different FXML files depending on the number of players
             switch (playerCount) {
                 case 2 -> loader = new FXMLLoader(getClass().getResource("/MainGUI.fxml"));
