@@ -65,7 +65,8 @@ public class GameServer implements ModelListener {
         if (!gameStarted) {
             logger.info("Starting the game...");
             model.initGame();
-            model.startGame();
+            model.start();
+            printGameState();
             broadcastGameState();
             logger.info("Game has started successfully.");
             gameStarted = true;
@@ -166,12 +167,16 @@ public class GameServer implements ModelListener {
     }
 
     public void ping() {
-        broadcastMessage(new GameMessage("ping"));
         broadcastGameState();
+        broadcastMessage(new GameMessage("ping"));
     }
 
     public void pong() {
         System.out.println("pong");
+    }
+
+    public void printGameState() {
+        model.printState();
     }
 
 }

@@ -20,6 +20,6 @@ public class AppTerminal {
         m.addListener(c);
         
         m.initGame();
-        m.startGame();
+        m.startGameLoop();
     }
 }

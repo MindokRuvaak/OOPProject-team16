@@ -65,7 +65,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private final List<Pane> paneList = new ArrayList<>();
     private int playerId;
     private String[] playerHand;
-    private String currentPlayer;
+    private int currentPlayer;
     private List<String> players = new ArrayList<>();
     CreateCardView cc;
 
@@ -75,8 +75,6 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     private String cardInPlay;
 
     public void initialize() {
-        // m.addListener(this);
-        // m.initGame();
         winningPane.setVisible(false);
         buttonDisplayHand.setVisible(false);
         rulesPane.setVisible(false);
@@ -91,8 +89,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
             buttonStart.setVisible(false);
             setPlayers();
             buttonDisplayHand.setVisible(true);
-            // m.start();
-            updateDisplay();
+            // updateDisplay();
         });
         buttonDisplayHand.setOnAction(event -> {
             updateDisplay();
@@ -137,7 +134,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         return ids;
     }
 
-    // [0] [1] [2] [3] [4]
+    // ------------------------ [0] ------ [1] -- [2] [3] ------ [4]
     // player object toString: "Player " + id + " - Cards: " + handSize;
     private int idOf(String player) {
         return Integer.parseInt(player.split(" ")[1]);
@@ -214,7 +211,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     private void updateTurnLabel() {
-        labelTurn.setText(currentPlayer + "'s turn");
+        labelTurn.setText("" + (currentPlayer+1) + "'s turn");
     }
 
     public void endTurn() {
@@ -229,8 +226,8 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     // move to view
     public void displayTopCard() {
         if (cardInPlay != null) {
-        ImageView cardView = cc.createCard(cardInPlay);
-        imageStartingCard.setImage(cardView.getImage());
+            ImageView cardView = cc.createCard(cardInPlay);
+            imageStartingCard.setImage(cardView.getImage());
         }
     }
 
@@ -238,8 +235,13 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     public void updateDisplay() {
         updateTurnLabel();
         displayTopCard();
+        // updateHands();
         displayHands();
     }
+
+    // private void updateHands() {
+        
+    // }
 
     // should go to view
     public void displayHands() {
@@ -310,7 +312,8 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         // temporary termianl input
         // TODO: implement gui
         // need winidow popup with 4 buttons, one for each color
-        //button "COLOR" calls setWildColor("COLOR") with "COLOR" to be the actual color name as string eg. "red"
+        // button "COLOR" calls setWildColor("COLOR") with "COLOR" to be the actual
+        // color name as string eg. "red"
     }
 
     public void addClientController(GameClientController gcc) {
@@ -323,13 +326,12 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     private void printGameState() {
-        System.out.println("\nthisPlayerID: " + playerId + 
-            "\nList of players: " + Arrays.toString(players.toArray(new String[0])) + 
-            "\nthis player cards: " + playersHand + 
-            "\ncurrent card: " + cardInPlay + 
-            "\ncurrent player: " + currentPlayer + 
-            "\nplayers connected: " + numConnectedPlayers
-            );
+        System.out.println("\nthisPlayerID: " + playerId +
+                "\nList of players: " + Arrays.toString(players.toArray(new String[0])) +
+                "\nthis player cards: " + Arrays.toString(playerHand) +
+                "\ncurrent card: " + cardInPlay +
+                "\ncurrent player id: " + currentPlayer +
+                "\nplayers connected: " + numConnectedPlayers);
     }
 
     public void setPlayerId(int id) {
@@ -344,16 +346,16 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     // --for each player in game--
     // "playerId":<[] hand of player>
     public void recieveServerData(Map<String, String[]> dataMap) {
-        this.currentPlayer = dataMap.get("currentPlayer")[0];
+        this.currentPlayer = Integer.parseInt(dataMap.get("currentPlayer")[0]);
         players = List.of(dataMap.get("listOfPlayers"));
         playerHand = dataMap.get(String.valueOf(this.playerId));
         cardInPlay = dataMap.get("topCard")[0];
+        printGameState();
     }
 
     public int numPlayersConnected() {
         return numConnectedPlayers;
     }
-
 
     public void setNumPlayersConnected(int n) {
         this.numConnectedPlayers = n;

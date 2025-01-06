@@ -7,11 +7,12 @@ import oopp.team16.model.gameLogic.DeckFactory;
 import oopp.team16.model.gameLogic.Player;
 import oopp.team16.model.gameLogic.Cards.Colors.StdColors;
 
-
 /**
  * The Model class serves as the core game logic manager.
- * It handles game setup, player management, and coordinates actions between the game and listeners.
- * It manages the creation of the deck, player actions, and communicates with listeners for updates.
+ * It handles game setup, player management, and coordinates actions between the
+ * game and listeners.
+ * It manages the creation of the deck, player actions, and communicates with
+ * listeners for updates.
  */
 public class Model { // maybe change name ?ModelGameSetup?
     private List<ModelListener> listeners;
@@ -32,7 +33,7 @@ public class Model { // maybe change name ?ModelGameSetup?
         game.init(players);
     }
 
-    public void startGame() {
+    public void startGameLoop() {
         game.startGameLoop();
     }
 
@@ -132,7 +133,19 @@ public class Model { // maybe change name ?ModelGameSetup?
         }
     }
 
-    public String[] getPlayerHandById(int playerId){
+    public String[] getPlayerHandById(int playerId) {
         return toStrings(game.getPlayerHandById(playerId));
+    }
+
+    public void printState() {
+        System.out.println("\ncurrentPlayerID: " + getCurrentPlayerID() +
+                "\nList of players: " + Arrays.toString(getListOfPlayers())); // +
+        for (Player p : players) {
+             System.out.println("\nplayer "+ p.getId() + " cards: ");
+             System.out.println(Arrays.toString(getPlayerHandById(p.getId())));
+        }
+        System.out.println("\ncurrent card: " + game.getTopPlayedCard() +
+                "\ncurrent player: " + game.getCurrentPlayer().toString() +
+                "\nplayers connected: " + players.size());
     }
 }
