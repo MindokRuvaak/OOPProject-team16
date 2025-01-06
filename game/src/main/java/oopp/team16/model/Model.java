@@ -59,8 +59,14 @@ public class Model { // maybe change name ?ModelGameSetup?
         }
     }
 
+    // 
     public void playCard(int cardNumber) {
         game.tryPlay(cardNumber - 1);
+    }
+    
+    // if int already converted to index
+    public void playCardAtInd(int cardNumber) {
+        game.tryPlay(cardNumber);
     }
 
     public void drawCard() {

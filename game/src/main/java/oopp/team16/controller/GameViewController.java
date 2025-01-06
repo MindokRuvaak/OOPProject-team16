@@ -74,7 +74,6 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     @FXML
     private Label labelBadMove;
 
-
     private final Map<Integer, Pane> playersHand = new HashMap<>();
     private final List<Pane> paneList = new ArrayList<>();
     private int playerId;
@@ -104,12 +103,12 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         paneList.add(player4Hand);
 
         buttonStart.setOnAction(event -> {// this button will be redundant?
-            buttonStart.setVisible(false);
-            setPlayers();
-            buttonDisplayHand.setVisible(true);
-            // updateDisplay();
+            if (gameStarted) {
+                buttonStart.setVisible(false);
+                updateDisplay();
+            }
         });
-        buttonDisplayHand.setOnAction(event -> {
+        buttonDisplayHand.setOnAction(event -> { // unused
             updateDisplay();
             buttonDisplayHand.setVisible(false);
         });
@@ -135,7 +134,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
             provideBlue();
         });
         buttonGreen.setOnAction(event -> {
-           provideGreen();
+            provideGreen();
         });
         buttonYellow.setOnAction(event -> {
             provideYellow();
@@ -144,24 +143,26 @@ public class GameViewController /* implements GameListener, ModelListener */ {
             provideRed();
         });
     }
-    public void provideBlue(){
+
+    public void provideBlue() {
         clientController.provideBlue();
         paneColour.setVisible(false);
     }
-    public void provideGreen(){
+
+    public void provideGreen() {
         clientController.provideGreen();
         paneColour.setVisible(false);
     }
-    public void provideYellow(){
+
+    public void provideYellow() {
         clientController.provideYellow();
         paneColour.setVisible(false);
     }
-    public void provideRed(){
+
+    public void provideRed() {
         clientController.provideRed();
         paneColour.setVisible(false);
     }
-
-
 
     public void setPlayers() {
         for (int i = 0; i < players.size(); i++) {
@@ -260,21 +261,18 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     private void updateTurnLabel() {
-        labelTurn.setText("" + (currentPlayer+1) + "'s turn");
+        labelTurn.setText("" + (currentPlayer + 1) + "'s turn");
     }
 
     public void endTurn() {
         // TODO: send end turn attempt message
-        if (gameStarted) {
+        clientController.endTurn();
 
-        }
     }
 
     public void playCard(int cardIndex) {
         // TODO: play card message
-        if (gameStarted) {
-            updateDisplay();
-        }
+        clientController.playCard(cardIndex);
     }
 
     // move to view
@@ -295,7 +293,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
     }
 
     // private void updateHands() {
-        
+
     // }
 
     // should go to view
@@ -322,8 +320,9 @@ public class GameViewController /* implements GameListener, ModelListener */ {
             }
             cardView.setOnMouseClicked(event -> {
                 int cardIndex = hand.getChildren().indexOf(cardView);
-                playCard(cardIndex + 1);
+                playCard(cardIndex);
                 System.out.println("Clicked card at index: " + cardIndex);
+                System.out.println(cardView.toString());
             });
             hand.getChildren().add(cardView); // Add the card to the HBox
         }
@@ -409,7 +408,7 @@ public class GameViewController /* implements GameListener, ModelListener */ {
         players = List.of(dataMap.get("listOfPlayers"));
         playerHand = dataMap.get(String.valueOf(this.playerId));
         cardInPlay = dataMap.get("topCard")[0];
-        printGameState();
+        // printGameState();
     }
 
     public int numPlayersConnected() {

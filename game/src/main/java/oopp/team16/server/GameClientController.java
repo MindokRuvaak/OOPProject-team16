@@ -46,10 +46,10 @@ public class GameClientController {
         gameClient.sendMessage(new GameMessage("drawCard", viewController.getPlayerId()));
     }
 
-    public void playCard(int cardId, String color) {
+    public void playCard(int cardInd) {
+        System.out.println("playing card at index " + cardInd);
         GameMessage playCardMessage = new GameMessage("playCard", viewController.getPlayerId());
-        playCardMessage.addData("cardNumber", new String[] { String.valueOf(cardId) }); // Example data
-        playCardMessage.addData("color", new String[] { color });
+        playCardMessage.addData("cardIndex", new String[] { String.valueOf(cardInd) }); 
         this.gameClient.sendMessage(playCardMessage);
     }
 

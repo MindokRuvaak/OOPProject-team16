@@ -57,4 +57,9 @@ public class GameMessage {
     public void addData(String key, String[] value) {
         this.data.put(key, value);
     }
+
+    @Override
+    public String toString() {
+        return getType();
+    }
 }

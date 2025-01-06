@@ -55,7 +55,6 @@ public class MainMenuController /* implements GameStartListener */{
     public MainMenuController() {
         this.playerCount = 0;
         this.gameViewController = new GameViewController();
-        // this.gameViewController.addListener(this);
         this.gameClientController = new GameClientController(this.gameViewController);
     }
     
@@ -63,21 +62,17 @@ public class MainMenuController /* implements GameStartListener */{
     @FXML
     public void start(ActionEvent event) throws IOException {
         playerCount = this.gameViewController.numPlayersConnected();
-        gameClientController.pressedStart();
         if (2 <= playerCount && playerCount <= 4) {
             this.primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             
             GameView gameView = new GameView(primaryStage, gameViewController);
             gameView.show();
         }
+        gameClientController.pressedStart();
         // else
         // errorS.setText("cannot start game");
         // errorS1.setText("must be atleast 2 or max 4 players");
     }
-
-    // @Override
-    // public void startGame() {
-    // }
 
     // Going to lobby port
     @FXML

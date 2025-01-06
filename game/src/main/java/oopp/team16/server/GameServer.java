@@ -96,7 +96,7 @@ public class GameServer implements ModelListener {
     }
 
     public void broadcastMessage(GameMessage message) {
-        logger.info("Broadcasting message: " + message);
+        logger.info("Broadcasting message: " + message.toString());
         connectionManager.getClients().forEach(client -> client.sendMessage(message));
     }
 
@@ -136,7 +136,7 @@ public class GameServer implements ModelListener {
 
     public synchronized void handlePlayCard(int sender, int cardNumber) {
         if (validSender(sender)) {
-            model.playCard(cardNumber);
+            model.playCardAtInd(cardNumber);
             broadcastGameState();
             // if spelare har vunnit: skicka win message till clients?
         }

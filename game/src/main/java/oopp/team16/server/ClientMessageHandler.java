@@ -42,6 +42,7 @@ public class ClientMessageHandler {
             case "start":
                 viewController.startGame();
                 break;
+                
             case "ping":
                 pong();
                 break;

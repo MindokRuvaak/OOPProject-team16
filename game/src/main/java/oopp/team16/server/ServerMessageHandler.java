@@ -79,9 +79,12 @@ public class ServerMessageHandler {
     // TODO: HandlePlayCard i server ska inte ta emot number, den ska väl ta emot
     // object?
     private void handlePlayCard(GameMessage message) {
-        Object cardData = message.getData().get("cardPlayed");
+        String[] cardData = message.getData().get("cardIndex");
+        // card given as single value integer, index in player hand
+        int cardInd = Integer.parseInt(cardData[0]);
+        System.out.println("recieved card index " + cardInd);
         int sender = message.getSender();
-        gameServer.handlePlayCard(sender, 3);
+        gameServer.handlePlayCard(sender, cardInd);
     }
 
     // får meddelande från endturn knappen
