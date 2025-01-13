@@ -36,25 +36,21 @@ public class ServerMessageHandler {
                 handleSayUno(message);
                 break;
 
-            case "gameWin":
-                handleGameWin(message);
-                break;
             case "playerDisconnect":
                 handlePlayerDisconnect(message);
                 break;
+
             case "playerConnected":
                 handlePlayerConnect();
                 break;
+
             case "ping":
                 ping();
                 break;
+
             default:
                 logger.warning("Unknown message type: " + message.getType());
         }
-    }
-
-    private void handleGameWin(GameMessage message) {
-        // gameServer.broadCastWinner()// tror detta görs i 
     }
 
     private void handlePlayerConnect() {
@@ -74,10 +70,7 @@ public class ServerMessageHandler {
         gameServer.handleDrawCard(sender);
     }
 
-    // får meddelande från playcard-knapp, antagligen då när man trycker på ett
-    // kort. denna
-    // TODO: HandlePlayCard i server ska inte ta emot number, den ska väl ta emot
-    // object?
+    // får meddelande från playcard-knapp, antagligen då när man trycker på ett kort
     private void handlePlayCard(GameMessage message) {
         String[] cardData = message.getData().get("cardIndex");
         // card given as single value integer, index in player hand
@@ -98,7 +91,7 @@ public class ServerMessageHandler {
         // gameServer.handleSayUno
     }
 
-    // får meddelande när klient disconnectar. ta bort player i modellen?
+    // får meddelande när klient disconnectar. tar bort player i modellen?
     private void handlePlayerDisconnect(GameMessage message) {
         // gameServer.handlePlayerDisconnect();
     }

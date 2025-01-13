@@ -30,7 +30,7 @@ public class GameServerApp {
                     gameServer.ping();
                 }
                 if ("print".equalsIgnoreCase(scanner.nextLine().trim())) {
-                    System.out.println("pringting gamestate here.");
+                    System.out.println("printing gamestate here.");
                     gameServer.printGameState();
                 }
             }

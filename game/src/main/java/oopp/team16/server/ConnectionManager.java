@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-// ConnectionManager hanterar connections, från serversidan
+// ConnectionManager hanterar connections, serverside
 public class ConnectionManager {
     private static final Logger logger = Logger.getLogger(ConnectionManager.class.getName());
 

@@ -165,7 +165,6 @@ public class GameServer implements ModelListener {
         return running;
     }
 
-    // TODO: DESSA?
     @Override
     public void requestPlayers(int lower, int upper) {
         for (ClientManager client : connectionManager.getClients()) {

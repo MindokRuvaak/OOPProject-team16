@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-//ClientManager hanterar individuella klienter, från serversidan.
+//ClientManager hanterar individuella klienter, serverside
 public class ClientManager extends MessageHandler implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientManager.class.getName());
 

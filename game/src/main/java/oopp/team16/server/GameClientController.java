@@ -37,10 +37,6 @@ public class GameClientController {
             logger.info("Disconnected from the server.");
         }
     }
-    // TODO: FIXA SENDER FÖR ALLA DE HÄR ?
-    public void gameStart() {
-        gameClient.sendMessage(new GameMessage("gameStart", viewController.getPlayerId()));
-    }
 
     public void drawCard() {
         gameClient.sendMessage(new GameMessage("drawCard", viewController.getPlayerId()));
@@ -49,7 +45,7 @@ public class GameClientController {
     public void playCard(int cardInd) {
         System.out.println("playing card at index " + cardInd);
         GameMessage playCardMessage = new GameMessage("playCard", viewController.getPlayerId());
-        playCardMessage.addData("cardIndex", new String[] { String.valueOf(cardInd) }); 
+        playCardMessage.addData("cardIndex", new String[] { String.valueOf(cardInd) });
         this.gameClient.sendMessage(playCardMessage);
     }
 
@@ -78,6 +74,7 @@ public class GameClientController {
         // System.out.println(gameClient == null);
         this.gameClient.sendMessage(new GameMessage("ping", viewController.getPlayerId()));
     }
+
     public void provideRed(){
         this.gameClient.sendMessage(new GameMessage("red", viewController.getPlayerId()));
     }
